@@ -1,17 +1,22 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Gigs from "../components/Gigs.astro";
+import LatestTracks from "../components/LatestTracks.astro";
+import Mixes from "../components/Mixes.astro";
+import Gallery from "../components/Gallery.astro";
+import Booking from "../components/Booking.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="IAN KITA | Swiss Design (Tailwind)">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-full items-start px-6 md:px-12 lg:px-24 py-12 lg:py-24">
+    <Hero />
+    <About />
+    <Gigs />
+    <LatestTracks />
+    <Mixes />
+    <Gallery />
+    <Booking />
+  </div>
+</Layout>

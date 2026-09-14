@@ -1,0 +1,26 @@
+---
+const tracks = [
+  { title: "INDUSTRIAL CORRUPTION", links: { spotify: "#", soundcloud: "#" } },
+  { title: "VOID ANOMALY", links: { spotify: "#", soundcloud: "#" } },
+];
+---
+<section class="col-span-1 lg:col-span-12 mb-24 lg:mb-48">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
+    <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-lg uppercase tracking-widest text-swiss-white mt-1">Latest Tracks</h2>
+    <div class="col-span-1 lg:col-span-9">
+      <ul class="list-none p-0 m-0 border-t-[1px] border-white/10">
+        {tracks.map((track) => (
+          <li class="flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b-[1px] border-white/10 font-sans text-lg lg:text-xl text-swiss-white">
+            <span class="md:flex-[2] mb-2 md:mb-0 font-medium">
+              {track.title}
+            </span>
+            <div class="flex gap-6 md:gap-8 md:text-right text-sm">
+              <a href={track.links.spotify} target="_blank" rel="noopener noreferrer" class="text-swiss-white hover:text-swiss-white transition-colors">Spotify ↗</a>
+              <a href={track.links.soundcloud} target="_blank" rel="noopener noreferrer" class="text-swiss-white hover:text-swiss-white transition-colors">Soundcloud ↗</a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

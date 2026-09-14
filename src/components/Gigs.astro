@@ -1,0 +1,23 @@
+---
+const gigs = [
+  { date: "15.10.26", venue: "CLUB ZLÍN", location: "ZLÍN, CZ" },
+  { date: "22.10.26", venue: "ROXY", location: "PRAGUE, CZ" },
+  { date: "05.11.26", venue: "FABRIC", location: "OSTRAVA, CZ" },
+];
+---
+<section class="col-span-1 lg:col-span-12 mb-24 lg:mb-48">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
+    <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-lg uppercase tracking-widest text-swiss-white mt-1">Selected Gigs</h2>
+    <div class="col-span-1 lg:col-span-9">
+      <ul class="list-none p-0 m-0 border-t-[1px] border-white/10">
+        {gigs.map((gig) => (
+          <li class="flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b-[1px] border-white/10 font-sans text-lg lg:text-xl text-swiss-white">
+            <span class="md:flex-1 mb-1 md:mb-0 text-swiss-white text-sm">{gig.date}</span>
+            <span class="md:flex-[2] mb-1 md:mb-0 font-medium">{gig.venue}</span>
+            <span class="md:text-right text-swiss-white text-base">{gig.location}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
