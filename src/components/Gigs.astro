@@ -11,10 +11,10 @@ const gigs = [
     <div class="col-span-1 lg:col-span-9">
       <ul class="list-none p-0 m-0 border-t-[1px] border-white/10">
         {gigs.map((gig) => (
-          <li class="flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b-[1px] border-white/10 font-sans text-lg lg:text-xl text-swiss-white">
-            <span class="md:flex-1 mb-1 md:mb-0 text-swiss-white text-sm">{gig.date}</span>
-            <span class="md:flex-[2] mb-1 md:mb-0 font-medium">{gig.venue}</span>
-            <span class="md:text-right text-swiss-white text-base">{gig.location}</span>
+          <li class="group flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b-[1px] border-white/10 font-sans text-lg lg:text-xl text-swiss-white transition-colors">
+            <span class="md:flex-1 mb-1 md:mb-0 text-swiss-white/60 text-sm">{gig.date}</span>
+            <span class="md:flex-[2] mb-1 md:mb-0 font-medium group-hover:text-swiss-red transition-colors">{gig.venue}</span>
+            <span class="md:text-right text-swiss-white/60 text-base">{gig.location}</span>
           </li>
         ))}
       </ul>
