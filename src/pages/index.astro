@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
+import Milestones from "../components/Milestones.astro";
 import Gigs from "../components/Gigs.astro";
 import LatestTracks from "../components/LatestTracks.astro";
 import Mixes from "../components/Mixes.astro";
@@ -10,13 +11,18 @@ import Booking from "../components/Booking.astro";
 ---
 
 <Layout title="Ian Kita | Techno & Tech House DJ">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-full items-start px-6 md:px-12 lg:px-24 py-12 lg:py-24">
-    <Hero />
-    <About />
-    <Gigs />
-    <LatestTracks />
-    <Mixes />
-    <Gallery />
-    <Booking />
-  </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-full items-start px-6 md:px-12 lg:px-24 py-12 lg:py-10">
+        <div class="col-span-1 lg:col-span-12 min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-2.5rem)] flex flex-col justify-between gap-16 lg:gap-24 pb-12 lg:pb-16">
+            <Hero/>
+            <About/>
+        </div>
+        <Milestones/>
+        <Gigs/>
+        <LatestTracks/>
+        <!--<Mixes />-->
+        <Gallery/>
+        <Booking/>
+    </div>
+
+    <script src="/src/scripts/scripts.ts"></script>
 </Layout>

@@ -2,25 +2,97 @@
 import '../styles/global.css';
 
 export interface Props {
-	title: string;
+    title: string;
+    description?: string;
+    image?: string;
 }
 
-const { title } = Astro.props;
+const {
+    title,
+    description = "Techno & Tech House DJ — selected works and upcoming performances by electronic music artist Ian Kita.",
+    image = "/og-image.png",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
+
+const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    name: "Ian Kita",
+    alternateName: "Jan Zelinger",
+    genre: ["Techno", "Tech House"],
+    url: Astro.site?.toString(),
+    image: ogImageURL.toString(),
+    foundingLocation: {
+        "@type": "Place",
+        name: "Zlín, Czech Republic",
+    },
+    contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "booking",
+        email: "booking@iankita.com",
+    },
+};
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-		<title>{title}</title>
-	</head>
-	<body>
-		<div class="min-h-screen relative z-10">
-			<slot />
-		</div>
-	</body>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content={description}/>
+    <link rel="canonical" href={canonicalURL}/>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <link rel="icon" type="image/png" href="/favicon.ico"/>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+    <link rel="manifest" href="/site.webmanifest"/>
+    <meta name="theme-color" content="#000000"/>
+
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Ian Kita"/>
+    <meta property="og:title" content={title}/>
+    <meta property="og:description" content={description}/>
+    <meta property="og:image" content={ogImageURL}/>
+    <meta property="og:url" content={canonicalURL}/>
+
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content={title}/>
+    <meta name="twitter:description" content={description}/>
+    <meta name="twitter:image" content={ogImageURL}/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+          rel="stylesheet">
+    <title>{title}</title>
+
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)}/>
+</head>
+<body>
+<div class="min-h-screen relative z-10">
+    <slot/>
+</div>
+<script>
+    const revealEls = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                }
+            },
+            {threshold: 0.15, rootMargin: '0px 0px -10% 0px'}
+        );
+        revealEls.forEach((el) => observer.observe(el));
+    } else {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+    }
+</script>
+</body>
 </html>

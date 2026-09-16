@@ -1,26 +1,42 @@
 ---
-const tracks = [
-  { title: "INDUSTRIAL CORRUPTION", links: { spotify: "#", soundcloud: "#" } },
-  { title: "VOID ANOMALY", links: { spotify: "#", soundcloud: "#" } },
-];
+import {getLatestTracks} from "../lib/soundcloudTracks";
+
+const TRACK_COUNT = 2;
+
+const cleanTracks = await getLatestTracks("https://soundcloud.com/iankitadj", TRACK_COUNT);
 ---
-<section class="col-span-1 lg:col-span-12 mb-24 lg:mb-48">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
-    <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-lg uppercase tracking-widest text-swiss-white mt-1">Latest Tracks</h2>
-    <div class="col-span-1 lg:col-span-9">
-      <ul class="list-none p-0 m-0 border-t-[1px] border-white/10">
-        {tracks.map((track) => (
-          <li class="flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b-[1px] border-white/10 font-sans text-lg lg:text-xl text-swiss-white">
-            <span class="md:flex-[2] mb-2 md:mb-0 font-medium">
-              {track.title}
-            </span>
-            <div class="flex gap-6 md:gap-8 md:text-right text-sm">
-              <a href={track.links.spotify} target="_blank" rel="noopener noreferrer" class="text-swiss-white/60 hover:text-swiss-red transition-colors">Spotify ↗</a>
-              <a href={track.links.soundcloud} target="_blank" rel="noopener noreferrer" class="text-swiss-white/60 hover:text-swiss-red transition-colors">Soundcloud ↗</a>
+<section id="tracks" class="reveal col-span-1 lg:col-span-12 mb-24 lg:mb-48">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
+        <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-xl uppercase tracking-widest text-swiss-white mt-1">
+            Latest Tracks</h2>
+        <div class="col-span-1 lg:col-span-9">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t-[1px] border-white/10">
+                {cleanTracks.map((track, i) => (
+                        <div class="flex min-h-[14rem] lg:min-h-[16rem] border border-white/10 rounded-sm overflow-hidden hover:border-white/30 transition-colors">
+                            <div class="flex flex-col flex-1 min-w-0 p-6 lg:p-8">
+                                <span class="block font-heading text-swiss-red text-base font-medium mb-6">{String(i + 1).padStart(2, "0")}</span>
+                                <h3 class="font-sans text-2xl lg:text-3xl font-medium text-swiss-white mb-6 leading-snug">{track.title}</h3>
+                                <div class="flex flex-wrap gap-4 mt-auto">
+                                    {track.links.spotify && (
+                                        <a href={track.links.spotify} target="_blank" rel="noopener noreferrer"
+                                           aria-label={`Listen to ${track.title} on Spotify`}
+                                           class="text-sm font-heading uppercase tracking-widest border border-white/20 rounded-full px-5 py-2.5 text-swiss-white/80 hover:text-swiss-white hover:border-white/40 focus-visible:outline-none focus-visible:text-swiss-white focus-visible:border-white/40 focus-visible:ring-2 focus-visible:ring-swiss-red/60 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black transition-colors no-underline">Spotify
+                                            ↗</a>
+                                    )}
+                                    <a href={track.links.soundcloud} target="_blank" rel="noopener noreferrer"
+                                       aria-label={`Listen to ${track.title} on SoundCloud`}
+                                       class="text-sm font-heading uppercase tracking-widest border border-white/20 rounded-full px-5 py-2.5 text-swiss-white/80 hover:text-swiss-white hover:border-white/40 focus-visible:outline-none focus-visible:text-swiss-white focus-visible:border-white/40 focus-visible:ring-2 focus-visible:ring-swiss-red/60 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black transition-colors no-underline">Soundcloud
+                                        ↗</a>
+                                </div>
+                            </div>
+                            <div class="aspect-square shrink-0 bg-[#111]">
+                                <img src={track.cover} alt={`${track.title} cover art`}
+                                     class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
+                                     loading="lazy"/>
+                            </div>
+                        </div>
+                ))}
             </div>
-          </li>
-        ))}
-      </ul>
+        </div>
     </div>
-  </div>
 </section>

@@ -3,30 +3,51 @@
 ---
 
 <header
-  class="col-span-1 lg:col-span-12 mb-24 lg:mb-48 flex flex-col justify-between gap-12 lg:gap-0 h-auto lg:h-[60vh] pt-8 lg:pt-16"
+        class="relative col-span-1 lg:col-span-12 flex flex-col justify-between gap-12 lg:gap-0 h-auto lg:h-[55vh] pt-8 lg:pt-16"
 >
-  <div>
-    <h1
-      class="font-heading font-bold text-6xl sm:text-7xl lg:text-[15vw] tracking-tighter leading-[0.9] lg:leading-[0.8] mb-4 text-swiss-white uppercase"
+    <div>
+        <div class="flex items-stretch justify-between">
+            <h1
+                    class="animate-load -ml-[0.06em] font-heading font-bold text-6xl sm:text-7xl lg:text-[15vw] tracking-tighter leading-[0.9] lg:leading-[0.8] text-swiss-white uppercase"
+            >
+                Ian Kita
+            </h1>
+            <nav
+                    class="hidden lg:flex flex-col items-end justify-between py-2 text-sm font-heading font-medium uppercase tracking-widest text-swiss-white"
+                    aria-label="Section navigation"
+            >
+                <a href="#about" class="animate-load hover:text-swiss-red transition-colors no-underline"
+                   style="animation-delay: 400ms">About</a>
+                <a href="#gigs" class="animate-load hover:text-swiss-red transition-colors no-underline"
+                   style="animation-delay: 450ms">Gigs</a>
+                <a href="#tracks" class="animate-load hover:text-swiss-red transition-colors no-underline"
+                   style="animation-delay: 500ms">Tracks</a>
+                <a href="#mixes" class="animate-load hover:text-swiss-red transition-colors no-underline"
+                   style="animation-delay: 550ms">Mixes</a>
+                <a href="#gallery" class="animate-load hover:text-swiss-red transition-colors no-underline"
+                   style="animation-delay: 600ms">Gallery</a>
+                <a href="#contact" class="animate-load hover:text-swiss-red transition-colors no-underline"
+                   style="animation-delay: 650ms">Contact</a>
+            </nav>
+        </div>
+        <p
+                class="animate-load font-sans text-swiss-white text-lg lg:text-xl max-w-xl leading-relaxed mt-12"
+                style="animation-delay: 150ms"
+        >
+            A minimal portfolio showcasing selected works and upcoming performances by
+            electronic music artist Ian Kita.
+        </p>
+    </div>
+    <div
+            class="animate-load flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-heading font-medium text-swiss-white uppercase tracking-widest"
+            style="animation-delay: 300ms"
     >
-      Ian Kita
-    </h1>
-    <p
-      class="font-sans text-swiss-white text-lg lg:text-xl max-w-xl leading-relaxed mt-8"
-    >
-      A minimal portfolio showcasing selected works and upcoming performances by
-      electronic music artist Ian Kita.
-    </p>
-  </div>
-  <div
-    class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-heading font-medium text-swiss-white uppercase tracking-widest"
-  >
     <span class="flex items-center gap-2">
       <span class="w-2 h-2 rounded-full bg-swiss-red"></span>
       Available for booking
     </span>
-    <span class="text-swiss-white">Techno</span>
-    <span class="text-swiss-white">Tech House</span>
-    <span class="text-swiss-white">Zlín, CZ</span>
-  </div>
+        <span class="text-swiss-white">Techno</span>
+        <span class="text-swiss-white">Tech House</span>
+        <span class="text-swiss-white">Zlín, CZ</span>
+    </div>
 </header>

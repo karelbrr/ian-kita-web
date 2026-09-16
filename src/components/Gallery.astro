@@ -1,21 +1,30 @@
 ---
 const images = [
-  { url: 'https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?auto=format&fit=crop&w=800&q=80', alt: 'DJ Setup' },
-  { url: '/gallery-2.jpg', alt: 'Live Set' },
-  { url: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80', alt: 'Performance' }
+    {
+        url: 'https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?auto=format&fit=crop&w=800&q=80',
+        alt: 'DJ Setup'
+    },
+    {url: '/gallery-2.jpg', alt: 'Live Set'},
+    {
+        url: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+        alt: 'Performance'
+    }
 ];
 ---
-<section class="col-span-1 lg:col-span-12 mb-24 lg:mb-48">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
-    <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-lg uppercase tracking-widest text-swiss-white mt-1">Archive</h2>
-    <div class="col-span-1 lg:col-span-9">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8 pt-8 border-t-[1px] border-white/10">
-        {images.map(img => (
-          <div class="aspect-square bg-[#111] overflow-hidden rounded-sm">
-            <img src={img.url} alt={img.alt} class="w-full h-full object-cover grayscale contrast-125 opacity-90 hover:opacity-100 transition-opacity" loading="lazy" />
-          </div>
-        ))}
-      </div>
+<section id="gallery" class="reveal col-span-1 lg:col-span-12 mb-24 lg:mb-48">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
+        <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-xl uppercase tracking-widest text-swiss-white mt-1">
+            Archive</h2>
+        <div class="col-span-1 lg:col-span-9">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8 pt-8 border-t-[1px] border-white/10">
+                {images.map(img => (
+                        <div class="aspect-square bg-[#111] overflow-hidden rounded-sm">
+                            <img src={img.url} alt={img.alt}
+                                 class="w-full h-full object-cover grayscale contrast-125 opacity-90 hover:opacity-100 transition-opacity"
+                                 loading="lazy"/>
+                        </div>
+                ))}
+            </div>
+        </div>
     </div>
-  </div>
 </section>

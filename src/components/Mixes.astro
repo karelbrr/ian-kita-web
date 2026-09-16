@@ -1,22 +1,31 @@
 ---
 const mixes = [
-    { title: 'SYSTEM OVERRIDE', duration: '45:20' },
-    { title: 'VOID TRANSMISSION', duration: '58:10' },
-    { title: 'NEON SHADOWS', duration: '62:00' }
+    {title: 'SYSTEM OVERRIDE', duration: '45:20'},
+    {title: 'VOID TRANSMISSION', duration: '58:10'},
+    {title: 'NEON SHADOWS', duration: '62:00'}
 ];
 ---
-<section class="col-span-1 lg:col-span-12 mb-24 lg:mb-48">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
-    <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-lg uppercase tracking-widest text-swiss-white mt-1">Mixes & Sets</h2>
-    <div class="col-span-1 lg:col-span-9">
-      <ul class="list-none p-0 m-0 border-t-[1px] border-white/10">
-        {mixes.map(mix => (
-          <li class="group flex flex-wrap justify-between items-center gap-x-4 gap-y-1 py-6 border-b-[1px] border-white/10 font-sans text-lg lg:text-xl text-swiss-white transition-colors cursor-pointer">
-            <span class="font-medium group-hover:text-swiss-red transition-colors">{mix.title}</span>
-            <span class="text-right text-sm text-swiss-white/60 group-hover:text-swiss-white transition-colors">{mix.duration}</span>
-          </li>
-        ))}
-      </ul>
+<section id="mixes" class="reveal col-span-1 lg:col-span-12 mb-24 lg:mb-48">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
+        <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-xl uppercase tracking-widest text-swiss-white mt-1">
+            Mixes & Sets</h2>
+        <div class="col-span-1 lg:col-span-9">
+            <ul class="list-none p-0 m-0 border-t-[1px] border-white/10">
+                {mixes.map((mix, i) => (
+                        <li class="border-b-[1px] border-white/10">
+                            <button
+                                    type="button"
+                                    aria-label={`Play ${mix.title}, ${mix.duration}`}
+                                    class="group flex items-center gap-4 py-6 w-full text-left font-sans text-lg lg:text-xl text-swiss-white transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-swiss-red/60 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm"
+                            >
+                                <span class="font-heading text-swiss-white/60 text-sm w-8 shrink-0 group-hover:text-swiss-red group-focus-visible:text-swiss-red transition-colors">{String(i + 1).padStart(2, "0")}</span>
+                                <span class="flex-1 font-medium group-hover:text-swiss-red group-focus-visible:text-swiss-red transition-colors">{mix.title}</span>
+                                <span class="text-swiss-red text-xs opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">▶</span>
+                                <span class="text-right text-sm text-swiss-white/60 tabular-nums border border-white/10 rounded-full px-3 py-1 group-hover:border-white/30 group-focus-visible:border-white/30 transition-colors">{mix.duration}</span>
+                            </button>
+                        </li>
+                ))}
+            </ul>
+        </div>
     </div>
-  </div>
 </section>

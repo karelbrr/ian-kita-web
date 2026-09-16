@@ -1,0 +1,32 @@
+IAN KITA WEBSITE — SUGGESTED IMPROVEMENTS
+
+CONTENT / LINKS
+- Footer social links (Instagram, Soundcloud, Resident Advisor) currently point to "#" — wire up real profile URLs.
+- Latest Tracks "Spotify"/"Soundcloud" links also point to "#" — link to actual track pages.
+- Gig rows have no link/CTA (e.g. tickets) — consider making each row clickable to a ticket link or event page.
+
+SEO / METADATA
+- No meta description, Open Graph, or Twitter Card tags in Layout.astro — add these for link previews and search.
+- No JSON-LD structured data (schema.org MusicGroup/Person) — would help search engines understand the artist profile.
+- No sitemap.xml or robots.txt.
+- Favicon is present (favicon.ico/svg) but no apple-touch-icon or web manifest for "add to home screen".
+
+PERFORMANCE
+- Google Fonts loaded via <link> tags block render slightly; consider self-hosting via @fontsource or adding font-display: swap fallback sizing to avoid layout shift if fonts fail to load.
+- Gallery images use raw <img> tags with remote Unsplash URLs — switch to Astro's built-in <Image />/<Picture /> for automatic optimization, responsive srcset, and to avoid depending on an external host.
+- Add explicit width/height (or aspect-ratio, already partly done via aspect-square) on all images to avoid CLS.
+
+ACCESSIBILITY
+- External links (Spotify/Soundcloud, target="_blank") should have descriptive aria-labels or visually-hidden text ("Listen to Void Anomaly on Spotify") instead of relying on the arrow glyph alone.
+- Mixes/Gigs list items rely on hover-only color change for affordance — add a visible focus state for keyboard navigation (currently only :hover, no :focus-visible styling).
+- Check color contrast of text-swiss-white/60 (60% opacity white on black) for WCAG AA on smaller text sizes.
+
+FUNCTIONALITY
+- Mixes list items are cursor-pointer with no actual click behavior/href — either link them to the mix (Soundcloud/Mixcloud embed) or remove the pointer cursor affordance.
+- No actual booking form — "Get in touch" is just a mailto link; a simple contact/booking form (or embedded Calendly-style link) could reduce friction.
+- No 404 page.
+
+POLISH
+- Consider adding the same fade/reveal animation treatment (already added) to individual list rows (Gigs/Tracks/Mixes) with a slight stagger for extra polish.
+- Add an OG image (social share preview) since none exists yet.
+- Minor: the Gallery archive images are all sourced from Unsplash placeholders except gallery-2.jpg — replace with real tour/press photos before launch.
