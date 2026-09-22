@@ -1,16 +1,13 @@
 ---
+import SectionShell from "./SectionShell.astro";
 import {getLatestTracks} from "../lib/soundcloudTracks";
 
 const TRACK_COUNT = 2;
 
 const cleanTracks = await getLatestTracks("https://soundcloud.com/iankitadj", TRACK_COUNT);
 ---
-<section id="tracks" class="reveal col-span-1 lg:col-span-12 mb-24 lg:mb-48">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
-        <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-xl uppercase tracking-widest text-swiss-white mt-1">
-            Latest Tracks</h2>
-        <div class="col-span-1 lg:col-span-9">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t-[1px] border-white/10">
+<SectionShell id="tracks" heading="Latest Tracks">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 ">
                 {cleanTracks.map((track, i) => (
                         <div class="flex min-h-[14rem] lg:min-h-[16rem] border border-white/10 rounded-sm overflow-hidden hover:border-white/30 transition-colors">
                             <div class="flex flex-col flex-1 min-w-0 p-6 lg:p-8">
@@ -29,14 +26,14 @@ const cleanTracks = await getLatestTracks("https://soundcloud.com/iankitadj", TR
                                         ↗</a>
                                 </div>
                             </div>
-                            <div class="aspect-square shrink-0 bg-[#111]">
-                                <img src={track.cover} alt={`${track.title} cover art`}
-                                     class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
-                                     loading="lazy"/>
+                            <div class="w-32 sm:w-40 lg:w-48 aspect-square shrink-0 bg-[#111]">
+                                {track.cover && (
+                                        <img src={track.cover} alt={`${track.title} cover art`}
+                                             class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
+                                             loading="lazy"/>
+                                )}
                             </div>
                         </div>
                 ))}
             </div>
-        </div>
-    </div>
-</section>
+</SectionShell>

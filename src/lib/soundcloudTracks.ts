@@ -72,7 +72,8 @@ function withSpotifyLinks(tracks: CleanTrack[]): CleanTrack[] {
 /**
  * Returns the artist's latest SoundCloud tracks, cached to disk for CACHE_TTL_MS
  * so repeated dev reloads/builds don't re-hit the live API every time. Falls back
- * to a stale cache (rather than failing the build) if the live fetch errors.
+ * to a stale cache, then to an empty list, rather than failing the build if the
+ * live fetch errors (e.g. no network access, or a fresh checkout with no cache).
  */
 export async function getLatestTracks(profileUrl: string, count: number): Promise<CleanTrack[]> {
     const cached = readCache();
@@ -89,6 +90,7 @@ export async function getLatestTracks(profileUrl: string, count: number): Promis
             console.warn("[soundcloudTracks] live fetch failed, using stale cache:", err);
             return withSpotifyLinks(cached.tracks.slice(0, count));
         }
-        throw err;
+        console.warn("[soundcloudTracks] live fetch failed and no cache available:", err);
+        return [];
     }
 }

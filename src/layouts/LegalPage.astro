@@ -1,0 +1,35 @@
+---
+import Layout from "./Layout.astro";
+
+export interface Props {
+    title: string;
+    heading: string;
+    lastUpdated: string;
+}
+
+const { title, heading, lastUpdated } = Astro.props;
+---
+
+<Layout title={title}>
+    <div class="px-6 py-24 lg:py-32 min-h-screen flex justify-center">
+        <div class="w-full max-w-2xl text-center">
+            <a
+                    href="/"
+                    class="inline-block mb-12 text-xs font-heading font-medium text-swiss-white/50 hover:text-swiss-white uppercase tracking-widest transition-colors"
+            >
+                &larr; Back to Home
+            </a>
+
+            <h1 class="font-heading font-semibold text-3xl md:text-4xl tracking-tight mb-3 text-swiss-white">
+                {heading}
+            </h1>
+            <p class="text-sm text-swiss-white/50 mb-16">
+                Last updated: {lastUpdated}
+            </p>
+
+            <div class="text-left font-sans text-swiss-white/80 leading-relaxed space-y-10">
+                <slot/>
+            </div>
+        </div>
+    </div>
+</Layout>

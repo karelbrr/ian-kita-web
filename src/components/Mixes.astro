@@ -1,15 +1,13 @@
 ---
+import SectionShell from "./SectionShell.astro";
+
 const mixes = [
     {title: 'SYSTEM OVERRIDE', duration: '45:20'},
     {title: 'VOID TRANSMISSION', duration: '58:10'},
     {title: 'NEON SHADOWS', duration: '62:00'}
 ];
 ---
-<section id="mixes" class="reveal col-span-1 lg:col-span-12 mb-24 lg:mb-48">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
-        <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-xl uppercase tracking-widest text-swiss-white mt-1">
-            Mixes & Sets</h2>
-        <div class="col-span-1 lg:col-span-9">
+<SectionShell id="mixes" heading="Mixes & Sets">
             <ul class="list-none p-0 m-0 border-t-[1px] border-white/10">
                 {mixes.map((mix, i) => (
                         <li class="border-b-[1px] border-white/10">
@@ -26,6 +24,4 @@ const mixes = [
                         </li>
                 ))}
             </ul>
-        </div>
-    </div>
-</section>
+</SectionShell>
