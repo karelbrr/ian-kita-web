@@ -1,11 +1,10 @@
 backend:
-  name: github
-  repo: karelbrr/ian-kita-web
+  name: git-gateway
   branch: main
 
-# Lets you run `npx decap-server` locally and edit content without OAuth
-# set up. Remove this line once a real OAuth backend is wired up for
-# production editing.
+# Lets you run `npx decap-server` locally and edit content without going
+# through Netlify Identity. Remove this line once you only want to edit
+# through the deployed site.
 local_backend: true
 
 media_folder: "public/uploads"
