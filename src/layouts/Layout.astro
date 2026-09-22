@@ -62,18 +62,14 @@ const structuredData = {
     <meta name="twitter:description" content={description}/>
     <meta name="twitter:image" content={ogImageURL}/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
-          rel="stylesheet">
     <title>{title}</title>
 
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)}/>
 </head>
 <body>
-<div class="min-h-screen relative z-10">
+<main class="min-h-screen relative z-10">
     <slot/>
-</div>
+</main>
 <script>
     const revealEls = document.querySelectorAll('.reveal');
 

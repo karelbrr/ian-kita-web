@@ -1,12 +1,9 @@
 ---
-const milestones = [
-    {year: "1999", text: "Began performing as DJ Kita"},
-    {year: "2003", text: "First Vinyl Release (Samopal Records)"},
-    {year: "2011", text: "Debuted as Ian Kita / First Solo EP"},
-    {year: "2023", text: "3rd Place, Bass Awards (DJ & Producer)"},
-];
+import { milestones } from "../data/milestones.json";
+import { festivals } from "../data/festivals.json";
 
-const festivals = ["Summer of Love", "Beat For Love", "Coal Festival", "Hradhouse", "Citadela"];
+const labels = "Natura Viva, Black Square Recordings, Egothermia Records, Yin Yang Records, Baikonur Records, Licker Records, Ushuaia Music.";
+const residencies = "Founder of 100% Tech House and Sklep House. Ambassador for the MOAI Ecosystem.";
 ---
 
 <section class="reveal col-span-1 lg:col-span-12 mb-24 lg:mb-48">
@@ -40,11 +37,26 @@ const festivals = ["Summer of Love", "Beat For Love", "Coal Festival", "Hradhous
                     {festivals.map((festival, i) => (
                             <li class="group flex items-center gap-5 border border-white/10 rounded-sm px-6 py-6 transition-colors hover:border-swiss-red/40 hover:bg-white/[0.02]">
                                 <span class="font-heading text-swiss-red text-sm font-medium tabular-nums shrink-0">{String(i + 1).padStart(2, "0")}</span>
-                                <span class="font-sans text-swiss-white text-xl lg:text-2xl font-medium">{festival}</span>
+                                <span class="font-sans text-swiss-white text-xl lg:text-2xl font-medium">{festival.name}</span>
                                 <span class="ml-auto w-2 h-2 rounded-full bg-swiss-red/0 transition-colors group-hover:bg-swiss-red"></span>
                             </li>
                     ))}
                 </ul>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12 pt-12 border-t-[1px] border-white/10">
+                    <div>
+                        <h3 class="font-heading font-medium text-sm uppercase tracking-widest text-swiss-white mb-4">
+                            Selected Labels
+                        </h3>
+                        <p class="font-sans text-swiss-white/60 text-base leading-relaxed m-0">{labels}</p>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-medium text-sm uppercase tracking-widest text-swiss-white mb-4">
+                            Residencies & Projects
+                        </h3>
+                        <p class="font-sans text-swiss-white/60 text-base leading-relaxed m-0">{residencies}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

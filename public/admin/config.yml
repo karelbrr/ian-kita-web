@@ -1,0 +1,81 @@
+backend:
+  name: github
+  repo: karelbrr/ian-kita-web
+  branch: main
+
+# Lets you run `npx decap-server` locally and edit content without OAuth
+# set up. Remove this line once a real OAuth backend is wired up for
+# production editing.
+local_backend: true
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "upcoming-shows"
+    label: "Upcoming Shows"
+    files:
+      - name: "upcoming-shows"
+        label: "Upcoming Shows"
+        file: "src/data/upcoming-shows.json"
+        format: "json"
+        fields:
+          - name: "shows"
+            label: "Shows"
+            widget: "list"
+            allow_add: true
+            summary: "{{venue}} — {{date}}"
+            fields:
+              - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+              - { name: "venue", label: "Venue", widget: "string" }
+              - { name: "location", label: "Location", widget: "string" }
+
+  - name: "milestones"
+    label: "Milestones"
+    files:
+      - name: "milestones"
+        label: "Milestones"
+        file: "src/data/milestones.json"
+        format: "json"
+        fields:
+          - name: "milestones"
+            label: "Milestones"
+            widget: "list"
+            allow_add: true
+            summary: "{{fields.year}} — {{text}}"
+            fields:
+              - { name: "year", label: "Year", widget: "string" }
+              - { name: "text", label: "Text", widget: "string" }
+
+  - name: "festivals"
+    label: "Festivals"
+    files:
+      - name: "festivals"
+        label: "Festivals"
+        file: "src/data/festivals.json"
+        format: "json"
+        fields:
+          - name: "festivals"
+            label: "Festivals"
+            widget: "list"
+            allow_add: true
+            summary: "{{name}}"
+            fields:
+              - { name: "name", label: "Name", widget: "string" }
+
+  - name: "gallery"
+    label: "Archive Images"
+    files:
+      - name: "gallery"
+        label: "Archive Images"
+        file: "src/data/gallery.json"
+        format: "json"
+        fields:
+          - name: "images"
+            label: "Images"
+            widget: "list"
+            allow_add: true
+            summary: "{{alt}}"
+            fields:
+              - { name: "url", label: "Image", widget: "image" }
+              - { name: "alt", label: "Alt text", widget: "string" }

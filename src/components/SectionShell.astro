@@ -1,0 +1,17 @@
+---
+export interface Props {
+    id: string;
+    heading: string;
+}
+
+const { id, heading } = Astro.props;
+---
+<section id={id} class="reveal col-span-1 lg:col-span-12 mb-24 lg:mb-48">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
+        <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-xl uppercase tracking-widest text-swiss-white mt-1">
+            {heading}</h2>
+        <div class="col-span-1 lg:col-span-9">
+            <slot/>
+        </div>
+    </div>
+</section>

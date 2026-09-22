@@ -1,24 +1,28 @@
 ---
-const gigs = [
-  { date: "15.10.26", venue: "CLUB ZLÍN", location: "ZLÍN, CZ" },
-  { date: "22.10.26", venue: "ROXY", location: "PRAGUE, CZ" },
-  { date: "05.11.26", venue: "FABRIC", location: "OSTRAVA, CZ" },
-];
+import SectionShell from "./SectionShell.astro";
+import { shows as SHOWS } from "../data/upcoming-shows.json";
+
+const todayISO = new Date().toISOString().slice(0, 10);
+const shows = SHOWS.filter((show) => show.date >= todayISO);
 
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-function parseGigDate(date: string) {
-  const [day, month] = date.split(".").map(Number);
-  return { day: String(day).padStart(2, "0"), month: MONTHS[month - 1] };
+// show.date is an ISO string ("2026-10-15"); parse as UTC to avoid the local
+// timezone shifting the displayed day by ±1.
+function parseShowDate(date: string) {
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return { day: String(parsed.getUTCDate()).padStart(2, "0"), month: MONTHS[parsed.getUTCMonth()] };
 }
 ---
-<section id="gigs" class="reveal col-span-1 lg:col-span-12 mb-24 lg:mb-48">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-32">
-    <h2 class="col-span-1 lg:col-span-3 font-heading font-medium text-xl uppercase tracking-widest text-swiss-white mt-1">Upcoming Shows</h2>
-    <div class="col-span-1 lg:col-span-9">
+<SectionShell id="gigs" heading="Upcoming Shows">
+      {shows.length === 0 ? (
+        <p class="font-sans text-swiss-white/60 text-lg border-t-[1px] border-white/10 pt-6">
+          No upcoming shows right now — check back soon.
+        </p>
+      ) : (
       <ul class="list-none p-0 m-0 border-t-[1px] border-white/10">
-        {gigs.map((gig, i) => {
-          const { day, month } = parseGigDate(gig.date);
+        {shows.map((show, i) => {
+          const { day, month } = parseShowDate(show.date);
           return (
             <li
               tabindex="0"
@@ -30,18 +34,17 @@ function parseGigDate(date: string) {
               </div>
               <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-3 mb-1">
-                  <span class="font-sans font-medium text-xl lg:text-2xl text-swiss-white group-hover:text-swiss-red group-focus-visible:text-swiss-red transition-colors">{gig.venue}</span>
+                  <span class="font-sans font-medium text-xl lg:text-2xl text-swiss-white group-hover:text-swiss-red group-focus-visible:text-swiss-red transition-colors">{show.venue}</span>
                   {i === 0 && (
                     <span class="text-[10px] font-heading font-medium uppercase tracking-widest text-swiss-red border border-swiss-red/40 rounded-full px-2 py-0.5">Next</span>
                   )}
                 </div>
-                <span class="font-sans text-swiss-white/60 text-sm lg:text-base">{gig.location}</span>
+                <span class="font-sans text-swiss-white/60 text-sm lg:text-base">{show.location}</span>
               </div>
               <span class="hidden md:block text-swiss-red text-xl opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 transition-all shrink-0">→</span>
             </li>
           );
         })}
       </ul>
-    </div>
-  </div>
-</section>
+      )}
+</SectionShell>

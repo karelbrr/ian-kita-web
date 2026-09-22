@@ -3,9 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
 import Milestones from "../components/Milestones.astro";
-import Gigs from "../components/Gigs.astro";
+import UpcomingShows from "../components/UpcomingShows.astro";
 import LatestTracks from "../components/LatestTracks.astro";
-import Mixes from "../components/Mixes.astro";
 import Gallery from "../components/Gallery.astro";
 import Booking from "../components/Booking.astro";
 ---
@@ -17,12 +16,10 @@ import Booking from "../components/Booking.astro";
             <About/>
         </div>
         <Milestones/>
-        <Gigs/>
+        <UpcomingShows/>
         <LatestTracks/>
-        <!--<Mixes />-->
         <Gallery/>
-        <Booking/>
     </div>
-
-    <script src="/src/scripts/scripts.ts"></script>
+`
+    <Booking/>
 </Layout>

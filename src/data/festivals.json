@@ -1,0 +1,9 @@
+{
+  "festivals": [
+    { "name": "Summer of Love" },
+    { "name": "Beat For Love" },
+    { "name": "Coal Festival" },
+    { "name": "Hradhouse" },
+    { "name": "Citadela" }
+  ]
+}
