@@ -1,0 +1,16 @@
+---
+/**
+ * Defines each letter of the logotype once per page so every <Logo/> can
+ * reference it with <use>, instead of repeating ~6 KB of path data per
+ * instance. Rendered once in Layout.astro. Kept at zero size rather than
+ * display:none because some browsers refuse to draw <use> references into a
+ * hidden SVG.
+ */
+import { LOGO_GLYPHS } from '../lib/logo';
+---
+
+<svg class="absolute h-0 w-0 overflow-hidden" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        {LOGO_GLYPHS.map((glyph, i) => <path id={`ik-glyph-${i}`} d={glyph.d} fill-rule="evenodd" pathLength="1" />)}
+    </defs>
+</svg>

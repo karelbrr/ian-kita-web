@@ -10,13 +10,27 @@
 @theme {
   --font-sans: "Inter", sans-serif;
   --font-heading: "Space Grotesk", sans-serif;
-  --color-swiss-red: #E60000;
+  /* Accent palette sampled from the Mácháč 2026 LED-wall mosaic: warm orange
+     through raspberry to plum. Black stays the dominant colour; these are
+     used for labels, hovers, gradients and soft glows. */
+  --color-accent: #F2880F;
+  --color-brand-orange: #F2880F;
+  --color-brand-magenta: #D6306A;
+  --color-brand-pink: #E85A7A;
+  --color-brand-purple: #5E2A6E;
+  --color-brand-plum: #2B1630;
   --color-swiss-black: #000000;
   --color-swiss-white: #ffffff;
   --color-swiss-gray: #888888;
+  --color-ink: #0b0b0b;
 }
 
 @layer base {
+  html {
+    /* Anchored sections stop below the fixed nav. */
+    scroll-padding-top: 5.5rem;
+  }
+
   html, body {
     @apply antialiased scroll-smooth;
   }
@@ -30,6 +44,212 @@
   }
 }
 
+/* Text filled with the brand gradient (orange → pink → raspberry). */
+@utility text-gradient-brand {
+  background-image: linear-gradient(90deg, var(--color-brand-orange) 0%, var(--color-brand-pink) 50%, var(--color-brand-magenta) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Small caps label used for section indices, captions and meta rows. */
+@utility eyebrow {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------------
+   Brand glyphs — the logotype is built from outlined squares and triangles,
+   so the UI borrows the same primitives for bullets and separators.
+--------------------------------------------------------------------------- */
+.glyph-square {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  border: 1.5px solid currentColor;
+  flex: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Film grain — a fixed noise layer over everything (pointer-events off).
+--------------------------------------------------------------------------- */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+}
+
+/* ---------------------------------------------------------------------------
+   Fixed navigation
+--------------------------------------------------------------------------- */
+.site-nav {
+  transition: background-color 0.5s ease, border-color 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+.site-nav.is-scrolled {
+  background: rgba(0, 0, 0, 0.72);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6.5rem 1.5rem 2.5rem;
+  background: rgba(0, 0, 0, 0.94);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  overflow-y: auto;
+}
+
+.menu-overlay[hidden] {
+  display: none;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+/* Fixed hairline bar at the top of the viewport that fills with scroll
+   progress. Tied 1:1 to user-driven scroll rather than autoplaying, so it
+   stays active regardless of prefers-reduced-motion. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 100;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--color-brand-orange), var(--color-brand-pink), var(--color-brand-magenta), var(--color-brand-purple));
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress-fill auto linear;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes scroll-progress-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Logotype draw-on: the wireframe strokes each letter's contour, then the
+   solid fill fades in underneath and the wire fades away. Static (solid)
+   when the visitor prefers reduced motion.
+--------------------------------------------------------------------------- */
+.logo-draw__wire path {
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------------------------------------------------------------------------
+   Marquee band
+--------------------------------------------------------------------------- */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+}
+
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-right: 1.5rem;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   Gallery lightbox
+--------------------------------------------------------------------------- */
+.lightbox {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+}
+
+.lightbox::backdrop {
+  background: rgba(0, 0, 0, 0.94);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.lightbox__img {
+  max-width: min(92vw, 1600px);
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox.is-loading .lightbox__img {
+  opacity: 0;
+}
+
+/* Pulsing outline square while the full-size photo loads. */
+.lightbox__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lightbox.is-loading .lightbox__spinner {
+  opacity: 1;
+  animation: lightbox-spin 1s linear infinite;
+}
+
+@keyframes lightbox-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — everything below only runs when the visitor has not asked for
+   reduced motion. Elements default to their final, visible state otherwise.
+--------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes fade-in-up {
     from {
@@ -42,9 +262,161 @@
     }
   }
 
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fade-in-blur {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(242, 136, 15, 0.55);
+    }
+    50% {
+      opacity: 0.65;
+      box-shadow: 0 0 0 5px rgba(242, 136, 15, 0);
+    }
+  }
+
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes logo-stroke {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes logo-fill {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes logo-wire-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes grain-shift {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-2%, 1%); }
+    40% { transform: translate(1%, -2%); }
+    60% { transform: translate(-1%, 2%); }
+    80% { transform: translate(2%, -1%); }
+  }
+
+  .grain {
+    animation: grain-shift 1.4s steps(5) infinite;
+  }
+
   .animate-load {
     opacity: 0;
     animation: fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-slide {
+    opacity: 0;
+    animation: slide-in-right 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-blur-up {
+    opacity: 0;
+    animation: fade-in-blur 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .pulse-dot {
+    animation: pulse-dot 2.4s ease-in-out infinite;
+  }
+
+  .hero__img {
+    animation: hero-zoom 2.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .logo-draw__wire path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: logo-stroke 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    animation-delay: calc(200ms + var(--i, 0) * 90ms);
+  }
+
+  .logo-draw__wire {
+    animation: logo-wire-out 0.9s ease forwards;
+    animation-delay: 2.6s;
+  }
+
+  .logo-draw__fill use {
+    opacity: 0;
+    animation: logo-fill 0.9s ease forwards;
+    animation-delay: calc(1.3s + var(--i, 0) * 90ms);
+  }
+
+  .marquee__track {
+    animation: marquee var(--marquee-duration, 60s) linear infinite;
+  }
+
+  .marquee--reverse .marquee__track {
+    animation-direction: reverse;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  /* Hero-only: as the intro scrolls past the top of the viewport, it settles
+     back and fades slightly, like a cover page being turned — distinct from
+     every other section's scroll-IN reveal below it. */
+  @supports (animation-timeline: view()) {
+    .hero-parallax {
+      view-timeline-name: --hero-timeline;
+      animation: hero-exit-fade linear both;
+      animation-timeline: --hero-timeline;
+      animation-range: exit 0% exit 100%;
+    }
+  }
+
+  @keyframes hero-exit-fade {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0.15;
+      transform: translateY(-40px);
+    }
   }
 
   .reveal {
@@ -56,5 +428,57 @@
   .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* Underline accent that draws in under a heading once its .reveal
+     ancestor becomes visible. */
+  .reveal-underline {
+    display: block;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+  }
+
+  .reveal.is-visible .reveal-underline {
+    transform: scaleX(1);
+  }
+
+  /* Staggered children: each direct child fades/slides/scales in with a
+     delay proportional to its index (set as --i by the reveal script),
+     capped so long lists don't cascade forever. */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(min(var(--i, 0), 10) * 70ms);
+  }
+
+  .stagger.is-visible > * {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* A red line that draws downward over a timeline's static rule once
+     revealed. Uses a pseudo-element so it doesn't interfere with .stagger's
+     direct-child selector on the same element. */
+  .timeline {
+    position: relative;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--color-brand-orange), var(--color-brand-magenta) 55%, var(--color-brand-purple));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.1s;
+  }
+
+  .timeline.is-visible::before {
+    transform: scaleY(1);
   }
 }

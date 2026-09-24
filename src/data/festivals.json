@@ -1,9 +1,25 @@
 {
   "festivals": [
-    { "name": "Summer of Love" },
-    { "name": "Beat For Love" },
-    { "name": "Coal Festival" },
-    { "name": "Hradhouse" },
-    { "name": "Citadela" }
+    {
+      "name": "Mácháč"
+    },
+    {
+      "name": "Beats for Love"
+    },
+    {
+      "name": "Coal Festival"
+    },
+    {
+      "name": "Summer of Love"
+    },
+    {
+      "name": "Hradhouse"
+    },
+    {
+      "name": "Citadela"
+    },
+    {
+      "name": "Cube"
+    }
   ]
 }

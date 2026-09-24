@@ -1,51 +1,64 @@
 ---
+import { Image } from 'astro:assets';
+import Logo from './Logo.astro';
+import portrait from '../assets/photos/portrait-bw.jpg';
+import about from '../data/about.json';
+import { shows as SHOWS } from '../data/upcoming-shows.json';
 
+const todayISO = new Date().toISOString().slice(0, 10);
+const nextShow = [...SHOWS].filter((show) => show.date >= todayISO).sort((a, b) => a.date.localeCompare(b.date))[0];
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function formatShort(date: string) {
+    const parsed = new Date(`${date}T00:00:00Z`);
+    return `${parsed.getUTCDate()} ${MONTHS[parsed.getUTCMonth()]}`;
+}
 ---
 
-<header
-        class="relative col-span-1 lg:col-span-12 flex flex-col justify-between gap-12 lg:gap-0 h-auto lg:h-[55vh] pt-8 lg:pt-16"
->
-    <div>
-        <div class="flex items-stretch justify-between">
-            <h1
-                    class="animate-load -ml-[0.06em] font-heading font-bold text-6xl sm:text-7xl lg:text-[15vw] tracking-tighter leading-[0.9] lg:leading-[0.8] text-swiss-white uppercase"
-            >
-                Ian Kita
-            </h1>
-            <nav
-                    class="hidden lg:flex flex-col items-end justify-between py-2 text-sm font-heading font-medium uppercase tracking-widest text-swiss-white"
-                    aria-label="Section navigation"
-            >
-                <a href="#about" class="animate-load hover:text-swiss-red transition-colors no-underline"
-                   style="animation-delay: 400ms">About</a>
-                <a href="#gigs" class="animate-load hover:text-swiss-red transition-colors no-underline"
-                   style="animation-delay: 450ms">Gigs</a>
-                <a href="#tracks" class="animate-load hover:text-swiss-red transition-colors no-underline"
-                   style="animation-delay: 500ms">Tracks</a>
-                <a href="#gallery" class="animate-load hover:text-swiss-red transition-colors no-underline"
-                   style="animation-delay: 600ms">Gallery</a>
-                <a href="#contact" class="animate-load hover:text-swiss-red transition-colors no-underline"
-                   style="animation-delay: 650ms">Contact</a>
-            </nav>
-        </div>
-        <p
-                class="animate-load font-sans text-swiss-white text-lg lg:text-xl max-w-xl leading-relaxed mt-12"
-                style="animation-delay: 150ms"
-        >
-            A minimal portfolio showcasing selected works and upcoming performances by
-            electronic music artist Ian Kita.
+<section id="top" class="hero relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-swiss-black">
+    <div class="absolute inset-0" aria-hidden="true">
+        <Image
+            src={portrait}
+            alt=""
+            widths={[640, 960, 1440, 2000, 2800]}
+            sizes="100vw"
+            class="hero__img h-full w-full object-cover object-[50%_18%] lg:object-[50%_22%]"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-swiss-black via-swiss-black/35 to-swiss-black/25"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-swiss-black/60 via-transparent to-swiss-black/20"></div>
+        <div class="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-brand-purple/35 via-brand-plum/20 to-transparent"></div>
+    </div>
+
+    <div class="hero-parallax relative z-10 px-6 pt-40 pb-8 md:px-12 lg:px-24 lg:pb-12">
+        <p class="animate-blur-up eyebrow mb-6 flex items-center gap-3 text-swiss-white/70" style="animation-delay: 1100ms">
+            <span class="glyph-square text-accent"></span>
+            {about.eyebrow}
         </p>
+
+        <h1 class="m-0 text-swiss-white">
+            <span class="sr-only">Ian Kita</span>
+            <Logo variant="draw" class="block h-auto w-full" decorative />
+        </h1>
+
+        <div class="mt-8 flex flex-col justify-between gap-6 border-t border-white/15 pt-6 md:flex-row md:items-end lg:mt-10">
+            <p class="animate-blur-up text-gradient-brand m-0 font-heading text-2xl font-medium tracking-tight lg:text-4xl" style="animation-delay: 1500ms">
+                {about.tagline}
+            </p>
+            <div class="animate-blur-up flex flex-wrap items-center gap-x-8 gap-y-3 eyebrow text-swiss-white/80" style="animation-delay: 1700ms">
+                <span class="flex items-center gap-2">
+                    <span class="pulse-dot h-2 w-2 rounded-full bg-accent"></span>
+                    Available for booking
+                </span>
+                {nextShow && (
+                    <a href="#shows" class="group flex items-center gap-2 text-swiss-white/80 transition-colors hover:text-swiss-white no-underline">
+                        Next: {formatShort(nextShow.date)} — {nextShow.venue}
+                        <span class="text-accent transition-transform group-hover:translate-x-1">→</span>
+                    </a>
+                )}
+            </div>
+        </div>
     </div>
-    <div
-            class="animate-load flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-heading font-medium text-swiss-white uppercase tracking-widest"
-            style="animation-delay: 300ms"
-    >
-    <span class="flex items-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-swiss-red"></span>
-      Available for booking
-    </span>
-        <span class="text-swiss-white">Techno</span>
-        <span class="text-swiss-white">Tech House</span>
-        <span class="text-swiss-white">Zlín, CZ</span>
-    </div>
-</header>
+</section>

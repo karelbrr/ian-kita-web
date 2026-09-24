@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import { milestones } from '../data/milestones.json';
+import thenPhoto from '../assets/photos/jancovka-2001.jpg';
+
+---
+
+<section id="journey" class="reveal px-6 py-24 md:px-12 lg:px-24 lg:py-40">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+            <p class="eyebrow mb-8 text-accent">Journey</p>
+            <h2 class="mb-12 font-heading text-3xl font-medium leading-[1.05] tracking-tight text-swiss-white sm:text-4xl lg:text-5xl">
+                From vinyl roots to festival main stages.
+            </h2>
+            <ol class="timeline stagger m-0 list-none border-l border-white/10 p-0 pl-8">
+                {milestones.map((milestone) => (
+                    <li class="relative pb-8 last:pb-0">
+                        <span class="absolute -left-[2.3rem] top-1.5 h-2.5 w-2.5 border border-accent bg-swiss-black"></span>
+                        <span class="mb-1 block font-heading text-sm font-medium tracking-widest text-accent">{milestone.year}</span>
+                        <span class="text-lg text-swiss-white/90 lg:text-xl">{milestone.text}</span>
+                    </li>
+                ))}
+            </ol>
+        </div>
+
+        <div class="lg:col-span-7">
+            <figure class="relative m-0 aspect-[592/800] w-full max-w-[46rem] overflow-hidden rounded-sm bg-ink lg:ml-auto">
+                <Image
+                    src={thenPhoto}
+                    alt="DJ Kita mixing on vinyl at Jančovka, 2001"
+                    widths={[592]}
+                    sizes="(min-width: 1024px) 55vw, 100vw"
+                    class="h-full w-full object-cover grayscale contrast-125"
+                    loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
+                <figcaption class="absolute bottom-4 left-4 flex items-center gap-2 eyebrow text-swiss-white/80">
+                    <span class="glyph-square text-accent"></span>
+                    2001 · Jančovka
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</section>

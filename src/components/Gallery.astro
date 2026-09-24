@@ -1,15 +1,96 @@
 ---
-import SectionShell from "./SectionShell.astro";
-import { images } from "../data/gallery.json";
+import { Image, getImage } from 'astro:assets';
+import Logo from './Logo.astro';
+import { images } from '../data/gallery.json';
+import { resolvePhoto } from '../lib/photos';
+
+// Bento layout is derived from each photo's real orientation: portraits get
+// two rows, wide shots two columns, and the first wide shot anchors the grid
+// as a 2×2 tile. Photos the CMS references from outside src/assets fall back
+// to a plain <img>.
+const items = await Promise.all(
+    images.map(async (image, i) => {
+        const photo = resolvePhoto(image.url);
+        const full = photo ? await getImage({ src: photo, width: Math.min(photo.width, 2000), format: 'webp' }) : undefined;
+        const ratio = photo ? photo.width / photo.height : 1;
+        const span = photo && i === 0 && ratio > 1.3
+            ? 'col-span-2 row-span-2'
+            : ratio < 0.9
+              ? 'row-span-2'
+              : ratio > 1.4
+                ? 'col-span-2'
+                : '';
+        return { ...image, photo, fullSrc: full?.src ?? image.url, span };
+    }),
+);
 ---
-<SectionShell id="gallery" heading="Archive">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8">
-                {images.map(img => (
-                        <div class="aspect-square bg-[#111] overflow-hidden rounded-sm">
-                            <img src={img.url} alt={img.alt}
-                                 class="w-full h-full object-cover grayscale contrast-125 opacity-90 hover:opacity-100 transition-opacity"
-                                 loading="lazy"/>
-                        </div>
-                ))}
-            </div>
-</SectionShell>
+
+<section id="gallery" class="reveal border-t border-white/10 px-6 py-24 md:px-12 lg:px-24 lg:py-40">
+    <div class="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end lg:mb-16">
+        <div>
+            <p class="eyebrow mb-8 text-accent">Gallery</p>
+            <h2 class="m-0 font-heading text-3xl font-medium leading-[1.05] tracking-tight text-swiss-white sm:text-4xl lg:text-5xl">
+                Nights & stages
+            </h2>
+        </div>
+        <p class="m-0 max-w-xs text-base leading-relaxed text-swiss-white/60 md:text-right">
+            From vinyl in the early 2000s to Mácháč 2026. Tap any photo to open it.
+        </p>
+    </div>
+
+    <div class="grid grid-flow-dense grid-cols-2 auto-rows-[42vw] gap-3 md:grid-cols-4 md:auto-rows-[21vw] lg:gap-4 lg:auto-rows-[17vw]">
+        {items.map((item) => (
+            <a
+                href={item.fullSrc}
+                class:list={['group relative block overflow-hidden rounded-sm bg-ink no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70', item.span]}
+                data-lightbox
+                data-caption={item.caption}
+                data-alt={item.alt}
+                aria-label={`Open photo: ${item.caption}`}
+            >
+                {item.photo ? (
+                    <Image
+                        src={item.photo}
+                        alt={item.alt}
+                        widths={[400, 800, 1200]}
+                        sizes={item.span.includes('col-span-2') ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+                        class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        loading="lazy"
+                    />
+                ) : (
+                    <img src={item.url} alt={item.alt} loading="lazy" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                )}
+                <span class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center gap-2 bg-gradient-to-t from-swiss-black/80 to-transparent p-4 pt-10 eyebrow text-swiss-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <span class="glyph-square text-accent"></span>
+                    {item.caption}
+                </span>
+            </a>
+        ))}
+        <a
+            href="#contact"
+            class="group flex flex-col justify-between rounded-sm border border-white/10 p-5 no-underline transition-colors hover:border-accent/60 lg:p-6"
+        >
+            <Logo class="w-2/3 text-swiss-white/25 transition-colors group-hover:text-swiss-white" decorative />
+            <span class="eyebrow text-swiss-white/60 transition-colors group-hover:text-swiss-white">
+                Need press photos or the full pack? Get in touch →
+            </span>
+        </a>
+    </div>
+</section>
+
+<dialog class="lightbox" data-lightbox-dialog aria-label="Photo viewer">
+    <span class="lightbox__spinner" aria-hidden="true"></span>
+    <div class="flex h-full w-full flex-col items-center justify-center gap-5 p-4 sm:p-8">
+        <figure class="m-0 flex flex-col items-center gap-4">
+            <img class="lightbox__img rounded-sm" src="" alt="" data-lightbox-img />
+            <figcaption class="flex items-center gap-4 eyebrow text-swiss-white/70">
+                <span data-lightbox-counter></span>
+                <span class="glyph-square text-accent"></span>
+                <span data-lightbox-caption></span>
+            </figcaption>
+        </figure>
+    </div>
+    <button type="button" class="absolute right-4 top-4 rounded-full border border-white/25 px-4 py-2.5 eyebrow text-swiss-white transition-colors hover:border-accent hover:text-accent sm:right-8 sm:top-8" data-lightbox-close>Close</button>
+    <button type="button" class="absolute left-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/25 text-swiss-white transition-colors hover:border-accent hover:text-accent sm:left-6" aria-label="Previous photo" data-lightbox-prev>←</button>
+    <button type="button" class="absolute right-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/25 text-swiss-white transition-colors hover:border-accent hover:text-accent sm:right-6" aria-label="Next photo" data-lightbox-next>→</button>
+</dialog>

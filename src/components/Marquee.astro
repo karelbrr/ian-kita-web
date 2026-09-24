@@ -1,0 +1,41 @@
+---
+/**
+ * Two infinite, opposite-direction bands: festival stages and record labels.
+ * Purely decorative (both lists appear as real text elsewhere), so it is
+ * hidden from assistive tech and frozen under prefers-reduced-motion.
+ */
+import { festivals } from '../data/festivals.json';
+import about from '../data/about.json';
+
+const stages = festivals.map((festival) => festival.name);
+const labels = about.labels.replace(/\.$/, '').split(',').map((label) => label.trim());
+---
+
+<div aria-hidden="true" class="select-none border-y border-white/10">
+    <div class="marquee py-5 lg:py-7" style="--marquee-duration: 55s">
+        <div class="marquee__track">
+            {[0, 1].map(() =>
+                stages.map((name) => (
+                    <span class="marquee__item font-heading text-3xl font-medium uppercase tracking-tight text-swiss-white/90 lg:text-6xl">
+                        {name}
+                        <svg viewBox="0 0 24 22" class="h-[0.55em] w-[0.6em] text-brand-magenta" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
+                            <path d="M12 1.5 22.5 20.5H1.5Z" />
+                        </svg>
+                    </span>
+                )),
+            )}
+        </div>
+    </div>
+    <div class="marquee marquee--reverse border-t border-white/10 py-4 lg:py-5" style="--marquee-duration: 90s">
+        <div class="marquee__track">
+            {[0, 1].map(() =>
+                labels.map((name) => (
+                    <span class="marquee__item eyebrow text-swiss-white/45">
+                        {name}
+                        <span class="glyph-square text-swiss-white/30"></span>
+                    </span>
+                )),
+            )}
+        </div>
+    </div>
+</div>

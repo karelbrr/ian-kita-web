@@ -1,0 +1,58 @@
+---
+/**
+ * The Ian Kita logotype as inline SVG so it inherits `currentColor` and can
+ * sit white on black, black on white, or red on hover — no image swaps.
+ *
+ * Letters are <use> references to the paths defined once by <LogoDefs/>
+ * (rendered in Layout.astro). `variant="draw"` adds a stroked wireframe made
+ * of real paths on top, so CSS can draw the contours in and then fade the
+ * solid fill up underneath (see global.css).
+ */
+import { LOGO_VIEWBOX, LOGO_GLYPHS, LOGO_WIDTH } from '../lib/logo';
+
+export interface Props {
+    class?: string;
+    title?: string;
+    variant?: 'solid' | 'draw';
+    /** Hide from assistive tech when a text alternative is provided nearby. */
+    decorative?: boolean;
+    /** Fill the letters with the brand gradient (solid variant only). */
+    gradient?: boolean;
+    /** Unique id for the gradient when several gradient logos share a page. */
+    gradientId?: string;
+}
+
+const {
+    class: className,
+    title = 'Ian Kita',
+    variant = 'solid',
+    decorative = false,
+    gradient = false,
+    gradientId = 'ik-logo-gradient',
+} = Astro.props;
+const a11y = decorative ? ({ 'aria-hidden': 'true' } as const) : ({ role: 'img', 'aria-label': title } as const);
+---
+
+{variant === 'solid' ? (
+    <svg class={className} viewBox={LOGO_VIEWBOX} fill={gradient ? `url(#${gradientId})` : 'currentColor'} xmlns="http://www.w3.org/2000/svg" {...a11y}>
+        {gradient && (
+            <defs>
+                <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="0" y1="0" x2={LOGO_WIDTH} y2="0">
+                    <stop offset="0" style="stop-color: var(--color-brand-orange)" />
+                    <stop offset="0.55" style="stop-color: var(--color-brand-magenta)" />
+                    <stop offset="1" style="stop-color: var(--color-brand-purple)" />
+                </linearGradient>
+            </defs>
+        )}
+        {LOGO_GLYPHS.map((_, i) => <use href={`#ik-glyph-${i}`} />)}
+    </svg>
+) : (
+    <svg class:list={['logo-draw', className]} viewBox={LOGO_VIEWBOX} xmlns="http://www.w3.org/2000/svg" {...a11y}>
+        <g class="logo-draw__fill" fill="currentColor">
+            {LOGO_GLYPHS.map((_, i) => <use href={`#ik-glyph-${i}`} style={`--i:${i}`} />)}
+        </g>
+        <g class="logo-draw__wire" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round">
+            {LOGO_GLYPHS.map((glyph, i) => <path d={glyph.d} pathLength="1" style={`--i:${i}`} />)}
+        </g>
+    </svg>
+)}

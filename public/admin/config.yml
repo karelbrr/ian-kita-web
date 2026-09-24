@@ -7,10 +7,41 @@ backend:
 # through the deployed site.
 local_backend: true
 
-media_folder: "public/uploads"
-public_folder: "/uploads"
+# Photos live inside src/ so Astro can optimise them (responsive sizes, WebP).
+# The stored path ("/src/assets/photos/<file>") is what the components look up.
+media_folder: "src/assets/photos"
+public_folder: "/src/assets/photos"
 
 collections:
+  - name: "about"
+    label: "About & Texts"
+    files:
+      - name: "about"
+        label: "About & Texts"
+        file: "src/data/about.json"
+        format: "json"
+        fields:
+          - { name: "tagline", label: "Hero tagline", widget: "string", hint: "Short line under the logo, e.g. “Music connects us.”" }
+          - { name: "eyebrow", label: "Hero eyebrow", widget: "string", hint: "Small caps line above the logo (genres · city)." }
+          - { name: "lead", label: "About — lead sentence", widget: "text" }
+          - name: "paragraphs"
+            label: "About — paragraphs"
+            widget: "list"
+            allow_add: true
+            field: { name: "paragraph", label: "Paragraph", widget: "text" }
+          - { name: "quote", label: "Manifesto quote", widget: "text" }
+          - { name: "quoteSource", label: "Quote source", widget: "string" }
+          - { name: "liveQuote", label: "Live section quote", widget: "text", hint: "Shown over the live video." }
+          - name: "stats"
+            label: "Key numbers"
+            widget: "list"
+            allow_add: true
+            summary: "{{value}} — {{label}}"
+            fields:
+              - { name: "value", label: "Value", widget: "string" }
+              - { name: "label", label: "Label", widget: "string" }
+          - { name: "labels", label: "Record labels", widget: "text", hint: "Comma-separated; shown in the scrolling band." }
+
   - name: "upcoming-shows"
     label: "Upcoming Shows"
     files:
@@ -47,7 +78,7 @@ collections:
               - { name: "text", label: "Text", widget: "string" }
 
   - name: "festivals"
-    label: "Festivals"
+    label: "Festivals (scrolling band)"
     files:
       - name: "festivals"
         label: "Festivals"
@@ -63,18 +94,20 @@ collections:
               - { name: "name", label: "Name", widget: "string" }
 
   - name: "gallery"
-    label: "Archive Images"
+    label: "Gallery Photos"
     files:
       - name: "gallery"
-        label: "Archive Images"
+        label: "Gallery Photos"
         file: "src/data/gallery.json"
         format: "json"
         fields:
           - name: "images"
-            label: "Images"
+            label: "Photos"
             widget: "list"
             allow_add: true
-            summary: "{{alt}}"
+            summary: "{{caption}}"
+            hint: "The first photo anchors the grid as a large tile; portrait photos take two rows, wide photos two columns."
             fields:
-              - { name: "url", label: "Image", widget: "image" }
-              - { name: "alt", label: "Alt text", widget: "string" }
+              - { name: "url", label: "Photo", widget: "image" }
+              - { name: "alt", label: "Alt text", widget: "string", hint: "Describe the photo for screen readers and search engines." }
+              - { name: "caption", label: "Caption", widget: "string", hint: "Venue or event, e.g. “Mácháč 2026”." }

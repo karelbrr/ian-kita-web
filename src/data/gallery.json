@@ -1,13 +1,54 @@
 {
   "images": [
     {
-      "url": "https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?auto=format&fit=crop&w=800&q=80",
-      "alt": "DJ Setup"
+      "url": "/src/assets/photos/machac-2026-stage.jpg",
+      "alt": "Ian Kita playing the main stage at Mácháč 2026, framed by a colourful LED wall",
+      "caption": "Mácháč 2026"
     },
-    { "url": "/gallery-2.jpg", "alt": "Live Set" },
     {
-      "url": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
-      "alt": "Performance"
+      "url": "/src/assets/photos/machac-2026-decks.jpg",
+      "alt": "Ian Kita behind Pioneer decks in the sun at Mácháč 2026",
+      "caption": "Mácháč 2026"
+    },
+    {
+      "url": "/src/assets/photos/uv-set.jpg",
+      "alt": "Ian Kita at the decks in front of a UV-lit floral backdrop",
+      "caption": "UV set"
+    },
+    {
+      "url": "/src/assets/photos/neon-club.jpg",
+      "alt": "Ian Kita playing under blue neon light beams in a smoky club",
+      "caption": "Club night"
+    },
+    {
+      "url": "/src/assets/photos/coal-festival.jpg",
+      "alt": "Ian Kita in sunglasses playing at Coal Festival",
+      "caption": "Coal Festival"
+    },
+    {
+      "url": "/src/assets/photos/machac-2026-lake.jpg",
+      "alt": "Ian Kita playing above the lake at Mácháč 2026",
+      "caption": "Mácháč 2026"
+    },
+    {
+      "url": "/src/assets/photos/boat-2020.jpg",
+      "alt": "Ian Kita laughing at a boat party on the river, 2020",
+      "caption": "Boat party, 2020"
+    },
+    {
+      "url": "/src/assets/photos/vinyl-2003.jpg",
+      "alt": "A young DJ Kita mixing on vinyl turntables in a packed club",
+      "caption": "Vinyl days"
+    },
+    {
+      "url": "/src/assets/photos/dj-masters-cup.jpg",
+      "alt": "DJ Kita scratching vinyl at the DJ Masters Cup",
+      "caption": "DJ Masters Cup"
+    },
+    {
+      "url": "/src/assets/photos/portrait-color.jpg",
+      "alt": "Studio portrait of Ian Kita",
+      "caption": "Press portrait"
     }
   ]
 }
