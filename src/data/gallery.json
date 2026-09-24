@@ -1,9 +1,9 @@
 {
   "images": [
     {
-      "url": "/src/assets/photos/machac-2026-stage.jpg",
-      "alt": "Ian Kita playing the main stage at Mácháč 2026, framed by a colourful LED wall",
-      "caption": "Mácháč 2026"
+      "url": "/src/assets/photos/portrait-bw.jpg",
+      "alt": "Black and white studio portrait of Ian Kita",
+      "caption": "Press portrait"
     },
     {
       "url": "/src/assets/photos/machac-2026-decks.jpg",
@@ -31,6 +31,11 @@
       "caption": "Mácháč 2026"
     },
     {
+      "url": "/src/assets/photos/dj-masters-cup.jpg",
+      "alt": "DJ Kita scratching vinyl at the DJ Masters Cup",
+      "caption": "DJ Masters Cup"
+    },
+    {
       "url": "/src/assets/photos/boat-2020.jpg",
       "alt": "Ian Kita laughing at a boat party on the river, 2020",
       "caption": "Boat party, 2020"
@@ -39,16 +44,6 @@
       "url": "/src/assets/photos/vinyl-2003.jpg",
       "alt": "A young DJ Kita mixing on vinyl turntables in a packed club",
       "caption": "Vinyl days"
-    },
-    {
-      "url": "/src/assets/photos/dj-masters-cup.jpg",
-      "alt": "DJ Kita scratching vinyl at the DJ Masters Cup",
-      "caption": "DJ Masters Cup"
-    },
-    {
-      "url": "/src/assets/photos/portrait-color.jpg",
-      "alt": "Studio portrait of Ian Kita",
-      "caption": "Press portrait"
     }
   ]
 }

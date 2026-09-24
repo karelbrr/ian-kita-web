@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Logo from './Logo.astro';
-import portrait from '../assets/photos/portrait-bw.jpg';
+import stage from '../assets/hero-stage-clean.jpg';
 import about from '../data/about.json';
 import { shows as SHOWS } from '../data/upcoming-shows.json';
 
@@ -17,19 +17,25 @@ function formatShort(date: string) {
 
 <section id="top" class="hero relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-swiss-black">
     <div class="absolute inset-0" aria-hidden="true">
-        <Image
-            src={portrait}
-            alt=""
-            widths={[640, 960, 1440, 2000, 2800]}
-            sizes="100vw"
-            class="hero__img h-full w-full object-cover object-[50%_18%] lg:object-[50%_22%]"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-swiss-black via-swiss-black/35 to-swiss-black/25"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-swiss-black/60 via-transparent to-swiss-black/20"></div>
-        <div class="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-brand-purple/35 via-brand-plum/20 to-transparent"></div>
+        <!-- On large screens the photo is enlarged from its bottom edge so the DJ
+             (centre of the frame) rises into the middle of the viewport, clear of
+             the logotype that sits over the darkened lower third. -->
+        <div class="absolute inset-0 origin-bottom scale-[1.12] lg:scale-[1.32]">
+            <Image
+                src={stage}
+                alt=""
+                widths={[640, 960, 1440, 2048]}
+                sizes="100vw"
+                class="hero__img h-full w-full object-cover object-[50%_100%]"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+            />
+        </div>
+        <div class="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-swiss-black/80 via-swiss-black/35 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-swiss-black via-swiss-black/50 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-swiss-black/40 via-transparent to-swiss-black/30"></div>
+        <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-plum/45 to-transparent"></div>
     </div>
 
     <div class="hero-parallax relative z-10 px-6 pt-40 pb-8 md:px-12 lg:px-24 lg:pb-12">

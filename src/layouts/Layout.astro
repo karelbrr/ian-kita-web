@@ -77,17 +77,28 @@ const structuredData = {
 
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}/>
 
-    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- Netlify Identity is only needed to complete CMS invitations, signups and
+         password recoveries: those email links land on the site root with a
+         token in the URL hash. The widget (and its third-party cookie) is
+         loaded on demand in that case only, so ordinary visitors never touch it. -->
     <script is:inline>
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", (user) => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
+        (function () {
+            if (!/(invite_token|recovery_token|confirmation_token|email_change_token|access_token)=/.test(window.location.hash)) return;
+            var script = document.createElement("script");
+            script.src = "https://identity.netlify.com/v1/netlify-identity-widget.js";
+            script.onload = function () {
+                var identity = window.netlifyIdentity;
+                if (!identity) return;
+                identity.on("init", function (user) {
+                    if (!user) {
+                        identity.on("login", function () {
+                            document.location.href = "/admin/";
+                        });
+                    }
+                });
+            };
+            document.head.appendChild(script);
+        })();
     </script>
 </head>
 <body>
