@@ -42,6 +42,36 @@
   body {
     @apply bg-swiss-black text-swiss-white font-sans;
   }
+
+  /* One on-brand focus ring for keyboard users. Elements with their own focus
+     treatment opt out with focus-visible:outline-none. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  #contact :focus-visible {
+    outline-color: var(--color-brand-magenta);
+  }
+
+  main:focus {
+    outline: none;
+  }
+
+  /* Even line lengths for headings, no stranded last word in body copy. */
+  h1, h2, h3, h4, blockquote {
+    text-wrap: balance;
+  }
+
+  p, li, dd, figcaption {
+    text-wrap: pretty;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html, body {
+      scroll-behavior: auto;
+    }
+  }
 }
 
 /* Text filled with the brand gradient (orange → pink → raspberry). */
@@ -101,6 +131,50 @@
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Scroll-spy: the link of the section in view reads as current (set by
+   setupScrollSpy), with a hairline drawing in underneath. */
+.site-nav nav a {
+  position: relative;
+}
+
+.site-nav nav a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -0.6rem;
+  height: 1px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-nav nav a[aria-current="true"] {
+  color: var(--color-swiss-white);
+}
+
+.site-nav nav a[aria-current="true"]::after {
+  transform: scaleX(1);
+}
+
+/* Skip link: parked above the viewport until a keyboard user tabs to it. */
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 110;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: var(--color-swiss-white);
+  color: var(--color-swiss-black);
+  text-decoration: none;
+  transform: translateY(calc(-100% - 1.5rem));
+}
+
+.skip-link:focus {
+  transform: none;
 }
 
 .menu-overlay {
@@ -243,6 +317,106 @@ body.menu-open {
 @keyframes lightbox-spin {
   to {
     transform: translate(-50%, -50%) rotate(90deg);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Journey timeline — while the photo scrolls past the pinned text, the
+   script marks each milestone past / active / future (data-state) and sets
+   --timeline-fill on the list. Without the script every milestone keeps its
+   default, fully readable look.
+--------------------------------------------------------------------------- */
+.milestone[data-state="future"] .milestone-year {
+  color: rgb(255 255 255 / 0.3);
+}
+
+.milestone[data-state="future"] .milestone-text {
+  color: rgb(255 255 255 / 0.35);
+}
+
+.milestone[data-state="past"] .milestone-text {
+  color: rgb(255 255 255 / 0.55);
+}
+
+.milestone[data-state="future"] .milestone-marker {
+  border-color: rgb(255 255 255 / 0.25);
+}
+
+.milestone[data-state="past"] .milestone-marker,
+.milestone[data-state="active"] .milestone-marker {
+  background-color: var(--color-accent);
+}
+
+.milestone[data-state="active"] .milestone-text {
+  color: var(--color-swiss-white);
+}
+
+.milestone[data-state]:hover .milestone-text {
+  color: var(--color-swiss-white);
+}
+
+/* Stacked era photos: only the one matching the active milestone shows. */
+.journey-shot {
+  opacity: 0;
+}
+
+.journey-shot.is-active {
+  opacity: 1;
+}
+
+/* Oversized outlined year, echoing the outlined logotype. */
+.journey-year {
+  font-size: clamp(3.5rem, 10vh, 9rem);
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Extra scroll length on desktop so the timeline plays out slowly: the photo
+   column gains room below the photo, and the photo drifts down through it so
+   it ends flush with the pinned text. The drift is a scroll-driven animation,
+   run by the browser in step with the scroll; its range matches the script's
+   (section at mid-screen until the text column, --journey-pinned-h tall,
+   releases). Browsers without scroll timelines pin the photo instead. Only
+   added by the script, and never for reduced-motion visitors. */
+@media (min-width: 1024px) {
+  .is-scrubbed .journey-track {
+    padding-bottom: 100vh;
+  }
+
+  @supports (animation-timeline: view()) {
+    .is-scrubbed .journey-track {
+      view-timeline: --journey-track block;
+    }
+
+    .is-scrubbed .journey-track > figure {
+      animation: journey-drift linear both;
+      animation-timeline: --journey-track;
+      animation-range: cover 50vh exit calc(100vh - 7rem - var(--journey-pinned-h, 0px));
+    }
+  }
+
+  @supports not (animation-timeline: view()) {
+    .is-scrubbed .journey-track > figure {
+      position: sticky;
+      top: 7rem;
+    }
+  }
+}
+
+@keyframes journey-drift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+/* On short screens the year would push the pinned column past the fold. */
+@media (max-height: 52rem) {
+  .journey-year {
+    display: none;
   }
 }
 
@@ -480,5 +654,42 @@ body.menu-open {
 
   .timeline.is-visible::before {
     transform: scaleY(1);
+  }
+
+  /* Once scroll-scrubbed, the line follows the reader instead of drawing
+     itself in one go. */
+  .timeline.is-scrubbed::before {
+    transform: scaleY(var(--timeline-fill, 0));
+    transition: transform 0.25s ease-out;
+  }
+
+  .milestone-marker,
+  .milestone-year,
+  .milestone-text {
+    transition: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease,
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .milestone[data-state="active"] .milestone-marker {
+    transform: rotate(45deg) scale(1.3);
+  }
+
+  .milestone[data-state="active"] .milestone-year,
+  .milestone[data-state="active"] .milestone-text {
+    transform: translateX(0.5rem);
+  }
+
+  /* Each era photo settles from a slight zoom as it fades in. */
+  .journey-shot {
+    transition: opacity 0.9s ease;
+  }
+
+  .journey-photo {
+    transform: scale(1.06);
+    transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .journey-shot.is-active .journey-photo {
+    transform: scale(1);
   }
 }

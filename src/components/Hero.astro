@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Logo from './Logo.astro';
 import stage from '../assets/hero-stage-clean.jpg';
 import about from '../data/about.json';
@@ -13,24 +13,45 @@ function formatShort(date: string) {
     const parsed = new Date(`${date}T00:00:00Z`);
     return `${parsed.getUTCDate()} ${MONTHS[parsed.getUTCMonth()]}`;
 }
+
+// Portrait screens only ever show the middle of this wide photo, so they get a
+// full-resolution centre crop instead of a downscaled copy of the whole frame.
+const portraitCrop = await getImage({
+    src: stage,
+    width: 1024,
+    height: 1190,
+    fit: 'cover',
+    position: 'center',
+    widths: [640, 1024],
+});
 ---
 
 <section id="top" class="hero relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-swiss-black">
     <div class="absolute inset-0" aria-hidden="true">
-        <!-- On large screens the photo is enlarged from its bottom edge so the DJ
+        {/* On large screens the photo is enlarged from its bottom edge so the DJ
              (centre of the frame) rises into the middle of the viewport, clear of
-             the logotype that sits over the darkened lower third. -->
-        <div class="absolute inset-0 origin-bottom scale-[1.12] lg:scale-[1.32]">
-            <Image
-                src={stage}
-                alt=""
-                widths={[640, 960, 1440, 2048]}
-                sizes="100vw"
-                class="hero__img h-full w-full object-cover object-[50%_100%]"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-            />
+             the logotype that sits over the darkened lower third. Portrait screens
+             zoom a little further, which also lifts the retouched spot on the LED
+             wall up under the nav and its dark fade. */}
+        <div class="absolute inset-0 origin-bottom scale-[1.12] portrait:scale-[1.42] lg:scale-[1.32]">
+            <picture class="contents">
+                <source
+                    media="(orientation: portrait)"
+                    srcset={portraitCrop.srcSet.attribute}
+                    sizes="(min-width: 1024px) 114vh, 97vh"
+                    type="image/webp"
+                />
+                <Image
+                    src={stage}
+                    alt=""
+                    widths={[640, 960, 1440, 2048]}
+                    sizes="(min-width: 1024px) 132vw, 112vw"
+                    class="hero__img h-full w-full object-cover object-[50%_100%]"
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                />
+            </picture>
         </div>
         <div class="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-swiss-black/80 via-swiss-black/35 to-transparent"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-swiss-black via-swiss-black/50 to-transparent"></div>
@@ -40,7 +61,6 @@ function formatShort(date: string) {
 
     <div class="hero-parallax relative z-10 px-6 pt-40 pb-8 md:px-12 lg:px-24 lg:pb-12">
         <p class="animate-blur-up eyebrow mb-6 flex items-center gap-3 text-swiss-white/70" style="animation-delay: 1100ms">
-            <span class="glyph-square text-accent"></span>
             {about.eyebrow}
         </p>
 
@@ -53,6 +73,7 @@ function formatShort(date: string) {
             <p class="animate-blur-up text-gradient-brand m-0 font-heading text-2xl font-medium tracking-tight lg:text-4xl" style="animation-delay: 1500ms">
                 {about.tagline}
             </p>
+            {/*
             <div class="animate-blur-up flex flex-wrap items-center gap-x-8 gap-y-3 eyebrow text-swiss-white/80" style="animation-delay: 1700ms">
                 <span class="flex items-center gap-2">
                     <span class="pulse-dot h-2 w-2 rounded-full bg-accent"></span>
@@ -65,6 +86,7 @@ function formatShort(date: string) {
                     </a>
                 )}
             </div>
+            */}
         </div>
     </div>
 </section>

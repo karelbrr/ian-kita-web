@@ -1,43 +1,88 @@
 ---
 import { Image } from 'astro:assets';
 import { milestones } from '../data/milestones.json';
-import thenPhoto from '../assets/photos/jancovka-2001.jpg';
+import jancovkaPhoto from '../assets/photos/jancovka-2001.jpg';
+import vinylPhoto from '../assets/photos/vinyl-2003.jpg';
+import festivalPhoto from '../assets/photos/coal-festival.jpg';
+
+// The photo follows the timeline: each shot takes over from the first
+// milestone in or after its year. Crops lean towards the DJ in each frame.
+const shots = [
+    {
+        src: jancovkaPhoto,
+        fromYear: 0,
+        alt: 'DJ Kita mixing on vinyl at Jančovka, 2001',
+        caption: '2001 · Jančovka',
+        position: '50% 100%',
+        tone: 'grayscale contrast-125',
+    },
+    {
+        src: vinylPhoto,
+        fromYear: 2003,
+        alt: 'A young DJ Kita mixing on vinyl turntables in a packed club',
+        caption: '2003 · Vinyl days',
+        position: '0% 50%',
+        tone: 'grayscale contrast-125',
+    },
+    {
+        src: festivalPhoto,
+        fromYear: 2021,
+        alt: 'Ian Kita in sunglasses playing at Coal Festival',
+        caption: 'Coal Festival',
+        position: '85% 50%',
+        tone: '',
+    },
+];
+
+const shotIndexFor = (year: string) => shots.findLastIndex((shot) => Number(year) >= shot.fromYear);
+
+// The 4:5 frame crops landscape shots, so they render wider than the column
+// (plus the 6% settle zoom). Reporting the real width lets retina screens
+// pick a sharp file instead of an upscaled one.
+const FRAME_ASPECT = 4 / 5;
+const shotSizes = (image: { width: number; height: number }) =>
+    `(min-width: 1024px) ${Math.round(58 * Math.max(1, image.width / image.height / FRAME_ASPECT))}vw, 100vw`;
 
 ---
 
-<section id="journey" class="reveal px-6 py-24 md:px-12 lg:px-24 lg:py-40">
-    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-        <div class="lg:col-span-5">
-            <p class="eyebrow mb-8 text-accent">Journey</p>
-            <h2 class="mb-12 font-heading text-3xl font-medium leading-[1.05] tracking-tight text-swiss-white sm:text-4xl lg:text-5xl">
+<section id="journey" data-journey class="reveal px-6 py-24 md:px-12 lg:px-24 lg:py-40">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
+            <p class="eyebrow mb-8 text-accent lg:mb-6">Journey</p>
+            <h2 class="mb-12 lg:mb-8 font-heading text-3xl font-medium leading-[1.05] tracking-tight text-swiss-white sm:text-4xl xl:text-5xl">
                 From vinyl roots to festival main stages.
             </h2>
-            <ol class="timeline stagger m-0 list-none border-l border-white/10 p-0 pl-8">
+            <ol class="timeline stagger m-0 list-none border-l border-white/10 p-0 pl-8" data-journey-timeline>
                 {milestones.map((milestone) => (
-                    <li class="relative pb-8 last:pb-0">
-                        <span class="absolute -left-[2.3rem] top-1.5 h-2.5 w-2.5 border border-accent bg-swiss-black"></span>
-                        <span class="mb-1 block font-heading text-sm font-medium tracking-widest text-accent">{milestone.year}</span>
-                        <span class="text-lg text-swiss-white/90 lg:text-xl">{milestone.text}</span>
+                    <li class="milestone relative pb-8 last:pb-0 lg:pb-4" data-milestone data-year={milestone.year} data-shot={shotIndexFor(milestone.year)}>
+                        <span class="milestone-marker absolute -left-[2.3rem] top-1.5 h-2.5 w-2.5 border border-accent bg-swiss-black" data-milestone-marker></span>
+                        <span class="milestone-year mb-1 block font-heading text-sm font-medium tracking-widest text-accent">{milestone.year}</span>
+                        <span class="milestone-text block text-lg text-swiss-white/90 lg:text-base">{milestone.text}</span>
                     </li>
                 ))}
             </ol>
+            <span class="journey-year mt-8 hidden font-heading font-semibold leading-none tracking-tight lg:block" aria-hidden="true" data-journey-year>
+                {milestones[0].year}
+            </span>
         </div>
 
-        <div class="lg:col-span-7">
-            <figure class="relative m-0 aspect-[592/800] w-full max-w-[46rem] overflow-hidden rounded-sm bg-ink lg:ml-auto">
-                <Image
-                    src={thenPhoto}
-                    alt="DJ Kita mixing on vinyl at Jančovka, 2001"
-                    widths={[592]}
-                    sizes="(min-width: 1024px) 55vw, 100vw"
-                    class="h-full w-full object-cover grayscale contrast-125"
-                    loading="lazy"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
-                <figcaption class="absolute bottom-4 left-4 flex items-center gap-2 eyebrow text-swiss-white/80">
-                    <span class="glyph-square text-accent"></span>
-                    2001 · Jančovka
-                </figcaption>
+        <div class="journey-track hidden lg:col-span-7 lg:block" data-journey-track>
+            <figure class="relative m-0 aspect-[4/5] w-full overflow-hidden rounded-sm bg-ink lg:max-h-[calc(100vh-9rem)]">
+                {shots.map((shot, i) => (
+                    <div class:list={['journey-shot absolute inset-0', { 'is-active': i === 0 }]} data-journey-shot>
+                        <Image
+                            src={shot.src}
+                            alt={shot.alt}
+                            widths={[600, 1000, 1400, 2000]}
+                            sizes={shotSizes(shot.src)}
+                            class:list={['journey-photo h-full w-full object-cover', shot.tone]}
+                            style={`object-position: ${shot.position}`}
+                            loading="lazy"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
+                        <span class="absolute bottom-4 left-4 eyebrow text-swiss-white/80">{shot.caption}</span>
+                    </div>
+                ))}
             </figure>
         </div>
     </div>

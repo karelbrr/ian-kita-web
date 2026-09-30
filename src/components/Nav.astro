@@ -32,14 +32,14 @@ const socials = [
         <div class="flex items-center gap-3">
             <a
                 href="/#contact"
-                class="hidden items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 eyebrow text-swiss-white transition-colors hover:border-accent hover:text-accent no-underline sm:inline-flex"
+                class="hidden items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 eyebrow text-swiss-white transition-colors hover:border-accent hover:text-accent active:scale-[0.97] no-underline sm:inline-flex"
             >
                 <span class="pulse-dot h-1.5 w-1.5 rounded-full bg-accent"></span>
                 Book
             </a>
             <button
                 type="button"
-                class="inline-flex items-center rounded-full border border-white/20 px-4 py-2.5 eyebrow text-swiss-white transition-colors hover:border-white/50 lg:hidden"
+                class="inline-flex items-center rounded-full border border-white/20 px-4 py-2.5 eyebrow text-swiss-white transition-colors hover:border-white/50 active:scale-[0.97] lg:hidden"
                 aria-expanded="false"
                 aria-controls="menu"
                 data-menu-toggle
@@ -55,24 +55,22 @@ const socials = [
 <div id="menu" class="menu-overlay lg:hidden" hidden>
     <nav aria-label="Mobile">
         <ul class="m-0 list-none p-0">
-            {links.map((link, i) => (
+            {links.map((link) => (
                 <li class="border-b border-white/10">
                     <a
                         href={link.href}
-                        class="flex items-baseline justify-between py-5 font-heading text-4xl font-medium tracking-tight text-swiss-white no-underline transition-colors hover:text-accent sm:text-5xl"
+                        class="block py-5 font-heading text-4xl font-medium tracking-tight text-swiss-white no-underline transition-colors hover:text-accent sm:text-5xl"
                     >
                         {link.label}
-                        <span class="eyebrow text-accent">{String(i + 1).padStart(2, '0')}</span>
                     </a>
                 </li>
             ))}
             <li class="border-b border-white/10">
                 <a
                     href="/#contact"
-                    class="flex items-baseline justify-between py-5 font-heading text-4xl font-medium tracking-tight text-accent no-underline sm:text-5xl"
+                    class="block py-5 font-heading text-4xl font-medium tracking-tight text-accent no-underline sm:text-5xl"
                 >
                     Book
-                    <span class="eyebrow">06</span>
                 </a>
             </li>
         </ul>

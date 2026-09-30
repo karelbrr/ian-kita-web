@@ -77,10 +77,10 @@ const structuredData = {
 
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}/>
 
-    <!-- Netlify Identity is only needed to complete CMS invitations, signups and
-         password recoveries: those email links land on the site root with a
-         token in the URL hash. The widget (and its third-party cookie) is
-         loaded on demand in that case only, so ordinary visitors never touch it. -->
+    {/* Netlify Identity is only needed to complete CMS invitations, signups and
+        password recoveries: those email links land on the site root with a
+        token in the URL hash. The widget (and its third-party cookie) is
+        loaded on demand in that case only, so ordinary visitors never touch it. */}
     <script is:inline>
         (function () {
             if (!/(invite_token|recovery_token|confirmation_token|email_change_token|access_token)=/.test(window.location.hash)) return;
@@ -102,10 +102,11 @@ const structuredData = {
     </script>
 </head>
 <body>
+<a href="#main" class="skip-link eyebrow">Skip to content</a>
 <div class="scroll-progress" aria-hidden="true"></div>
 <LogoDefs/>
 <Nav/>
-<main class="relative z-10 min-h-screen overflow-x-clip">
+<main id="main" tabindex="-1" class="relative z-10 min-h-screen overflow-x-clip">
     <slot/>
 </main>
 <div class="grain" aria-hidden="true"></div>
