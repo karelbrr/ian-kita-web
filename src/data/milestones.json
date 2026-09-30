@@ -1,11 +1,11 @@
 {
   "milestones": [
-    { "year": "1998", "text": "First mixes on vinyl turntables" },
-    { "year": "1999", "text": "Began performing as DJ Kita" },
-    { "year": "2003", "text": "First vinyl release — Volkom (Samopal Records)" },
-    { "year": "2011", "text": "Debuted as Ian Kita with the I Have to Say EP (Naked Records)" },
-    { "year": "2021", "text": "Launched Sklep House with DJ Manisch at Sklep 33, Zlín" },
-    { "year": "2023", "text": "3rd place, Bass Awards — DJ & Producer" },
-    { "year": "2025", "text": "3rd place, Bass Awards — Techno Producer of the Year, third year running" }
+    { "year": "1998", "text": "First mixes on vinyl turntables", "text_cs": "První mixy na gramofonech" },
+    { "year": "1999", "text": "Began performing as DJ Kita", "text_cs": "Začal vystupovat jako DJ Kita" },
+    { "year": "2003", "text": "First vinyl release — Volkom (Samopal Records)", "text_cs": "První vinyl – Volkom (Samopal Records)" },
+    { "year": "2011", "text": "Debuted as Ian Kita with the I Have to Say EP (Naked Records)", "text_cs": "Debut jako Ian Kita s EP I Have to Say (Naked Records)" },
+    { "year": "2021", "text": "Launched Sklep House with DJ Manisch at Sklep 33, Zlín", "text_cs": "S DJ Manischem založil sérii Sklep House v klubu Sklep 33 ve Zlíně" },
+    { "year": "2023", "text": "3rd place, Bass Awards — DJ & Producer", "text_cs": "3. místo v anketě Bass Awards – DJ a producent" },
+    { "year": "2025", "text": "3rd place, Bass Awards — Techno Producer of the Year, third year running", "text_cs": "3. místo v Bass Awards – techno producent roku, třetí rok v řadě" }
   ]
 }

@@ -5,7 +5,13 @@
     * it scrolls near the viewport (see setupLazyVideo); reduced-motion visitors
     * get the poster. Desktop gets the 1080p file, smaller screens the 720p one.
     */
-import about from '../data/about.json';
+import {toLocale} from '../i18n';
+import {getAbout} from '../i18n/content';
+import {getDictionary} from '../i18n/ui';
+
+const locale = toLocale(Astro.currentLocale);
+const about = getAbout(locale);
+const t = getDictionary(locale);
 ---
 
 <section class="live-band relative flex min-h-[72svh] items-end overflow-hidden bg-ink lg:min-h-[88svh]"
@@ -27,11 +33,11 @@ import about from '../data/about.json';
     <div class="absolute inset-0 bg-gradient-to-t from-swiss-black via-brand-plum/40 to-swiss-black/50"
          aria-hidden="true"></div>
 
-    <div class="relative z-10 w-full px-6 pt-40 pb-14 md:px-12 lg:px-24 lg:pb-24">
-        <h2 id="live-heading" class="eyebrow mb-6 text-accent">Live</h2>
+    <div class="relative z-10 w-full px-page pt-40 pb-14 lg:pb-24">
+        <h2 id="live-heading" class="eyebrow mb-6 text-accent">{t.live.label}</h2>
         <blockquote class="m-0 max-w-5xl">
             <p class="m-0 font-heading text-3xl font-medium leading-[1.02] tracking-tight text-balance indent-[-0.47em] text-swiss-white sm:text-4xl lg:text-6xl">
-                “{about.liveQuote}”
+                {t.quotes.open}{about.liveQuote}{t.quotes.close}
             </p>
         </blockquote>
 

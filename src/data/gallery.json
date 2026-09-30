@@ -3,47 +3,65 @@
     {
       "url": "/src/assets/photos/portrait-bw.jpg",
       "alt": "Black and white studio portrait of Ian Kita",
-      "caption": "Press portrait"
+      "caption": "Press portrait",
+      "caption_cs": "Tiskové foto",
+      "alt_cs": "Černobílý studiový portrét Iana Kity"
     },
     {
-      "url": "/src/assets/photos/machac-2026-decks.jpg",
-      "alt": "Ian Kita behind Pioneer decks in the sun at Mácháč 2026",
-      "caption": "Mácháč 2026"
+      "url": "/src/assets/photos/early-days.jpg",
+      "alt": "Young DJ Kita with dreadlocks and a rasta headband scratching a record",
+      "caption": "Early days",
+      "caption_cs": "Začátky",
+      "alt_cs": "Mladý DJ Kita s dredy a rastafariánskou čelenkou scratchuje desku"
     },
     {
       "url": "/src/assets/photos/uv-set.jpg",
       "alt": "Ian Kita at the decks in front of a UV-lit floral backdrop",
-      "caption": "UV set"
+      "caption": "UV set",
+      "caption_cs": "UV set",
+      "alt_cs": "Ian Kita za pulty před květinovou dekorací ozářenou UV světlem"
     },
     {
       "url": "/src/assets/photos/neon-club.jpg",
       "alt": "Ian Kita playing under blue neon light beams in a smoky club",
-      "caption": "Club night"
+      "caption": "Club night",
+      "caption_cs": "Klubová noc",
+      "alt_cs": "Ian Kita hraje pod modrými neonovými paprsky v zakouřeném klubu"
     },
     {
       "url": "/src/assets/photos/coal-festival.jpg",
       "alt": "Ian Kita in sunglasses playing at Coal Festival",
-      "caption": "Coal Festival"
+      "caption": "Coal Festival",
+      "caption_cs": "Coal Festival",
+      "alt_cs": "Ian Kita ve slunečních brýlích hraje na Coal Festivalu"
     },
     {
       "url": "/src/assets/photos/machac-2026-lake.jpg",
       "alt": "Ian Kita playing above the lake at Mácháč 2026",
-      "caption": "Mácháč 2026"
+      "caption": "Mácháč 2026",
+      "caption_cs": "Mácháč 2026",
+      "alt_cs": "Ian Kita hraje nad jezerem na Mácháči 2026"
     },
     {
       "url": "/src/assets/photos/dj-masters-cup.jpg",
       "alt": "DJ Kita scratching vinyl at the DJ Masters Cup",
-      "caption": "DJ Masters Cup"
+      "caption": "DJ Masters Cup",
+      "caption_cs": "DJ Masters Cup",
+      "alt_cs": "DJ Kita scratchuje vinyl na DJ Masters Cupu"
     },
     {
       "url": "/src/assets/photos/boat-2020.jpg",
       "alt": "Ian Kita laughing at a boat party on the river, 2020",
-      "caption": "Boat party, 2020"
+      "caption": "Boat party, 2020",
+      "caption_cs": "Párty na lodi, 2020",
+      "alt_cs": "Ian Kita se směje na párty na lodi na řece, 2020"
     },
     {
       "url": "/src/assets/photos/vinyl-2003.jpg",
       "alt": "A young DJ Kita mixing on vinyl turntables in a packed club",
-      "caption": "Vinyl days"
+      "caption": "Vinyl days",
+      "caption_cs": "Doba vinylu",
+      "alt_cs": "Mladý DJ Kita mixuje na gramofonech v plném klubu"
     }
   ]
 }

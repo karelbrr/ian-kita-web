@@ -17,10 +17,11 @@ collections:
     label: "About & Texts"
     files:
       - name: "about"
-        label: "About & Texts"
+        label: "About & Texts — English"
         file: "src/data/about.json"
         format: "json"
-        fields:
+        # The Czech entry below reuses this field list (&about_fields / *about_fields).
+        fields: &about_fields
           - { name: "tagline", label: "Hero tagline", widget: "string", hint: "Short line under the logo, e.g. “Music connects us.”" }
           - { name: "eyebrow", label: "Hero eyebrow", widget: "string", hint: "Small caps line above the logo (genres · city)." }
           - { name: "lead", label: "About — lead sentence", widget: "text" }
@@ -41,6 +42,11 @@ collections:
               - { name: "value", label: "Value", widget: "string" }
               - { name: "label", label: "Label", widget: "string" }
           - { name: "labels", label: "Record labels", widget: "text", hint: "Comma-separated; shown in the scrolling band." }
+      - name: "about-cs"
+        label: "About & Texts — Czech"
+        file: "src/data/about.cs.json"
+        format: "json"
+        fields: *about_fields
 
   - name: "upcoming-shows"
     label: "Upcoming Shows"
@@ -57,8 +63,9 @@ collections:
             summary: "{{venue}} — {{date}}"
             fields:
               - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-              - { name: "venue", label: "Venue", widget: "string" }
-              - { name: "location", label: "Location", widget: "string" }
+              - { name: "venue", label: "Venue", widget: "string", hint: "Normal case, e.g. Club Zlín." }
+              - { name: "location", label: "Location", widget: "string", hint: "City and country, e.g. Zlín, CZ." }
+              - { name: "location_cs", label: "Location (Czech)", widget: "string", required: false, hint: "Only when the Czech name differs, e.g. Praha, CZ." }
 
   - name: "milestones"
     label: "Milestones"
@@ -76,6 +83,7 @@ collections:
             fields:
               - { name: "year", label: "Year", widget: "string" }
               - { name: "text", label: "Text", widget: "string" }
+              - { name: "text_cs", label: "Text (Czech)", widget: "string", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }
 
   - name: "festivals"
     label: "Festivals (scrolling band)"
@@ -111,3 +119,5 @@ collections:
               - { name: "url", label: "Photo", widget: "image" }
               - { name: "alt", label: "Alt text", widget: "string", hint: "Describe the photo for screen readers and search engines." }
               - { name: "caption", label: "Caption", widget: "string", hint: "Venue or event, e.g. “Mácháč 2026”." }
+              - { name: "caption_cs", label: "Caption (Czech)", widget: "string", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }
+              - { name: "alt_cs", label: "Alt text (Czech)", widget: "string", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }

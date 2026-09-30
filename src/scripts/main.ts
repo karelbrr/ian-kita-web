@@ -6,6 +6,27 @@
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// --- Upcoming shows: drop dates that have passed -------------------------------
+// The list is filtered when the site is built; this removes shows whose date
+// has passed since then. The next show is styled via :first-child, so the
+// highlight and NEXT badge move on by themselves. Runs before the reveals so
+// the stagger indexes only count the rows that stay.
+function setupShows() {
+    const list = document.querySelector<HTMLElement>('[data-shows]');
+    if (!list) return;
+
+    const timeZone = list.dataset.timeZone ?? 'Europe/Prague';
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone }).format(new Date());
+    list.querySelectorAll<HTMLElement>('[data-show-date]').forEach((row) => {
+        if ((row.dataset.showDate ?? '') < today) row.remove();
+    });
+
+    if (list.children.length === 0) {
+        list.remove();
+        document.querySelector<HTMLElement>('[data-shows-empty]')?.removeAttribute('hidden');
+    }
+}
+
 // --- Scroll reveals ---------------------------------------------------------
 function setupReveals() {
     const revealEls = document.querySelectorAll('.reveal, .stagger, .timeline');
@@ -156,14 +177,34 @@ function setupScrollSpy() {
     sections.forEach((section) => observer.observe(section));
 }
 
+// --- Language switch keeps the reader's place ----------------------------------
+// Both languages share section ids, so the link to the other language gets the
+// section currently marked by the scroll-spy (or the URL's own hash).
+function setupLanguageSwitch() {
+    document.querySelectorAll<HTMLAnchorElement>('[data-language-switch]').forEach((link) => {
+        link.addEventListener('click', () => {
+            const current = document.querySelector<HTMLAnchorElement>('[data-nav] nav a[aria-current="true"]');
+            const hash = current?.hash || window.location.hash;
+            if (hash) link.hash = hash;
+        });
+    });
+}
+
 // --- Fixed nav: translucent once the page has scrolled ----------------------
 function setupNav() {
     const nav = document.querySelector<HTMLElement>('[data-nav]');
     if (!nav) return;
 
-    const update = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
+    // The footer is the page's only light section; once it reaches the nav's
+    // middle, the nav switches to its light style.
+    const footer = document.getElementById('contact');
+    const update = () => {
+        nav.classList.toggle('is-scrolled', window.scrollY > 24);
+        nav.classList.toggle('is-light', footer !== null && footer.getBoundingClientRect().top < nav.offsetHeight / 2);
+    };
     update();
     window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
 
     const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
     const menu = document.getElementById('menu');
@@ -316,10 +357,12 @@ function setupScrollProgressFallback() {
     window.addEventListener('resize', update);
 }
 
+setupShows();
 setupReveals();
 setupJourney();
 setupNav();
 setupScrollSpy();
+setupLanguageSwitch();
 setupLazyVideo();
 setupLightbox();
 setupCopyButtons();

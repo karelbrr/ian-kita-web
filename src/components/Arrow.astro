@@ -1,0 +1,31 @@
+---
+/**
+    * The site's one arrow icon, drawn at the same stroke weight everywhere so
+    * pills, links, the footer button and the lightbox all match.
+    */
+export interface Props {
+    direction?: 'up-right' | 'left' | 'right';
+    class?: string;
+}
+
+const {direction = 'up-right', class: className} = Astro.props;
+
+const paths = {
+    'up-right': 'M7 17 17 7M8 7h9v9',
+    left: 'M19 12H5m6-6-6 6 6 6',
+    right: 'M5 12h14m-6-6 6 6-6 6',
+};
+---
+
+<svg
+        viewBox="0 0 24 24"
+        class={className}
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+>
+    <path d={paths[direction]}/>
+</svg>

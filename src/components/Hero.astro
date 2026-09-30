@@ -2,8 +2,11 @@
 import { Image, getImage } from 'astro:assets';
 import Logo from './Logo.astro';
 import stage from '../assets/hero-stage-clean.jpg';
-import about from '../data/about.json';
 import { shows as SHOWS } from '../data/upcoming-shows.json';
+import { toLocale } from '../i18n';
+import { getAbout } from '../i18n/content';
+
+const about = getAbout(toLocale(Astro.currentLocale));
 
 const todayISO = new Date().toISOString().slice(0, 10);
 const nextShow = [...SHOWS].filter((show) => show.date >= todayISO).sort((a, b) => a.date.localeCompare(b.date))[0];
@@ -59,7 +62,7 @@ const portraitCrop = await getImage({
         <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-plum/45 to-transparent"></div>
     </div>
 
-    <div class="hero-parallax relative z-10 px-6 pt-40 pb-8 md:px-12 lg:px-24 lg:pb-12">
+    <div class="hero-parallax relative z-10 px-page pt-40 pb-8 lg:pb-12">
         <p class="animate-blur-up eyebrow mb-6 flex items-center gap-3 text-swiss-white/70" style="animation-delay: 1100ms">
             {about.eyebrow}
         </p>

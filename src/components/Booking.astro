@@ -1,75 +1,67 @@
 ---
+import Arrow from './Arrow.astro';
 import Logo from './Logo.astro';
+import {localePath, toLocale} from '../i18n';
+import {getDictionary} from '../i18n/ui';
+
+const locale = toLocale(Astro.currentLocale);
+const t = getDictionary(locale);
 
 const email = 'booking@iankita.com';
 ---
 
 <footer id="contact" class="reveal overflow-hidden bg-swiss-white text-swiss-black">
-    <div class="px-6 pt-24 md:px-12 lg:px-24 lg:pt-40">
-        <h2 class="eyebrow m-0 mb-8 text-brand-magenta lg:mb-10">Booking</h2>
+    <div class="px-page pt-24 lg:pt-40">
+        <h2 class="eyebrow m-0 mb-8 text-brand-magenta lg:mb-10">{t.booking.label}</h2>
 
         {/* The whole row is the mailto link: the address in display type, a round
              arrow button at the far end, and a gradient rule that sweeps in on hover. */}
         <a
-            href={`mailto:${email}`}
-            class="group relative flex items-center justify-between gap-3 border-b border-black/10 pb-6 no-underline focus-visible:outline-none sm:gap-6 lg:pb-10"
+                href={`mailto:${email}`}
+                class="group relative flex items-center justify-between gap-3 border-b border-black/10 pb-6 no-underline focus-visible:outline-none sm:gap-6 lg:pb-10"
         >
             <span class="min-w-0 bg-gradient-to-r from-brand-orange via-brand-pink to-brand-magenta bg-clip-text font-heading text-[clamp(1.4rem,5.6vw,6rem)] font-bold leading-none tracking-tighter text-swiss-black transition-colors duration-300 [overflow-wrap:anywhere] group-hover:text-transparent group-focus-visible:text-transparent">
                 {email}
             </span>
             <span
-                class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-black/15 text-swiss-black transition-colors duration-300 group-active:scale-95 group-hover:border-swiss-black group-hover:bg-swiss-black group-hover:text-swiss-white group-focus-visible:border-swiss-black group-focus-visible:bg-swiss-black group-focus-visible:text-swiss-white sm:h-14 sm:w-14 lg:h-20 lg:w-20 xl:h-24 xl:w-24"
-                aria-hidden="true"
+                    class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-black/15 text-swiss-black transition-colors duration-300 group-active:scale-95 group-hover:border-swiss-black group-hover:bg-swiss-black group-hover:text-swiss-white group-focus-visible:border-swiss-black group-focus-visible:bg-swiss-black group-focus-visible:text-swiss-white sm:h-14 sm:w-14 lg:h-20 lg:w-20 xl:h-24 xl:w-24"
+                    aria-hidden="true"
             >
-                <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 sm:h-5 sm:w-5 lg:h-7 lg:w-7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M7 17 17 7M8 7h9v9" />
-                </svg>
+                <Arrow class="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 sm:h-5 sm:w-5 lg:h-7 lg:w-7"/>
             </span>
             <span
-                class="pointer-events-none absolute inset-x-0 -bottom-px h-0.5 origin-left scale-x-0 bg-gradient-to-r from-brand-orange via-brand-pink to-brand-purple transition-transform duration-500 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100 motion-reduce:transition-none"
-                aria-hidden="true"
+                    class="pointer-events-none absolute inset-x-0 -bottom-px h-0.5 origin-left scale-x-0 bg-gradient-to-r from-brand-orange via-brand-pink to-brand-purple transition-transform duration-500 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100 motion-reduce:transition-none"
+                    aria-hidden="true"
             ></span>
         </a>
 
         <div class="mt-8 grid grid-cols-1 gap-6 lg:mt-12 lg:grid-cols-12 lg:gap-16">
             <p class="m-0 font-heading text-xl font-medium leading-[1.15] tracking-tight text-balance sm:text-3xl lg:col-span-6 xl:text-4xl">
-                Available for clubs, festivals and radio shows across Europe.
+                {t.booking.heading}
             </p>
             <div class="lg:col-span-5 lg:col-start-8">
                 <p class="m-0 max-w-xl text-base leading-relaxed text-swiss-black/60 lg:text-lg">
-                    Techno and tech house sets, radio show guest mixes and remixes. Based in Zlín, Czech Republic — playing across the Czech Republic, Slovakia, Poland, Germany and Luxembourg.
+                    {t.booking.description}
                 </p>
-                {/* Revealed by setupCopyButtons() only where the Clipboard API works. */}
-                <button
-                    type="button"
-                    class="mt-6 inline-flex items-center gap-2 rounded-full border border-black/15 px-5 py-2.5 eyebrow text-swiss-black/70 transition-colors active:scale-[0.97] hover:border-swiss-black hover:text-swiss-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-magenta/60 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-white"
-                    data-copy={email}
-                    data-copied-label="Copied"
-                    hidden
-                >
-                    <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <rect x="9" y="9" width="11" height="11" rx="1.5" />
-                        <path d="M5 15V5a1 1 0 0 1 1-1h10" />
-                    </svg>
-                    <span data-copy-label aria-live="polite">Copy email</span>
-                </button>
             </div>
         </div>
 
         <div class="mt-20 flex flex-col items-start justify-between gap-4 border-t border-black/10 py-8 text-xs text-swiss-black/60 md:flex-row md:items-center lg:mt-32">
-            <p class="m-0">&copy; {new Date().getFullYear()} Ian Kita. All rights reserved.</p>
-            <div class="flex flex-wrap gap-6">
-                <a href="/privacy-policy" class="underline transition-colors hover:text-swiss-black">Privacy Policy</a>
-                <a href="/terms" class="underline transition-colors hover:text-swiss-black">Terms of Service</a>
+            <p class="m-0">&copy; {new Date().getFullYear()} {t.booking.rights}</p>
+            <div class="flex flex-wrap items-center gap-x-6">
+                <a href={localePath(locale, '/privacy-policy')} class="inline-block py-2 underline transition-colors hover:text-swiss-black">{t.booking.privacy}</a>
+                <a href={localePath(locale, '/terms')} class="inline-block py-2 underline transition-colors hover:text-swiss-black">{t.booking.terms}</a>
                 <span>
-                    Made by&nbsp;
-                    <a href="https://karelbraborec.com" target="_blank" rel="noopener noreferrer" aria-label="Karel Braborec's website" class="underline transition-colors hover:text-swiss-black">karelbraborec.com</a>
+                    {t.booking.madeBy}&nbsp;
+                    <a href="https://karelbraborec.com" target="_blank" rel="noopener noreferrer"
+                       aria-label={t.booking.madeByLabel}
+                       class="inline-block py-2 underline transition-colors hover:text-swiss-black">karelbraborec.com</a>
                 </span>
             </div>
         </div>
     </div>
 
-    <div class="px-6 pt-6 md:px-12 lg:px-24 lg:pt-10" aria-hidden="true">
-        <Logo class="block h-auto w-full translate-y-[6%]" gradient decorative />
+    <div class="px-page pt-6 lg:pt-10" aria-hidden="true">
+        <Logo class="block h-auto w-full translate-y-[6%]" gradient decorative/>
     </div>
 </footer>

@@ -1,16 +1,35 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Arrow from "../components/Arrow.astro";
 ---
 
-<Layout title="Ian Kita | Page not found" description="The page you're looking for doesn't exist.">
+{/* Netlify serves this one page for every missing URL, so it speaks both languages. */}
+<Layout
+  title="Ian Kita | Page not found · Stránka nenalezena"
+  description="The page you're looking for doesn't exist. Tato stránka neexistuje."
+  alternatePath="/cs/"
+  translated={false}
+>
   <div class="min-h-screen flex flex-col items-center justify-center px-6 text-center">
     <h1 class="font-heading font-bold text-7xl md:text-8xl tracking-tighter text-transparent [-webkit-text-stroke:2px_var(--color-swiss-white)] mb-6">404</h1>
-    <p class="font-sans text-swiss-white/60 text-base mb-10">This page doesn't exist.</p>
-    <a
-      href="/"
-      class="inline-block text-xs font-heading font-medium text-swiss-white/60 hover:text-swiss-white uppercase tracking-widest transition-colors no-underline"
-    >
-      &larr; Back to Home
-    </a>
+    <p class="font-sans text-swiss-white/60 text-base mb-1">This page doesn't exist.</p>
+    <p class="font-sans text-swiss-white/60 text-base mb-10" lang="cs">Tato stránka neexistuje.</p>
+    <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-xs font-heading font-medium text-swiss-white/60 hover:text-swiss-white uppercase tracking-widest transition-colors no-underline"
+      >
+        <Arrow direction="left" class="h-3.5 w-3.5" />
+        Back to Home
+      </a>
+      <a
+        href="/cs/"
+        lang="cs"
+        class="inline-flex items-center gap-2 text-xs font-heading font-medium text-swiss-white/60 hover:text-swiss-white uppercase tracking-widest transition-colors no-underline"
+      >
+        <Arrow direction="left" class="h-3.5 w-3.5" />
+        Zpět na úvod
+      </a>
+    </div>
   </div>
 </Layout>

@@ -1,0 +1,33 @@
+---
+/**
+ * The home page, shared by src/pages/index.astro (English) and
+ * src/pages/cs/index.astro (Czech) so both languages always show the same
+ * sections. Each section reads its language from the page URL.
+ */
+import Layout from '../layouts/Layout.astro';
+import Hero from './Hero.astro';
+import About from './About.astro';
+import Marquee from './Marquee.astro';
+import Journey from './Journey.astro';
+import LiveBand from './LiveBand.astro';
+import UpcomingShows from './UpcomingShows.astro';
+import LatestTracks from './LatestTracks.astro';
+import Gallery from './Gallery.astro';
+import Booking from './Booking.astro';
+import {toLocale} from '../i18n';
+import {getDictionary} from '../i18n/ui';
+
+const t = getDictionary(toLocale(Astro.currentLocale));
+---
+
+<Layout title={t.meta.title}>
+    <Hero/>
+    <About/>
+    {/* <Marquee/> */}
+    <Journey/>
+    <LiveBand/>
+    <UpcomingShows/>
+    <LatestTracks/>
+    <Gallery/>
+    <Booking/>
+</Layout>

@@ -1,9 +1,14 @@
 ---
-import { Image } from 'astro:assets';
-import { milestones } from '../data/milestones.json';
+import {Image} from 'astro:assets';
+import {milestones} from '../data/milestones.json';
 import jancovkaPhoto from '../assets/photos/jancovka-2001.jpg';
 import vinylPhoto from '../assets/photos/vinyl-2003.jpg';
 import festivalPhoto from '../assets/photos/coal-festival.jpg';
+import {pick, toLocale} from '../i18n';
+import {getDictionary} from '../i18n/ui';
+
+const locale = toLocale(Astro.currentLocale);
+const t = getDictionary(locale);
 
 // The photo follows the timeline: each shot takes over from the first
 // milestone in or after its year. Crops lean towards the DJ in each frame.
@@ -11,30 +16,43 @@ const shots = [
     {
         src: jancovkaPhoto,
         fromYear: 0,
-        alt: 'DJ Kita mixing on vinyl at Jančovka, 2001',
-        caption: '2001 · Jančovka',
+        alt: {en: 'DJ Kita mixing on vinyl at Jančovka, 2001', cs: 'DJ Kita mixuje na gramofonech, Jančovka 2001'},
+        caption: {en: '2001 · Jančovka', cs: '2001 · Jančovka'},
         position: '50% 100%',
         tone: 'grayscale contrast-125',
+        // Small original: shown as a print inside the frame instead of being
+        // stretched to fill it.
+        inset: true,
     },
     {
         src: vinylPhoto,
         fromYear: 2003,
-        alt: 'A young DJ Kita mixing on vinyl turntables in a packed club',
-        caption: '2003 · Vinyl days',
+        alt: {en: 'A young DJ Kita mixing on vinyl turntables in a packed club', cs: 'Mladý DJ Kita mixuje na gramofonech v plném klubu'},
+        caption: {en: '2003 · Vinyl days', cs: '2003 · Doba vinylu'},
         position: '0% 50%',
         tone: 'grayscale contrast-125',
     },
     {
         src: festivalPhoto,
         fromYear: 2021,
-        alt: 'Ian Kita in sunglasses playing at Coal Festival',
-        caption: 'Coal Festival',
+        alt: {en: 'Ian Kita in sunglasses playing at Coal Festival', cs: 'Ian Kita ve slunečních brýlích hraje na Coal Festivalu'},
+        caption: {en: 'Coal Festival', cs: 'Coal Festival'},
         position: '85% 50%',
         tone: '',
     },
-];
+].map((shot) => ({...shot, alt: shot.alt[locale], caption: shot.caption[locale]}));
 
 const shotIndexFor = (year: string) => shots.findLastIndex((shot) => Number(year) >= shot.fromYear);
+
+// Phones and tablets have no photo column, so each era's photo sits inline in
+// the timeline, under the first milestone of that era.
+const timeline = milestones.map((milestone, i) => {
+    const shotIndex = shotIndexFor(milestone.year);
+    const startsEra = i === 0 || shotIndex !== shotIndexFor(milestones[i - 1].year);
+    return {milestone, shotIndex, inlineShot: startsEra ? shots[shotIndex] : undefined};
+});
+
+const inlineWidths = (width: number) => [320, 480, 640, 960].filter((w) => w < width).concat(Math.min(width, 1280));
 
 // The 4:5 frame crops landscape shots, so they render wider than the column
 // (plus the 6% settle zoom). Reporting the real width lets retina screens
@@ -42,26 +60,48 @@ const shotIndexFor = (year: string) => shots.findLastIndex((shot) => Number(year
 const FRAME_ASPECT = 4 / 5;
 const shotSizes = (image: { width: number; height: number }) =>
     `(min-width: 1024px) ${Math.round(58 * Math.max(1, image.width / image.height / FRAME_ASPECT))}vw, 100vw`;
-
 ---
 
-<section id="journey" data-journey class="reveal px-6 py-24 md:px-12 lg:px-24 lg:py-40">
+<section id="journey" data-journey class="reveal border-t border-white/10 px-page py-24 lg:py-40">
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-12">
-        <div class="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
-            <p class="eyebrow mb-8 text-accent lg:mb-6">Journey</p>
+        <div class="journey-pinned lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
+            <p class="eyebrow mb-8 text-accent lg:mb-6">{t.journey.label}</p>
             <h2 class="mb-12 lg:mb-8 font-heading text-3xl font-medium leading-[1.05] tracking-tight text-swiss-white sm:text-4xl xl:text-5xl">
-                From vinyl roots to festival main stages.
+                {t.journey.heading}
             </h2>
             <ol class="timeline stagger m-0 list-none border-l border-white/10 p-0 pl-8" data-journey-timeline>
-                {milestones.map((milestone) => (
-                    <li class="milestone relative pb-8 last:pb-0 lg:pb-4" data-milestone data-year={milestone.year} data-shot={shotIndexFor(milestone.year)}>
-                        <span class="milestone-marker absolute -left-[2.3rem] top-1.5 h-2.5 w-2.5 border border-accent bg-swiss-black" data-milestone-marker></span>
-                        <span class="milestone-year mb-1 block font-heading text-sm font-medium tracking-widest text-accent">{milestone.year}</span>
-                        <span class="milestone-text block text-lg text-swiss-white/90 lg:text-base">{milestone.text}</span>
-                    </li>
+                {timeline.map(({milestone, shotIndex, inlineShot}) => (
+                        <li class="milestone relative pb-8 last:pb-0 lg:pb-4" data-milestone data-year={milestone.year}
+                            data-shot={shotIndex}>
+                            <span class="milestone-marker absolute -left-[2.3rem] top-1.5 h-2.5 w-2.5 border border-accent bg-swiss-black"
+                                  data-milestone-marker></span>
+                            <span class="milestone-year mb-1 block font-heading text-sm font-medium tracking-widest text-accent">{milestone.year}</span>
+                            <span class="milestone-text block text-lg text-swiss-white/90 lg:text-base">{pick(locale, milestone.text, milestone.text_cs)}</span>
+                            {inlineShot && (
+                                    <figure
+                                            class:list={[
+                                                'relative m-0 mt-5 overflow-hidden rounded-sm bg-ink lg:hidden',
+                                                inlineShot.src.width < inlineShot.src.height ? 'max-w-xs' : 'max-w-md',
+                                            ]}
+                                    >
+                                        <Image
+                                                src={inlineShot.src}
+                                                alt={inlineShot.alt}
+                                                widths={inlineWidths(inlineShot.src.width)}
+                                                sizes={inlineShot.src.width < inlineShot.src.height ? '(min-width: 26rem) 20rem, calc(100vw - 5rem)' : '(min-width: 34rem) 28rem, calc(100vw - 5rem)'}
+                                                class:list={['block h-auto w-full', inlineShot.tone]}
+                                                loading="lazy"
+                                        />
+                                        <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
+                                        <figcaption
+                                                class="absolute bottom-3 left-3 eyebrow text-swiss-white/80">{inlineShot.caption}</figcaption>
+                                    </figure>
+                            )}
+                        </li>
                 ))}
             </ol>
-            <span class="journey-year mt-8 hidden font-heading font-semibold leading-none tracking-tight lg:block" aria-hidden="true" data-journey-year>
+            <span class="journey-year mt-8 hidden font-heading font-semibold leading-none tracking-tight lg:block"
+                  aria-hidden="true" data-journey-year>
                 {milestones[0].year}
             </span>
         </div>
@@ -69,19 +109,35 @@ const shotSizes = (image: { width: number; height: number }) =>
         <div class="journey-track hidden lg:col-span-7 lg:block" data-journey-track>
             <figure class="relative m-0 aspect-[4/5] w-full overflow-hidden rounded-sm bg-ink lg:max-h-[calc(100vh-9rem)]">
                 {shots.map((shot, i) => (
-                    <div class:list={['journey-shot absolute inset-0', { 'is-active': i === 0 }]} data-journey-shot>
-                        <Image
-                            src={shot.src}
-                            alt={shot.alt}
-                            widths={[600, 1000, 1400, 2000]}
-                            sizes={shotSizes(shot.src)}
-                            class:list={['journey-photo h-full w-full object-cover', shot.tone]}
-                            style={`object-position: ${shot.position}`}
-                            loading="lazy"
-                        />
-                        <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
-                        <span class="absolute bottom-4 left-4 eyebrow text-swiss-white/80">{shot.caption}</span>
-                    </div>
+                        <div class:list={['journey-shot absolute inset-0', {'is-active': i === 0}]} data-journey-shot>
+                            {shot.inset ? (
+                                    <div class="absolute inset-0 flex items-center justify-center p-[8%]">
+                                        <div class="relative h-full ring-1 ring-white/10"
+                                             style={`aspect-ratio: ${shot.src.width} / ${shot.src.height}`}>
+                                            <Image
+                                                    src={shot.src}
+                                                    alt={shot.alt}
+                                                    widths={[shot.src.width]}
+                                                    sizes="(min-width: 1024px) 36rem, 100vw"
+                                                    class:list={['journey-photo h-full w-full object-cover', shot.tone]}
+                                                    loading="lazy"
+                                            />
+                                        </div>
+                                    </div>
+                            ) : (
+                                    <Image
+                                            src={shot.src}
+                                            alt={shot.alt}
+                                            widths={[600, 1000, 1400, 2000]}
+                                            sizes={shotSizes(shot.src)}
+                                            class:list={['journey-photo h-full w-full object-cover', shot.tone]}
+                                            style={`object-position: ${shot.position}`}
+                                            loading="lazy"
+                                    />
+                            )}
+                            <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 eyebrow text-swiss-white/80">{shot.caption}</span>
+                        </div>
                 ))}
             </figure>
         </div>

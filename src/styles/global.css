@@ -74,6 +74,30 @@
   }
 }
 
+/* Page gutters. Below the content width they are the usual responsive side
+   padding; on very wide screens they grow so section content stops at
+   --content-max while backgrounds keep running edge to edge. */
+:root {
+  --gutter: 1.5rem;
+  --content-max: 100rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 3rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --gutter: 6rem;
+  }
+}
+
+@utility px-page {
+  padding-inline: max(var(--gutter), calc((100% - var(--content-max)) / 2));
+}
+
 /* Text filled with the brand gradient (orange → pink → raspberry). */
 @utility text-gradient-brand {
   background-image: linear-gradient(90deg, var(--color-brand-orange) 0%, var(--color-brand-pink) 50%, var(--color-brand-magenta) 100%);
@@ -131,6 +155,31 @@
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Over the white footer the nav turns into a light glass bar with dark text
+   (setupNav toggles .is-light), instead of a black band across white. The
+   open mobile menu is dark, so the light style never applies while it is open. */
+body:not(.menu-open) .site-nav.is-light {
+  background: rgb(255 255 255 / 0.82);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-color: rgb(0 0 0 / 0.08);
+}
+
+body:not(.menu-open) .site-nav.is-light :is(a, button) {
+  color: rgb(0 0 0 / 0.7);
+  border-color: rgb(0 0 0 / 0.15);
+}
+
+body:not(.menu-open) .site-nav.is-light :is(a, button):hover,
+body:not(.menu-open) .site-nav.is-light nav a[aria-current="true"] {
+  color: var(--color-swiss-black);
+  border-color: var(--color-swiss-black);
+}
+
+body:not(.menu-open) .site-nav.is-light nav a::after {
+  background: var(--color-brand-magenta);
 }
 
 /* Scroll-spy: the link of the section in view reads as current (set by
@@ -327,19 +376,19 @@ body.menu-open {
    default, fully readable look.
 --------------------------------------------------------------------------- */
 .milestone[data-state="future"] .milestone-year {
-  color: rgb(255 255 255 / 0.3);
+  color: rgb(255 255 255 / 0.5);
 }
 
 .milestone[data-state="future"] .milestone-text {
-  color: rgb(255 255 255 / 0.35);
+  color: rgb(255 255 255 / 0.5);
 }
 
 .milestone[data-state="past"] .milestone-text {
-  color: rgb(255 255 255 / 0.55);
+  color: rgb(255 255 255 / 0.7);
 }
 
 .milestone[data-state="future"] .milestone-marker {
-  border-color: rgb(255 255 255 / 0.25);
+  border-color: rgb(255 255 255 / 0.4);
 }
 
 .milestone[data-state="past"] .milestone-marker,
@@ -417,6 +466,32 @@ body.menu-open {
 @media (max-height: 52rem) {
   .journey-year {
     display: none;
+  }
+}
+
+/* Short laptop screens also get a tighter pinned column, so every milestone
+   fits under the nav while it is pinned. */
+@media (min-width: 64rem) and (max-height: 52rem) {
+  .journey-pinned > .eyebrow {
+    margin-bottom: 1rem;
+  }
+
+  .journey-pinned h2 {
+    margin-bottom: 1.25rem;
+    font-size: 2.25rem;
+  }
+
+  .journey-pinned .milestone {
+    padding-bottom: 0.5rem;
+  }
+
+  .journey-pinned .milestone:last-child {
+    padding-bottom: 0;
+  }
+
+  .journey-pinned .milestone-text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 }
 

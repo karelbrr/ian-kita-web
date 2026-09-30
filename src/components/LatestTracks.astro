@@ -1,6 +1,11 @@
 ---
+import Arrow from './Arrow.astro';
 import Logo from './Logo.astro';
-import { getLatestTracks } from '../lib/soundcloudTracks';
+import {getLatestTracks} from '../lib/soundcloudTracks';
+import {toLocale} from '../i18n';
+import {getDictionary} from '../i18n/ui';
+
+const t = getDictionary(toLocale(Astro.currentLocale));
 
 const TRACK_COUNT = 4;
 
@@ -10,82 +15,94 @@ const displayTitle = (title: string) => title.replace(/^ian kita\s*[-–—]\s*/
 const tracks = await getLatestTracks('https://soundcloud.com/iankitadj', TRACK_COUNT);
 
 const platforms = [
-    { href: 'https://soundcloud.com/iankitadj', label: 'SoundCloud' },
-    { href: 'https://open.spotify.com/artist/5O53OdbKPbycjdfysY4Oyt', label: 'Spotify' },
-    { href: 'https://www.instagram.com/dj_ian_kita/', label: 'Instagram' },
+    {href: 'https://soundcloud.com/iankitadj', label: 'SoundCloud'},
+    {href: 'https://open.spotify.com/artist/5O53OdbKPbycjdfysY4Oyt', label: 'Spotify'},
+    {href: 'https://www.instagram.com/dj_ian_kita/', label: 'Instagram'},
 ];
 ---
 
-<section id="music" class="reveal relative border-t border-white/10 px-6 py-24 md:px-12 lg:px-24 lg:py-40">
-    <div class="pointer-events-none absolute -left-40 -top-20 h-[40rem] w-[40rem] rounded-full bg-[radial-gradient(closest-side,var(--color-brand-magenta),transparent)] opacity-30" aria-hidden="true"></div>
+<section id="music" class="reveal relative border-t border-white/10 px-page py-24 lg:py-40">
+    <div class="pointer-events-none absolute -left-40 -top-20 h-[40rem] w-[40rem] rounded-full bg-[radial-gradient(closest-side,var(--color-brand-magenta),transparent)] opacity-30"
+         aria-hidden="true"></div>
     <div class="relative mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end lg:mb-16">
         <div>
-            <p class="eyebrow mb-8 text-accent">Music</p>
+            <p class="eyebrow mb-8 text-accent">{t.music.label}</p>
             <h2 class="m-0 font-heading text-3xl font-medium leading-[1.05] tracking-tight text-swiss-white sm:text-4xl lg:text-5xl">
-                Latest releases & sets
+                {t.music.heading}
             </h2>
         </div>
         <div class="flex flex-wrap gap-3">
             {platforms.map((platform) => (
-                <a
-                    href={platform.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Ian Kita on ${platform.label}`}
-                    class="rounded-full border border-white/20 px-5 py-2.5 eyebrow text-swiss-white/80 transition-colors hover:border-accent hover:text-swiss-white active:scale-[0.97] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
-                >
-                    {platform.label} ↗
-                </a>
+                    <a
+                            href={platform.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={t.music.platformLabel(platform.label)}
+                            class="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-5 py-2.5 eyebrow text-swiss-white/80 transition-colors hover:border-accent hover:text-swiss-white active:scale-[0.97] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                    >
+                        {platform.label}
+                        <Arrow class="h-3 w-3"/>
+                    </a>
             ))}
         </div>
     </div>
 
     {tracks.length === 0 ? (
-        <p class="relative border-t border-white/10 pt-6 text-lg text-swiss-white/60">
-            Fresh releases are on <a href="https://soundcloud.com/iankitadj" target="_blank" rel="noopener noreferrer" class="text-swiss-white underline">SoundCloud</a>.
-        </p>
+            <p class="relative border-t border-white/10 pt-6 text-lg text-swiss-white/60">
+                {t.music.emptyBefore}<a href="https://soundcloud.com/iankitadj" target="_blank"
+                                         rel="noopener noreferrer" class="text-swiss-white underline">{t.music.emptyLink}</a>{t.music.emptyAfter}
+            </p>
     ) : (
-        <div class="stagger relative grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
-            {tracks.map((track, i) => (
-                <article class="group flex flex-col">
-                    <a
-                        href={track.links.soundcloud}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Listen to ${track.title} on SoundCloud`}
-                        class="relative block aspect-square overflow-hidden rounded-sm bg-ink no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
-                    >
-                        {track.cover ? (
-                            <img
-                                src={track.cover}
-                                alt=""
-                                width="500"
-                                height="500"
-                                loading="lazy"
-                                decoding="async"
-                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                        ) : (
-                            <div class="grid h-full w-full place-items-center p-8">
-                                <Logo class="w-full text-swiss-white/20" decorative />
-                            </div>
-                        )}
-                        <span class="absolute left-3 top-3 font-heading text-xs font-medium text-swiss-white drop-shadow">{String(i + 1).padStart(2, '0')}</span>
-                        <span class="absolute inset-0 grid place-items-center bg-swiss-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div class="stagger relative grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
+                {tracks.map((track, i) => (
+                        <article class="group flex flex-col">
+                            <a
+                                    href={track.links.soundcloud}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={t.music.listenLabel(track.title)}
+                                    class="relative block aspect-square overflow-hidden rounded-sm bg-ink no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                            >
+                                {track.cover ? (
+                                        <img
+                                                src={track.cover}
+                                                alt=""
+                                                width="500"
+                                                height="500"
+                                                loading="lazy"
+                                                decoding="async"
+                                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+                                ) : (
+                                        <div class="grid h-full w-full place-items-center p-8">
+                                            <Logo class="w-full text-swiss-white/20" decorative/>
+                                        </div>
+                                )}
+                                <span class="absolute left-3 top-3 font-heading text-xs font-medium text-swiss-white drop-shadow">{String(i + 1).padStart(2, '0')}</span>
+                                <span class="absolute inset-0 grid place-items-center bg-swiss-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                             <span class="grid h-14 w-14 place-items-center rounded-full border border-white/70 bg-swiss-black/40 text-swiss-white backdrop-blur-sm">
-                                <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5" fill="currentColor"><path d="M7 4.5v15l13-7.5z" /></svg>
+                                <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5" fill="currentColor"><path
+                                        d="M7 4.5v15l13-7.5z"/></svg>
                             </span>
                         </span>
-                    </a>
-                    <h3 class="mt-4 text-base font-medium leading-snug text-swiss-white transition-colors group-hover:text-accent lg:text-lg">{displayTitle(track.title)}</h3>
-                    <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 eyebrow text-swiss-white/40">
-                        <a href={track.links.soundcloud} target="_blank" rel="noopener noreferrer" class="hover:text-swiss-white no-underline">SoundCloud ↗</a>
-                        {track.links.spotify && (
-                            <a href={track.links.spotify} target="_blank" rel="noopener noreferrer" class="hover:text-swiss-white no-underline">Spotify ↗</a>
-                        )}
-                    </div>
-                </article>
-            ))}
-        </div>
+                            </a>
+                            <h3 class="mb-1 mt-4 text-base font-medium leading-snug text-swiss-white transition-colors group-hover:text-accent lg:text-lg">{displayTitle(track.title)}</h3>
+                            <div class="mt-auto flex flex-wrap gap-x-4 pt-1 eyebrow text-swiss-white/60">
+                                <a href={track.links.soundcloud} target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center gap-1 py-2 transition-colors hover:text-swiss-white no-underline">
+                                    SoundCloud
+                                    <Arrow class="h-3 w-3"/>
+                                </a>
+                                {track.links.spotify && (
+                                        <a href={track.links.spotify} target="_blank" rel="noopener noreferrer"
+                                           class="inline-flex items-center gap-1 py-2 transition-colors hover:text-swiss-white no-underline">
+                                            Spotify
+                                            <Arrow class="h-3 w-3"/>
+                                        </a>
+                                )}
+                            </div>
+                        </article>
+                ))}
+            </div>
     )}
 </section>

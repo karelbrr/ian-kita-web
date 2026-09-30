@@ -1,5 +1,8 @@
 ---
 import Layout from "./Layout.astro";
+import Arrow from "../components/Arrow.astro";
+import { czechNbspHtml, localePath, toLocale } from "../i18n";
+import { getDictionary } from "../i18n/ui";
 
 export interface Props {
     title: string;
@@ -8,27 +11,35 @@ export interface Props {
 }
 
 const { title, heading, lastUpdated } = Astro.props;
+const locale = toLocale(Astro.currentLocale);
+const t = getDictionary(locale);
+
+// Czech pages follow Czech typesetting (see czechNbsp); the text itself is
+// written as plain HTML in the page file.
+const body = await Astro.slots.render("default");
+const html = locale === "cs" ? czechNbspHtml(body) : body;
 ---
 
 <Layout title={title}>
     <div class="px-6 py-24 lg:py-32 min-h-screen flex justify-center">
         <div class="w-full max-w-2xl text-center">
             <a
-                    href="/"
-                    class="inline-block mb-12 text-xs font-heading font-medium text-swiss-white/50 hover:text-swiss-white uppercase tracking-widest transition-colors"
+                    href={localePath(locale, "/")}
+                    class="inline-flex items-center gap-2 mb-12 text-xs font-heading font-medium text-swiss-white/50 hover:text-swiss-white uppercase tracking-widest transition-colors"
             >
-                &larr; Back to Home
+                <Arrow direction="left" class="h-3.5 w-3.5" />
+                {t.legal.back}
             </a>
 
             <h1 class="font-heading font-semibold text-3xl md:text-4xl tracking-tight mb-3 text-swiss-white">
                 {heading}
             </h1>
             <p class="text-sm text-swiss-white/50 mb-16">
-                Last updated: {lastUpdated}
+                {t.legal.updated} {lastUpdated}
             </p>
 
             <div class="text-left font-sans text-swiss-white/80 leading-relaxed space-y-10">
-                <slot/>
+                <Fragment set:html={html} />
             </div>
         </div>
     </div>

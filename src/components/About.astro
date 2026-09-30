@@ -1,10 +1,16 @@
 ---
 import {Image} from 'astro:assets';
-import about from '../data/about.json';
 import photo from '../assets/photos/machac-2026-decks.jpg';
+import {toLocale} from '../i18n';
+import {getAbout} from '../i18n/content';
+import {getDictionary} from '../i18n/ui';
+
+const locale = toLocale(Astro.currentLocale);
+const about = getAbout(locale);
+const t = getDictionary(locale);
 ---
 
-<section id="about" class="reveal relative px-6 py-24 md:px-12 lg:px-24 lg:py-40">
+<section id="about" class="reveal relative px-page py-24 lg:py-40">
     <div class="pointer-events-none absolute -top-32 right-0 h-[44rem] w-[44rem] translate-x-1/3 rounded-full bg-[radial-gradient(closest-side,var(--color-brand-purple),transparent)] opacity-50"
          aria-hidden="true"></div>
     <div class="relative grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
@@ -14,7 +20,7 @@ import photo from '../assets/photos/machac-2026-decks.jpg';
                      the MÁCHÁČ watermark (bottom-right corner) outside the frame. */}
                 <Image
                         src={photo}
-                        alt="Ian Kita mixing on Pioneer decks in the sun at Mácháč 2026"
+                        alt={t.about.photoAlt}
                         widths={[480, 800, 1200, 1365]}
                         sizes="(min-width: 1024px) 40vw, 100vw"
                         class="h-full w-full object-cover object-[50%_35%]"
@@ -28,7 +34,7 @@ import photo from '../assets/photos/machac-2026-decks.jpg';
         </div>
 
         <div class="lg:col-span-7 lg:pl-8">
-            <h2 class="eyebrow mb-8 text-accent">About</h2>
+            <h2 class="eyebrow mb-8 text-accent">{t.about.label}</h2>
             <p class="mb-10 font-heading text-3xl leading-[1.05] tracking-tight text-balance text-swiss-white sm:text-4xl lg:text-5xl">
                 {about.lead}
             </p>
@@ -38,7 +44,7 @@ import photo from '../assets/photos/machac-2026-decks.jpg';
 
             <blockquote class="mt-14 border-l-2 border-accent pl-6 lg:pl-8">
                 <p class="m-0 font-heading text-2xl leading-snug tracking-tight text-swiss-white lg:text-3xl">
-                    “{about.quote}”</p>
+                    {t.quotes.open}{about.quote}{t.quotes.close}</p>
                 <footer class="eyebrow mt-4 text-swiss-white/50">{about.quoteSource}</footer>
             </blockquote>
 

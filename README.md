@@ -25,14 +25,15 @@ A photo-led portfolio website for electronic music artist Ian Kita (Techno & Tec
 │   │   └── photos/           # Press photos (also the CMS media folder)
 │   ├── components/           # Nav, Hero, About, Marquee, Journey, LiveBand,
 │   │                         # UpcomingShows, LatestTracks, Gallery, Booking, Logo
-│   ├── data/                 # about, milestones, festivals, upcoming-shows, gallery (CMS-edited JSON)
+│   ├── data/                 # about, about.cs, milestones, festivals, upcoming-shows, gallery (CMS-edited JSON)
+│   ├── i18n/                 # Languages: helpers (index.ts), interface text (ui.ts), About content (content.ts)
 │   ├── layouts/              # Layout.astro — <head>, SEO/OG/Twitter meta, JSON-LD, nav, grain
 │   ├── lib/
 │   │   ├── logo.ts              # Logotype glyph paths for inline rendering
 │   │   ├── photos.ts            # Resolves CMS photo paths to optimisable imports
 │   │   ├── soundcloudTracks.ts  # Fetches + caches latest SoundCloud tracks
 │   │   └── spotifyLinks.ts      # Manual SoundCloud → Spotify track link mapping
-│   ├── pages/                # index, 404, privacy-policy, terms, admin
+│   ├── pages/                # index, 404, privacy-policy, terms, admin; cs/ holds the Czech pages
 │   ├── scripts/main.ts       # Client behaviour: reveals, nav, lightbox, lazy video
 │   └── styles/               # Global CSS (Tailwind theme, motion, components)
 └── package.json
@@ -53,6 +54,26 @@ The hero background is derived from `photos/machac-2026-stage.jpg` by `node scri
 The logotype comes from the press pack: `src/assets/logo.svg` is the vector file, `src/lib/logo.ts` holds the same paths per letter for inline rendering and the hero draw-on animation. Run `node scripts/generate-brand-assets.mjs` to regenerate the favicon, app icons and Open Graph image.
 
 SoundCloud tracks are fetched live and cached in `.cache/tracks.json` for a day to keep local dev and builds fast. To link a SoundCloud track to its Spotify release, add an entry to `src/lib/spotifyLinks.ts` keyed by the track's SoundCloud permalink URL.
+
+## Languages
+
+The site is in English at the root and in Czech under `/cs/`, using Astro's i18n routing (`i18n` in `astro.config.mjs`). The CZ / EN link in the header opens the same page in the other language and keeps the section being read. Each page declares its other-language version for search engines, and the sitemap pairs them.
+
+- **Interface text** (nav, headings, buttons, labels) is in `src/i18n/ui.ts`, one dictionary per language.
+- **About texts** are `src/data/about.json` (English) and `src/data/about.cs.json` (Czech), both editable in the CMS.
+- **Lists** keep one entry per item with optional Czech fields: `text_cs` for milestones, `caption_cs` and `alt_cs` for gallery photos, `location_cs` for shows. An empty Czech field falls back to the English value, so a photo or show is only added once.
+- **Legal pages** have Czech versions in `src/pages/cs/`.
+- **Czech typesetting**: one-letter words (a, i, k, o, s, u, v, z) are joined to the next word so they never end a line (`czechNbsp` in `src/i18n/index.ts`).
+- **Home page**: the section order lives in `src/components/HomePage.astro`, shared by `src/pages/index.astro` and `src/pages/cs/index.astro`.
+
+## Daily rebuild
+
+Upcoming shows are filtered by date and SoundCloud tracks are fetched when the site is built, so the site should rebuild daily. `netlify/functions/daily-rebuild.mjs` is a Netlify scheduled function that calls a build hook every night (00:15 UTC). It needs a one-time setup in the Netlify dashboard:
+
+1. **Site configuration → Build & deploy → Build hooks**: add a hook for `main`.
+2. **Site configuration → Environment variables**: add `BUILD_HOOK_URL` with the hook's URL, scoped to Functions.
+
+Until then, visitors' browsers still hide shows whose date has passed; the rebuild keeps the HTML and tracks fresh.
 
 ## 🧞 Commands
 

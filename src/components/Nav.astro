@@ -1,76 +1,104 @@
 ---
 import Logo from './Logo.astro';
+import {LANGUAGES, localePath, otherLocale, toLocale} from '../i18n';
+import {getDictionary} from '../i18n/ui';
 
-// Absolute anchors so the nav also works from /privacy-policy, /terms and /404.
+export interface Props {
+    /** This page in the other language, for the language switch. */
+    alternatePath: string;
+}
+
+const {alternatePath} = Astro.props;
+const locale = toLocale(Astro.currentLocale);
+const other = LANGUAGES[otherLocale(locale)];
+const t = getDictionary(locale);
+
+// Absolute anchors so the nav also works from the legal pages and the 404 page.
 const links = [
-    { href: '/#about', label: 'About' },
-    { href: '/#journey', label: 'Journey' },
-    { href: '/#shows', label: 'Shows' },
-    { href: '/#music', label: 'Music' },
-    { href: '/#gallery', label: 'Gallery' },
-];
+    {hash: 'about', label: t.nav.about},
+    {hash: 'journey', label: t.nav.journey},
+    {hash: 'shows', label: t.nav.shows},
+    {hash: 'music', label: t.nav.music},
+    {hash: 'gallery', label: t.nav.gallery},
+].map(({hash, label}) => ({href: localePath(locale, `/#${hash}`), label}));
+const homeHref = localePath(locale, '/');
+const bookHref = localePath(locale, '/#contact');
 
 const socials = [
-    { href: 'https://www.instagram.com/dj_ian_kita/', label: 'Instagram' },
-    { href: 'https://soundcloud.com/iankitadj', label: 'SoundCloud' },
-    { href: 'https://open.spotify.com/artist/5O53OdbKPbycjdfysY4Oyt', label: 'Spotify' },
+    {href: 'https://www.instagram.com/dj_ian_kita/', label: 'Instagram'},
+    {href: 'https://soundcloud.com/iankitadj', label: 'SoundCloud'},
+    {href: 'https://open.spotify.com/artist/5O53OdbKPbycjdfysY4Oyt', label: 'Spotify'},
 ];
 ---
 
 <header class="site-nav fixed inset-x-0 top-0 z-50 border-b border-transparent" data-nav>
-    <div class="flex h-16 items-center justify-between px-6 md:px-12 lg:h-20 lg:px-24">
-        <a href="/" class="text-swiss-white transition-colors hover:text-accent no-underline" aria-label="Ian Kita — home">
-            <Logo class="h-[15px] w-auto lg:h-[18px]" decorative />
+    <div class="flex h-16 items-center justify-between px-page lg:h-20">
+        <a href={homeHref} class="text-swiss-white transition-colors hover:text-accent no-underline"
+           aria-label={t.nav.home}>
+            <Logo class="h-[15px] w-auto lg:h-[18px]" decorative/>
         </a>
 
-        <nav class="hidden items-center gap-9 lg:flex" aria-label="Primary">
+        <nav class="hidden items-center gap-9 lg:flex" aria-label={t.nav.primary}>
             {links.map((link) => (
-                <a href={link.href} class="eyebrow text-swiss-white/70 transition-colors hover:text-swiss-white no-underline">{link.label}</a>
+                    <a href={link.href}
+                       class="eyebrow text-swiss-white/70 transition-colors hover:text-swiss-white no-underline">{link.label}</a>
             ))}
         </nav>
 
         <div class="flex items-center gap-3">
+            {/* Links to this page in the other language; setupLanguageSwitch adds
+                the section being read, so the reader lands in the same place. */}
             <a
-                href="/#contact"
-                class="hidden items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 eyebrow text-swiss-white transition-colors hover:border-accent hover:text-accent active:scale-[0.97] no-underline sm:inline-flex"
+                    href={alternatePath}
+                    hreflang={other.hreflang}
+                    lang={other.hreflang}
+                    aria-label={other.name}
+                    class="px-2 py-2.5 eyebrow text-swiss-white/70 transition-colors hover:text-swiss-white no-underline"
+                    data-language-switch
+            >
+                {other.code}
+            </a>
+            <a
+                    href={bookHref}
+                    class="hidden items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 eyebrow text-swiss-white transition-colors hover:border-accent hover:text-accent active:scale-[0.97] no-underline sm:inline-flex"
             >
                 <span class="pulse-dot h-1.5 w-1.5 rounded-full bg-accent"></span>
-                Book
+                {t.nav.book}
             </a>
             <button
-                type="button"
-                class="inline-flex items-center rounded-full border border-white/20 px-4 py-2.5 eyebrow text-swiss-white transition-colors hover:border-white/50 active:scale-[0.97] lg:hidden"
-                aria-expanded="false"
-                aria-controls="menu"
-                data-menu-toggle
-                data-label-open="Menu"
-                data-label-close="Close"
+                    type="button"
+                    class="inline-flex items-center rounded-full border border-white/20 px-4 py-2.5 eyebrow text-swiss-white transition-colors hover:border-white/50 active:scale-[0.97] lg:hidden"
+                    aria-expanded="false"
+                    aria-controls="menu"
+                    data-menu-toggle
+                    data-label-open={t.nav.menu}
+                    data-label-close={t.nav.close}
             >
-                Menu
+                {t.nav.menu}
             </button>
         </div>
     </div>
 </header>
 
 <div id="menu" class="menu-overlay lg:hidden" hidden>
-    <nav aria-label="Mobile">
+    <nav aria-label={t.nav.mobile}>
         <ul class="m-0 list-none p-0">
             {links.map((link) => (
-                <li class="border-b border-white/10">
-                    <a
-                        href={link.href}
-                        class="block py-5 font-heading text-4xl font-medium tracking-tight text-swiss-white no-underline transition-colors hover:text-accent sm:text-5xl"
-                    >
-                        {link.label}
-                    </a>
-                </li>
+                    <li class="border-b border-white/10">
+                        <a
+                                href={link.href}
+                                class="block py-5 font-heading text-4xl font-medium tracking-tight text-swiss-white no-underline transition-colors hover:text-accent sm:text-5xl"
+                        >
+                            {link.label}
+                        </a>
+                    </li>
             ))}
             <li class="border-b border-white/10">
                 <a
-                    href="/#contact"
-                    class="block py-5 font-heading text-4xl font-medium tracking-tight text-accent no-underline sm:text-5xl"
+                        href={bookHref}
+                        class="block py-5 font-heading text-4xl font-medium tracking-tight text-accent no-underline sm:text-5xl"
                 >
-                    Book
+                    {t.nav.book}
                 </a>
             </li>
         </ul>
@@ -78,9 +106,10 @@ const socials = [
     <div class="mt-12 flex flex-wrap items-end justify-between gap-6">
         <div class="flex flex-wrap gap-x-6 gap-y-2 eyebrow text-swiss-white/60">
             {socials.map((s) => (
-                <a href={s.href} target="_blank" rel="noopener noreferrer" class="hover:text-swiss-white no-underline">{s.label}</a>
+                    <a href={s.href} target="_blank" rel="noopener noreferrer"
+                       class="hover:text-swiss-white no-underline">{s.label}</a>
             ))}
         </div>
-        <Logo class="h-4 w-auto text-swiss-white/40" decorative />
+        <Logo class="h-4 w-auto text-swiss-white/40" decorative/>
     </div>
 </div>

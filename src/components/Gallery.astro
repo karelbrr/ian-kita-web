@@ -2,6 +2,12 @@
 import {Image, getImage} from 'astro:assets';
 import {images} from '../data/gallery.json';
 import {resolvePhoto} from '../lib/photos';
+import Arrow from './Arrow.astro';
+import {pick, toLocale} from '../i18n';
+import {getDictionary} from '../i18n/ui';
+
+const locale = toLocale(Astro.currentLocale);
+const t = getDictionary(locale);
 
 // Bento layout is derived from each photo's real orientation: portraits get
 // two rows, clearly wide shots (about 16:10 or wider) two columns, and the
@@ -23,7 +29,14 @@ const items = await Promise.all(
                 : ratio > 1.55
                     ? 'col-span-2'
                     : '';
-        return {...image, photo, fullSrc: full?.src ?? image.url, span};
+        return {
+            ...image,
+            alt: pick(locale, image.alt, image.alt_cs),
+            caption: pick(locale, image.caption, image.caption_cs),
+            photo,
+            fullSrc: full?.src ?? image.url,
+            span,
+        };
     }),
 );
 
@@ -39,17 +52,17 @@ for (let i = items.length - 1; i >= 0 && cells % 4 !== 0; i--) {
 }
 ---
 
-<section id="gallery" class="reveal border-t border-white/10 px-6 py-24 md:px-12 lg:px-24 lg:py-40">
+<section id="gallery" class="reveal border-t border-white/10 px-page py-24 lg:py-40">
     <div class="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end lg:mb-16">
         <div>
-            <p class="eyebrow mb-8 text-accent">Gallery</p>
+            <p class="eyebrow mb-8 text-accent">{t.gallery.label}</p>
             <h2 class="m-0 font-heading text-3xl font-medium leading-[1.05] tracking-tight text-swiss-white sm:text-4xl lg:text-5xl">
-                Nights & stages
+                {t.gallery.heading}
             </h2>
         </div>
     </div>
 
-    <div class="grid grid-flow-dense grid-cols-2 auto-rows-[42vw] gap-3 md:grid-cols-4 md:auto-rows-[21vw] lg:gap-4 lg:auto-rows-[17vw]">
+    <div class="grid grid-flow-dense grid-cols-2 auto-rows-[42vw] gap-3 md:grid-cols-4 md:auto-rows-[21vw] lg:gap-4 lg:auto-rows-[min(17vw,22rem)]">
         {items.map((item) => (
                 <a
                         href={item.fullSrc}
@@ -57,7 +70,7 @@ for (let i = items.length - 1; i >= 0 && cells % 4 !== 0; i--) {
                         data-lightbox
                         data-caption={item.caption}
                         data-alt={item.alt}
-                        aria-label={`Open photo: ${item.caption}`}
+                        aria-label={t.gallery.openPhoto(item.caption)}
                 >
                     {item.photo ? (
                             <Image
@@ -72,7 +85,7 @@ for (let i = items.length - 1; i >= 0 && cells % 4 !== 0; i--) {
                             <img src={item.url} alt={item.alt} loading="lazy"
                                  class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"/>
                     )}
-                    <span class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center gap-2 bg-gradient-to-t from-swiss-black/80 to-transparent p-4 pt-10 eyebrow text-swiss-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <span class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center gap-2 bg-gradient-to-t from-swiss-black/80 to-transparent p-4 pt-10 eyebrow text-swiss-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 pointer-coarse:opacity-100">
                     <span class="glyph-square text-accent"></span>
                         {item.caption}
                 </span>
@@ -82,7 +95,7 @@ for (let i = items.length - 1; i >= 0 && cells % 4 !== 0; i--) {
     </div>
 </section>
 
-<dialog class="lightbox" data-lightbox-dialog aria-label="Photo viewer">
+<dialog class="lightbox" data-lightbox-dialog aria-label={t.gallery.viewer}>
     <span class="lightbox__spinner" aria-hidden="true"></span>
     <div class="flex h-full w-full flex-col items-center justify-center gap-5 p-4 sm:p-8">
         <figure class="m-0 flex flex-col items-center gap-4">
@@ -96,16 +109,16 @@ for (let i = items.length - 1; i >= 0 && cells % 4 !== 0; i--) {
     </div>
     <button type="button"
             class="absolute right-4 top-4 rounded-full border border-white/25 px-4 py-2.5 eyebrow text-swiss-white transition-colors hover:border-accent hover:text-accent active:scale-[0.97] sm:right-8 sm:top-8"
-            data-lightbox-close>Close
+            data-lightbox-close>{t.gallery.close}
     </button>
     <button type="button"
             class="absolute left-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/25 text-swiss-white transition-colors hover:border-accent hover:text-accent active:scale-[0.97] sm:left-6"
-            aria-label="Previous photo" data-lightbox-prev>
-        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>
+            aria-label={t.gallery.previous} data-lightbox-prev>
+        <Arrow direction="left" class="h-5 w-5" />
     </button>
     <button type="button"
             class="absolute right-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/25 text-swiss-white transition-colors hover:border-accent hover:text-accent active:scale-[0.97] sm:right-6"
-            aria-label="Next photo" data-lightbox-next>
-        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            aria-label={t.gallery.next} data-lightbox-next>
+        <Arrow direction="right" class="h-5 w-5" />
     </button>
 </dialog>

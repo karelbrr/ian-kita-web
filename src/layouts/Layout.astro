@@ -2,20 +2,34 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import LogoDefs from '../components/LogoDefs.astro';
+import {DEFAULT_LOCALE, LANGUAGES, otherLocale, toLocale, translatedPath} from '../i18n';
+import {getDictionary} from '../i18n/ui';
 
 export interface Props {
     title: string;
     description?: string;
     image?: string;
+    /** This page in the other language. Defaults to the same path with or without /cs. */
+    alternatePath?: string;
+    /** False for pages without a translated counterpart (the 404 page): no hreflang links. */
+    translated?: boolean;
 }
+
+const locale = toLocale(Astro.currentLocale);
+const other = otherLocale(locale);
+const t = getDictionary(locale);
 
 const {
     title,
-    description = 'Ian Kita — techno & tech house DJ and producer from Zlín, Czech Republic. Upcoming shows, latest releases, photos and booking.',
+    description = t.meta.description,
     image = '/og-image.png',
+    alternatePath = translatedPath(Astro.url.pathname, other),
+    translated = true,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const alternateURL = new URL(alternatePath, Astro.site);
+const defaultLanguageURL = locale === DEFAULT_LOCALE ? canonicalURL : alternateURL;
 const ogImageURL = new URL(image, Astro.site);
 
 const structuredData = {
@@ -46,12 +60,19 @@ const structuredData = {
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={LANGUAGES[locale].hreflang}>
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content={description}/>
     <link rel="canonical" href={canonicalURL}/>
+    {translated && (
+        <>
+            <link rel="alternate" hreflang={LANGUAGES[locale].hreflang} href={canonicalURL}/>
+            <link rel="alternate" hreflang={LANGUAGES[other].hreflang} href={alternateURL}/>
+            <link rel="alternate" hreflang="x-default" href={defaultLanguageURL}/>
+        </>
+    )}
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"/>
@@ -61,6 +82,8 @@ const structuredData = {
 
     <meta property="og:type" content="website"/>
     <meta property="og:site_name" content="Ian Kita"/>
+    <meta property="og:locale" content={LANGUAGES[locale].ogLocale}/>
+    <meta property="og:locale:alternate" content={LANGUAGES[other].ogLocale}/>
     <meta property="og:title" content={title}/>
     <meta property="og:description" content={description}/>
     <meta property="og:image" content={ogImageURL}/>
@@ -102,10 +125,10 @@ const structuredData = {
     </script>
 </head>
 <body>
-<a href="#main" class="skip-link eyebrow">Skip to content</a>
+<a href="#main" class="skip-link eyebrow">{t.skipLink}</a>
 <div class="scroll-progress" aria-hidden="true"></div>
 <LogoDefs/>
-<Nav/>
+<Nav alternatePath={alternatePath}/>
 <main id="main" tabindex="-1" class="relative z-10 min-h-screen overflow-x-clip">
     <slot/>
 </main>
