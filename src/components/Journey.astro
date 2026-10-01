@@ -11,18 +11,17 @@ const locale = toLocale(Astro.currentLocale);
 const t = getDictionary(locale);
 
 // The photo follows the timeline: each shot takes over from the first
-// milestone in or after its year. Crops lean towards the DJ in each frame.
+// milestone in or after its year. On desktop every photo is a vertical print on
+// a dark mat, in the 2001 photo's proportions, so the print stays the same size
+// as the eras change; landscape photos are cropped towards the DJ (position).
 const shots = [
     {
         src: jancovkaPhoto,
         fromYear: 0,
         alt: {en: 'DJ Kita mixing on vinyl at Jančovka, 2001', cs: 'DJ Kita mixuje na gramofonech, Jančovka 2001'},
         caption: {en: '2001 · Jančovka', cs: '2001 · Jančovka'},
-        position: '50% 100%',
+        position: '50% 50%',
         tone: 'grayscale contrast-125',
-        // Small original: shown as a print inside the frame instead of being
-        // stretched to fill it.
-        inset: true,
     },
     {
         src: vinylPhoto,
@@ -52,14 +51,15 @@ const timeline = milestones.map((milestone, i) => {
     return {milestone, shotIndex, inlineShot: startsEra ? shots[shotIndex] : undefined};
 });
 
-const inlineWidths = (width: number) => [320, 480, 640, 960].filter((w) => w < width).concat(Math.min(width, 1280));
+const PRINT_RATIO = jancovkaPhoto.width / jancovkaPhoto.height;
 
-// The 4:5 frame crops landscape shots, so they render wider than the column
-// (plus the 6% settle zoom). Reporting the real width lets retina screens
-// pick a sharp file instead of an upscaled one.
-const FRAME_ASPECT = 4 / 5;
-const shotSizes = (image: { width: number; height: number }) =>
-    `(min-width: 1024px) ${Math.round(58 * Math.max(1, image.width / image.height / FRAME_ASPECT))}vw, 100vw`;
+// A cropped landscape photo renders wider than its vertical print, so its
+// sizes hint scales with how much wider it is; that keeps retina screens sharp.
+const printSizes = (image: {width: number; height: number}) =>
+    `(min-width: 1024px) ${Math.round(42 * Math.max(1, image.width / image.height / PRINT_RATIO))}vw, 100vw`;
+
+// Never more than the original photo, and at most 2000px.
+const printWidths = (width: number) => [480, 800, 1200, 1600].filter((w) => w < width).concat(Math.min(width, 2000));
 ---
 
 <section id="journey" data-journey class="reveal border-t border-white/10 px-page py-24 lg:py-40">
@@ -80,21 +80,19 @@ const shotSizes = (image: { width: number; height: number }) =>
                             {inlineShot && (
                                     <figure
                                             class:list={[
-                                                'relative m-0 mt-5 overflow-hidden rounded-sm bg-ink lg:hidden',
+                                                'm-0 mt-5 rounded-sm bg-ink p-4 lg:hidden',
                                                 inlineShot.src.width < inlineShot.src.height ? 'max-w-xs' : 'max-w-md',
                                             ]}
                                     >
                                         <Image
                                                 src={inlineShot.src}
                                                 alt={inlineShot.alt}
-                                                widths={inlineWidths(inlineShot.src.width)}
-                                                sizes={inlineShot.src.width < inlineShot.src.height ? '(min-width: 26rem) 20rem, calc(100vw - 5rem)' : '(min-width: 34rem) 28rem, calc(100vw - 5rem)'}
-                                                class:list={['block h-auto w-full', inlineShot.tone]}
+                                                widths={printWidths(inlineShot.src.width)}
+                                                sizes={inlineShot.src.width < inlineShot.src.height ? '(min-width: 26rem) 18rem, calc(100vw - 7rem)' : '(min-width: 34rem) 26rem, calc(100vw - 7rem)'}
+                                                class:list={['block h-auto w-full ring-1 ring-white/10', inlineShot.tone]}
                                                 loading="lazy"
                                         />
-                                        <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
-                                        <figcaption
-                                                class="absolute bottom-3 left-3 eyebrow text-swiss-white/80">{inlineShot.caption}</figcaption>
+                                        <figcaption class="mt-3 eyebrow text-swiss-white/80">{inlineShot.caption}</figcaption>
                                     </figure>
                             )}
                         </li>
@@ -110,31 +108,22 @@ const shotSizes = (image: { width: number; height: number }) =>
             <figure class="relative m-0 aspect-[4/5] w-full overflow-hidden rounded-sm bg-ink lg:max-h-[calc(100vh-9rem)]">
                 {shots.map((shot, i) => (
                         <div class:list={['journey-shot absolute inset-0', {'is-active': i === 0}]} data-journey-shot>
-                            {shot.inset ? (
-                                    <div class="absolute inset-0 flex items-center justify-center p-[8%]">
-                                        <div class="relative h-full ring-1 ring-white/10"
-                                             style={`aspect-ratio: ${shot.src.width} / ${shot.src.height}`}>
-                                            <Image
-                                                    src={shot.src}
-                                                    alt={shot.alt}
-                                                    widths={[shot.src.width]}
-                                                    sizes="(min-width: 1024px) 36rem, 100vw"
-                                                    class:list={['journey-photo h-full w-full object-cover', shot.tone]}
-                                                    loading="lazy"
-                                            />
-                                        </div>
+                            <div class="absolute inset-0 p-[8%]">
+                                <div class="journey-print-area">
+                                    <div class="journey-print ring-1 ring-white/10"
+                                         style={`--print-ratio: ${PRINT_RATIO}`}>
+                                        <Image
+                                                src={shot.src}
+                                                alt={shot.alt}
+                                                widths={printWidths(shot.src.width)}
+                                                sizes={printSizes(shot.src)}
+                                                class:list={['journey-photo h-full w-full object-cover', shot.tone]}
+                                                style={`object-position: ${shot.position}`}
+                                                loading="lazy"
+                                        />
                                     </div>
-                            ) : (
-                                    <Image
-                                            src={shot.src}
-                                            alt={shot.alt}
-                                            widths={[600, 1000, 1400, 2000]}
-                                            sizes={shotSizes(shot.src)}
-                                            class:list={['journey-photo h-full w-full object-cover', shot.tone]}
-                                            style={`object-position: ${shot.position}`}
-                                            loading="lazy"
-                                    />
-                            )}
+                                </div>
+                            </div>
                             <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
                             <span class="absolute bottom-4 left-4 eyebrow text-swiss-white/80">{shot.caption}</span>
                         </div>
