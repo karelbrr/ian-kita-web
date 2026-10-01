@@ -6,11 +6,13 @@ import { getDictionary } from "../i18n/ui";
 
 export interface Props {
     title: string;
+    /** The summary shown under the title in search results. */
+    description: string;
     heading: string;
     lastUpdated: string;
 }
 
-const { title, heading, lastUpdated } = Astro.props;
+const { title, description, heading, lastUpdated } = Astro.props;
 const locale = toLocale(Astro.currentLocale);
 const t = getDictionary(locale);
 
@@ -20,7 +22,7 @@ const body = await Astro.slots.render("default");
 const html = locale === "cs" ? czechNbspHtml(body) : body;
 ---
 
-<Layout title={title}>
+<Layout title={title} description={description}>
     <div class="px-6 py-24 lg:py-32 min-h-screen flex justify-center">
         <div class="w-full max-w-2xl text-center">
             <a
