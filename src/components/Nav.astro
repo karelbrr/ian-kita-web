@@ -35,7 +35,7 @@ const socials = [
     <div class="flex h-16 items-center justify-between px-page lg:h-20">
         <a href={homeHref} class="text-swiss-white transition-colors hover:text-accent no-underline"
            aria-label={t.nav.home}>
-            <Logo class="h-[15px] w-auto lg:h-[18px]" decorative/>
+            <Logo class="h-[13px] w-auto min-[400px]:h-[15px] lg:h-[18px]" decorative/>
         </a>
 
         <nav class="hidden items-center gap-9 lg:flex" aria-label={t.nav.primary}>
@@ -45,7 +45,7 @@ const socials = [
             ))}
         </nav>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 sm:gap-3">
             {/* Links to this page in the other language; setupLanguageSwitch adds
                 the section being read, so the reader lands in the same place. */}
             <a
@@ -53,21 +53,21 @@ const socials = [
                     hreflang={other.hreflang}
                     lang={other.hreflang}
                     aria-label={other.name}
-                    class="px-2 py-2.5 eyebrow text-swiss-white/70 transition-colors hover:text-swiss-white no-underline"
+                    class="px-2 py-2.5 eyebrow text-swiss-white/70 transition-colors hover:text-swiss-white no-underline max-[359px]:hidden"
                     data-language-switch
             >
                 {other.code}
             </a>
             <a
                     href={bookHref}
-                    class="hidden items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 eyebrow text-swiss-white transition-colors hover:border-accent hover:text-accent active:scale-[0.97] no-underline sm:inline-flex"
+                    class="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3.5 py-2.5 eyebrow text-swiss-white transition-colors hover:border-accent hover:text-accent active:scale-[0.97] no-underline sm:gap-2 sm:px-5"
             >
-                <span class="pulse-dot h-1.5 w-1.5 rounded-full bg-accent"></span>
+                <span class="pulse-dot hidden h-1.5 w-1.5 rounded-full bg-accent sm:block"></span>
                 {t.nav.book}
             </a>
             <button
                     type="button"
-                    class="inline-flex items-center rounded-full border border-white/20 px-4 py-2.5 eyebrow text-swiss-white transition-colors hover:border-white/50 active:scale-[0.97] lg:hidden"
+                    class="inline-flex items-center rounded-full border border-white/20 px-3.5 py-2.5 eyebrow text-swiss-white transition-colors hover:border-white/50 active:scale-[0.97] sm:px-4 lg:hidden"
                     aria-expanded="false"
                     aria-controls="menu"
                     data-menu-toggle
@@ -105,6 +105,8 @@ const socials = [
     </nav>
     <div class="mt-12 flex flex-wrap items-end justify-between gap-6">
         <div class="flex flex-wrap gap-x-6 gap-y-2 eyebrow text-swiss-white/60">
+            <a href={alternatePath} hreflang={other.hreflang} lang={other.hreflang}
+               class="text-swiss-white hover:text-accent no-underline" data-language-switch>{other.name}</a>
             {socials.map((s) => (
                     <a href={s.href} target="_blank" rel="noopener noreferrer"
                        class="hover:text-swiss-white no-underline">{s.label}</a>

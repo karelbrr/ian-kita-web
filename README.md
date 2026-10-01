@@ -57,7 +57,7 @@ SoundCloud tracks are fetched live and cached in `.cache/tracks.json` for a day 
 
 ## Languages
 
-The site is in English at the root and in Czech under `/cs/`, using Astro's i18n routing (`i18n` in `astro.config.mjs`). The CZ / EN link in the header opens the same page in the other language and keeps the section being read. Each page declares its other-language version for search engines, and the sitemap pairs them.
+The site is in English at the root and in Czech under `/cs/`, using Astro's i18n routing (`i18n` in `astro.config.mjs`). The CZ / EN link in the header (on phones also in the menu) opens the same page in the other language and keeps the section being read. Each page declares its other-language version for search engines, and the sitemap pairs them.
 
 - **Interface text** (nav, headings, buttons, labels) is in `src/i18n/ui.ts`, one dictionary per language.
 - **About texts** are `src/data/about.json` (English) and `src/data/about.cs.json` (Czech), both editable in the CMS.
