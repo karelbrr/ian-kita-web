@@ -370,7 +370,7 @@ body.menu-open {
 }
 
 /* ---------------------------------------------------------------------------
-   Journey timeline — while the photo scrolls past the pinned text, the
+   Journey timeline — while the stage (text and photo) is pinned, the
    script marks each milestone past / active / future (data-state) and sets
    --timeline-fill on the list. Without the script every milestone keeps its
    default, fully readable look.
@@ -439,44 +439,15 @@ body.menu-open {
   font-variant-numeric: tabular-nums;
 }
 
-/* Extra scroll length on desktop so the timeline plays out slowly: the photo
-   column gains room below the photo, and the photo drifts down through it so
-   it ends flush with the pinned text. The drift is a scroll-driven animation,
-   run by the browser in step with the scroll; its range matches the script's
-   (section at mid-screen until the text column, --journey-pinned-h tall,
-   releases). Browsers without scroll timelines pin the photo instead. Only
-   added by the script, and never for reduced-motion visitors. */
+/* Scroll length for the pinned stage on desktop: one step (25vh) per
+   milestone. The milestones play out over every step but the last, which
+   holds the final one before the stage scrolls on with the page. Only added by
+   the script, and never for reduced-motion visitors. */
 @media (min-width: 1024px) {
-  .is-scrubbed .journey-track {
-    padding-bottom: 100vh;
-  }
-
-  @supports (animation-timeline: view()) {
-    .is-scrubbed .journey-track {
-      view-timeline: --journey-track block;
-    }
-
-    .is-scrubbed .journey-track > figure {
-      animation: journey-drift linear both;
-      animation-timeline: --journey-track;
-      animation-range: cover 50vh exit calc(100vh - 7rem - var(--journey-pinned-h, 0px));
-    }
-  }
-
-  @supports not (animation-timeline: view()) {
-    .is-scrubbed .journey-track > figure {
-      position: sticky;
-      top: 7rem;
-    }
-  }
-}
-
-@keyframes journey-drift {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100vh);
+  .is-scrubbed .journey-runway::after {
+    content: "";
+    display: block;
+    height: calc(var(--journey-steps, 6) * 25vh);
   }
 }
 

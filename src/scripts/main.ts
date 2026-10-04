@@ -64,10 +64,10 @@ function setupReveals() {
 // viewport instead. Either way the photo swaps to the active milestone's era.
 function setupJourney() {
     const section = document.querySelector<HTMLElement>('[data-journey]');
+    const runway = section?.querySelector<HTMLElement>('[data-journey-runway]');
+    const stage = section?.querySelector<HTMLElement>('[data-journey-stage]');
     const timeline = section?.querySelector<HTMLElement>('[data-journey-timeline]');
-    const pinned = timeline?.parentElement;
-    const grid = pinned?.parentElement;
-    if (!section || !timeline || !pinned || !grid) return;
+    if (!section || !runway || !stage || !timeline) return;
 
     const items = Array.from(timeline.querySelectorAll<HTMLElement>('[data-milestone]'));
     if (items.length < 2) return;
@@ -76,7 +76,6 @@ function setupJourney() {
     const shots = Array.from(section.querySelectorAll<HTMLElement>('[data-journey-shot]'));
     const desktop = window.matchMedia('(min-width: 1024px)');
     let activeIndex = -1;
-    let pinnedHeight = 0;
     let frame = 0;
 
     const markerOffsets = () => {
@@ -104,14 +103,16 @@ function setupJourney() {
         frame = 0;
         const offsets = markerOffsets();
         const last = offsets.length - 1;
-        const gridRect = grid.getBoundingClientRect();
-        const travel = gridRect.height - pinned.offsetHeight;
+        // How far the runway scrolls while the stage is pinned; none for
+        // reduced-motion visitors, whose stage never pins.
+        const travel = runway.offsetHeight - stage.offsetHeight;
 
         let fill: number;
-        if (desktop.matches) {
-            const start = window.innerHeight * 0.5;
-            const end = (parseFloat(getComputedStyle(pinned).top) || 0) - Math.max(travel, 0);
-            const progress = Math.min(Math.max((start - gridRect.top) / (start - end), 0), 1);
+        if (desktop.matches && travel > 0) {
+            // One step of the runway per milestone: the milestones play out
+            // over all but the last step, which holds the final one.
+            const pinnedFor = (parseFloat(getComputedStyle(stage).top) || 0) - runway.getBoundingClientRect().top;
+            const progress = Math.min(Math.max(pinnedFor / ((travel * last) / items.length), 0), 1);
             const position = progress * last;
             const i = Math.min(Math.floor(position), last - 1);
             fill = offsets[i] + (offsets[i + 1] - offsets[i]) * (position - i);
@@ -121,10 +122,6 @@ function setupJourney() {
         }
 
         timeline.style.setProperty('--timeline-fill', String(fill / timeline.offsetHeight));
-        if (pinnedHeight !== pinned.offsetHeight) {
-            pinnedHeight = pinned.offsetHeight;
-            section.style.setProperty('--journey-pinned-h', `${pinnedHeight}px`);
-        }
 
         const next = offsets.reduce((found, offset, i) => (offset <= fill + 1 ? i : found), -1);
         if (next === activeIndex) return;
