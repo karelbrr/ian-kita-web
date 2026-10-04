@@ -1,0 +1,13 @@
+// Cloudflare hosting: the site is fully static, so `npm run build` writes the
+// finished pages to dist/ and `wrangler deploy` uploads that folder as is.
+// Without this file Wrangler would add Astro's Cloudflare server adapter,
+// which a static site doesn't need.
+{
+  "name": "ian-kita-web",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // Missing pages get dist/404.html with a 404 status.
+    "not_found_handling": "404-page"
+  }
+}
