@@ -41,7 +41,7 @@ A photo-led portfolio website for electronic music artist Ian Kita (Techno & Tec
 
 ## Content
 
-All editable content is JSON in `src/data/`, managed through Decap CMS at `/admin/` (config in `public/admin/config.yml`):
+All editable content is JSON in `src/data/`, managed through Decap CMS at `/admin/` (config in `public/admin/config.yml`). Editors sign in through [DecapBridge](https://decapbridge.com) with a password or a Google or Microsoft account; invite them, and renew the GitHub access token it commits with, in the DecapBridge dashboard.
 
 - `about.json` — hero tagline/eyebrow, about text, manifesto quotes, key numbers, record labels (marquee band)
 - `upcoming-shows.json` — shows (past dates are filtered out automatically)

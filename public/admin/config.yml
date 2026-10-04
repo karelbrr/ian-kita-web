@@ -1,10 +1,37 @@
+# Editors sign in through DecapBridge (password, Google or Microsoft), which
+# commits their changes to GitHub with an access token kept on its side.
+# Invite editors from the DecapBridge dashboard.
 backend:
   name: git-gateway
+  repo: karelbrr/ian-kita-web
   branch: main
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/aa5add73-39c9-4e5c-8197-4a4cf72c784f/pkce
+  auth_token_endpoint: /sites/aa5add73-39c9-4e5c-8197-4a4cf72c784f/token
+  gateway_url: https://gateway.decapbridge.com
+  # The repo is public, so commit messages name the editor but leave out
+  # their email address.
+  commit_messages:
+    create: Create {{collection}} “{{slug}}” - {{author-name}} via DecapBridge
+    update: Update {{collection}} “{{slug}}” - {{author-name}} via DecapBridge
+    delete: Delete {{collection}} “{{slug}}” - {{author-name}} via DecapBridge
+    uploadMedia: Upload “{{path}}” - {{author-name}} via DecapBridge
+    deleteMedia: Delete “{{path}}” - {{author-name}} via DecapBridge
+    openAuthoring: Message {{message}} - {{author-name}} via DecapBridge
 
-# Lets you run `npx decap-server` locally and edit content without going
-# through Netlify Identity. Remove this line once you only want to edit
-# through the deployed site.
+# Profile fields DecapBridge passes on, for the editor's name and avatar.
+auth:
+  email_claim: email
+  first_name_claim: first_name
+  last_name_claim: last_name
+  avatar_url_claim: avatar_url
+
+logo_url: https://decapbridge.com/decapcms-with-bridge.svg
+site_url: https://iankita.com
+
+# Lets you run `npx decap-server` locally and edit content without signing
+# in. Remove this line once you only want to edit through the deployed site.
 local_backend: true
 
 # Photos live inside src/ so Astro can optimise them (responsive sizes, WebP).
