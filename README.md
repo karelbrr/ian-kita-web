@@ -66,14 +66,14 @@ The site is in English at the root and in Czech under `/cs/`, using Astro's i18n
 - **Czech typesetting**: one-letter words (a, i, k, o, s, u, v, z) are joined to the next word so they never end a line (`czechNbsp` in `src/i18n/index.ts`).
 - **Home page**: the section order lives in `src/components/HomePage.astro`, shared by `src/pages/index.astro` and `src/pages/cs/index.astro`.
 
-## Daily rebuild
+## Scheduled rebuild
 
-Upcoming shows are filtered by date and SoundCloud tracks are fetched when the site is built, so the site should rebuild daily. `netlify/functions/daily-rebuild.mjs` is a Netlify scheduled function that calls a build hook every night (00:15 UTC). It needs a one-time setup in the Netlify dashboard:
+Upcoming shows are filtered by date and SoundCloud tracks are fetched when the site is built, so the site rebuilds on a schedule. `netlify/functions/scheduled-rebuild.mjs` is a Netlify scheduled function that calls a build hook three times a week (Monday, Wednesday and Friday at 00:15 UTC). Not every night, because each rebuild is a full deploy and Netlify's credit-based free plan (300 credits a month, 15 per deploy) can't cover one a day. It needs a one-time setup in the Netlify dashboard:
 
 1. **Site configuration → Build & deploy → Build hooks**: add a hook for `main`.
 2. **Site configuration → Environment variables**: add `BUILD_HOOK_URL` with the hook's URL, scoped to Functions.
 
-Until then, visitors' browsers still hide shows whose date has passed; the rebuild keeps the HTML and tracks fresh.
+Visitors' browsers hide shows whose date has passed even between rebuilds (and before the setup); the rebuild keeps the HTML and tracks fresh.
 
 ## 🧞 Commands
 
