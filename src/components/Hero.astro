@@ -2,20 +2,10 @@
 import { Image, getImage } from 'astro:assets';
 import Logo from './Logo.astro';
 import stage from '../assets/hero-stage-clean.jpg';
-import { shows as SHOWS } from '../data/upcoming-shows.json';
 import { toLocale } from '../i18n';
 import { getAbout } from '../i18n/content';
 
 const about = getAbout(toLocale(Astro.currentLocale));
-
-const todayISO = new Date().toISOString().slice(0, 10);
-const nextShow = [...SHOWS].filter((show) => show.date >= todayISO).sort((a, b) => a.date.localeCompare(b.date))[0];
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-function formatShort(date: string) {
-    const parsed = new Date(`${date}T00:00:00Z`);
-    return `${parsed.getUTCDate()} ${MONTHS[parsed.getUTCMonth()]}`;
-}
 
 // Portrait screens only ever show the middle of this wide photo, so they get a
 // full-resolution centre crop instead of a downscaled copy of the whole frame.
@@ -76,20 +66,6 @@ const portraitCrop = await getImage({
             <p class="animate-blur-up text-gradient-brand m-0 font-heading text-2xl font-medium tracking-tight lg:text-4xl" style="animation-delay: 1500ms">
                 {about.tagline}
             </p>
-            {/*
-            <div class="animate-blur-up flex flex-wrap items-center gap-x-8 gap-y-3 eyebrow text-swiss-white/80" style="animation-delay: 1700ms">
-                <span class="flex items-center gap-2">
-                    <span class="pulse-dot h-2 w-2 rounded-full bg-accent"></span>
-                    Available for booking
-                </span>
-                {nextShow && (
-                    <a href="#shows" class="group flex items-center gap-2 text-swiss-white/80 transition-colors hover:text-swiss-white no-underline">
-                        Next: {formatShort(nextShow.date)} — {nextShow.venue}
-                        <span class="text-accent transition-transform group-hover:translate-x-1">→</span>
-                    </a>
-                )}
-            </div>
-            */}
         </div>
     </div>
 </section>

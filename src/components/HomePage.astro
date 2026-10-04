@@ -7,7 +7,6 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from './Hero.astro';
 import About from './About.astro';
-import Marquee from './Marquee.astro';
 import Journey from './Journey.astro';
 import LiveBand from './LiveBand.astro';
 import UpcomingShows from './UpcomingShows.astro';
@@ -23,7 +22,7 @@ const t = getDictionary(toLocale(Astro.currentLocale));
 <Layout title={t.meta.title}>
     <Hero/>
     <About/>
-    {/* <Marquee/> */}
+    {/* The festivals and labels band (Marquee.astro) is switched off; import it and render <Marquee/> here to bring it back. */}
     <Journey/>
     <LiveBand/>
     <UpcomingShows/>
