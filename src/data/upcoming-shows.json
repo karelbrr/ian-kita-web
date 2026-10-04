@@ -1,7 +1,20 @@
 {
   "shows": [
-    { "date": "2026-10-15", "venue": "Club Zlín", "location": "Zlín, CZ" },
-    { "date": "2026-10-22", "venue": "Roxy", "location": "Prague, CZ", "location_cs": "Praha, CZ" },
-    { "date": "2026-11-05", "venue": "Fabric", "location": "Ostrava, CZ" }
+    {
+      "date": "2026-10-15",
+      "venue": "Club Zlínnn",
+      "location": "Zlín, CZ"
+    },
+    {
+      "date": "2026-10-22",
+      "venue": "Roxy",
+      "location": "Prague, CZ",
+      "location_cs": "Praha, CZ"
+    },
+    {
+      "date": "2026-11-05",
+      "venue": "Fabric",
+      "location": "Ostrava, CZ"
+    }
   ]
 }
