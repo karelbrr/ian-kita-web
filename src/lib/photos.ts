@@ -4,10 +4,11 @@ import type { ImageMetadata } from 'astro';
  * Every photo under src/assets/photos, keyed by its project-root path
  * (e.g. "/src/assets/photos/coal-festival.jpg"). The CMS stores exactly this
  * path in the data files, so content editors can pick any uploaded photo and
- * it still goes through Astro's image optimisation.
+ * it still goes through Astro's image optimisation. Uppercase extensions are
+ * included because photos straight off a phone or camera are named IMG_1234.JPG.
  */
 const photoModules = import.meta.glob<{ default: ImageMetadata }>(
-    '/src/assets/photos/*.{jpg,jpeg,png,webp,avif}',
+    '/src/assets/photos/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}',
     { eager: true },
 );
 
