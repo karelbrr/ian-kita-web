@@ -1,39 +1,39 @@
 {
   "milestones": [
     {
-      "year": "1998",
-      "text": "First mixes on vinyl turntables",
+      "black_and_white": true,
       "text_cs": "První mixy na gramofonech",
-      "photo": "/src/assets/photos/early-days.jpg",
-      "alt": "Young DJ Kita with dreadlocks and a rasta headband scratching a record",
-      "alt_cs": "Mladý DJ Kita s dredy a rastafariánskou čelenkou scratchuje desku",
       "caption": "Early days",
+      "alt_cs": "Mladý DJ Kita s dredy a rastafariánskou čelenkou scratchuje desku",
       "caption_cs": "Začátky",
+      "alt": "Young DJ Kita with dreadlocks and a rasta headband scratching a record",
+      "text": "First mixes on vinyl turntables",
+      "photo": "/src/assets/photos/early-days.jpg",
       "focus": 50,
-      "black_and_white": true
+      "year": "1998"
     },
     {
-      "year": "1999",
-      "text": "Began performing as DJ Kita",
+      "black_and_white": true,
       "text_cs": "Začal vystupovat jako DJ Kita",
-      "photo": "/src/assets/photos/jancovka-2001.jpg",
-      "alt": "DJ Kita mixing on vinyl at Jančovka, 2001",
-      "alt_cs": "DJ Kita mixuje na gramofonech, Jančovka 2001",
       "caption": "2001 · Jančovka",
+      "alt_cs": "DJ Kita mixuje na gramofonech, Jančovka 2001",
+      "alt": "DJ Kita mixing on vinyl at Jančovka, 2001",
+      "text": "Began performing as DJ Kita",
+      "photo": "/src/assets/photos/jancovka-2001.jpg",
       "focus": 50,
-      "black_and_white": true
+      "year": "1999"
     },
     {
-      "year": "2003",
-      "text": "First vinyl release — Volkom (Samopal Records)",
+      "black_and_white": true,
       "text_cs": "První vinyl – Volkom (Samopal Records)",
-      "photo": "/src/assets/photos/vinyl-2003.jpg",
-      "alt": "A young DJ Kita mixing on vinyl turntables in a packed club",
-      "alt_cs": "Mladý DJ Kita mixuje na gramofonech v plném klubu",
       "caption": "2003 · Vinyl days",
+      "alt_cs": "Mladý DJ Kita mixuje na gramofonech v plném klubu",
       "caption_cs": "2003 · Doba vinylu",
+      "alt": "A young DJ Kita mixing on vinyl turntables in a packed club",
+      "text": "First vinyl release — Volkom (Samopal Records)",
+      "photo": "/src/assets/photos/vinyl-2003.jpg",
       "focus": 0,
-      "black_and_white": true
+      "year": "2003"
     },
     {
       "year": "2011",
@@ -46,15 +46,15 @@
       "focus": 52
     },
     {
-      "year": "2021",
-      "text": "Launched Sklep House with DJ Manisch at Sklep 33, Zlín",
       "text_cs": "S DJ Manischem založil sérii Sklep House v klubu Sklep 33 ve Zlíně",
-      "photo": "/src/assets/photos/neon-club.jpg",
-      "alt": "Ian Kita playing under blue neon light beams in a smoky club",
-      "alt_cs": "Ian Kita hraje pod modrými neonovými paprsky v zakouřeném klubu",
       "caption": "Club night",
+      "alt_cs": "Ian Kita hraje pod modrými neonovými paprsky v zakouřeném klubu",
       "caption_cs": "Klubová noc",
-      "focus": 75
+      "alt": "Ian Kita playing under blue neon light beams in a smoky club",
+      "text": "Launched Sklep House with DJ Manisch at Sklep 33, Zlín",
+      "photo": "/src/assets/photos/neon-club.jpg",
+      "focus": 75,
+      "year": "2021"
     },
     {
       "year": "2023",
@@ -75,6 +75,11 @@
       "alt_cs": "Ian Kita hraje na hlavní stagi Mácháče 2026",
       "caption": "Mácháč 2026",
       "focus": 50
+    },
+    {
+      "year": "2024",
+      "text": "3rd place, Bass Awards — Techno Producer of the Year",
+      "text_cs": "3. místo, Bass Awards — Techno producent roku"
     }
   ]
 }
