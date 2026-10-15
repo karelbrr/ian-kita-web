@@ -1,4 +1,4 @@
-import { czechNbsp, type Locale } from './index';
+import {czechNbsp, type Locale} from './index';
 
 /**
  * Interface text for every language. Content that editors change (bio,
@@ -6,12 +6,12 @@ import { czechNbsp, type Locale } from './index';
  */
 const en = {
     meta: {
-        title: 'Ian Kita | Techno & Tech House DJ — Zlín, CZ',
+        title: 'Ian Kita | Techno & House DJ — Zlín, CZ',
         description:
-            'Ian Kita — techno & tech house DJ and producer from Zlín, Czech Republic. Upcoming shows, latest releases, photos and booking.',
+            'Ian Kita — techno & House DJ and producer from Zlín, Czech Republic. Upcoming shows, latest releases, photos and booking.',
     },
     skipLink: 'Skip to content',
-    quotes: { open: '“', close: '”' },
+    quotes: {open: '“', close: '”'},
     nav: {
         home: 'Ian Kita — home',
         primary: 'Primary',
@@ -90,7 +90,7 @@ const cs: Dictionary = {
             'Ian Kita – techno a tech house DJ a producent ze Zlína. Nadcházející akce, nejnovější tracky, fotky a booking.',
     },
     skipLink: 'Přeskočit na obsah',
-    quotes: { open: '„', close: '“' },
+    quotes: {open: '„', close: '“'},
     nav: {
         home: 'Ian Kita – úvod',
         primary: 'Hlavní navigace',
@@ -167,7 +167,7 @@ function typesetStrings<T>(value: T): T {
     return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, typesetStrings(entry)])) as T;
 }
 
-const dictionaries: Record<Locale, Dictionary> = { en, cs: typesetStrings(cs) };
+const dictionaries: Record<Locale, Dictionary> = {en, cs: typesetStrings(cs)};
 
 export function getDictionary(locale: Locale): Dictionary {
     return dictionaries[locale];
