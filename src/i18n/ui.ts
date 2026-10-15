@@ -8,7 +8,7 @@ const en = {
     meta: {
         title: 'Ian Kita | Techno & House DJ — Zlín, CZ',
         description:
-            'Ian Kita — techno & House DJ and producer from Zlín, Czech Republic. Upcoming shows, latest releases, photos and booking.',
+            'Ian Kita — techno & house DJ and producer from Zlín, Czech Republic. Upcoming shows, latest releases, photos and booking.',
     },
     skipLink: 'Skip to content',
     quotes: {open: '“', close: '”'},
@@ -85,9 +85,9 @@ export type Dictionary = typeof en;
 
 const cs: Dictionary = {
     meta: {
-        title: 'Ian Kita | Techno a tech house DJ – Zlín',
+        title: 'Ian Kita | Techno a house DJ – Zlín',
         description:
-            'Ian Kita – techno a tech house DJ a producent ze Zlína. Nadcházející akce, nejnovější tracky, fotky a booking.',
+            'Ian Kita – techno a house DJ a producent ze Zlína. Nadcházející akce, nejnovější tracky, fotky a booking.',
     },
     skipLink: 'Přeskočit na obsah',
     quotes: {open: '„', close: '“'},
