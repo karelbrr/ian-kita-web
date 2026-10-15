@@ -1,3 +1,9 @@
 {
-  "shows": []
+  "shows": [
+    {
+      "date": "2026-10-16",
+      "venue": "Sklep House with Jerry",
+      "location": "Sklep 33, Zlín"
+    }
+  ]
 }
