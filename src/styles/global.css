@@ -413,7 +413,8 @@ body.menu-open {
   opacity: 1;
 }
 
-/* Each era photo is a vertical print on the dark mat. The print area is a
+/* Each milestone photo is a print on the dark mat: vertical, or square for
+   album covers. The print area is a
    size container, so the print fills as much of it as its proportions
    (--print-ratio) allow, whatever the frame's own shape. */
 .journey-print-area {

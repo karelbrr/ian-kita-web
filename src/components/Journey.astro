@@ -22,13 +22,17 @@ type Milestone = {
     black_and_white?: boolean;
 };
 
-type Shot = {src: ImageMetadata; alt: string; caption?: string; position: string; tone: string};
+type Shot = {src: ImageMetadata; alt: string; caption?: string; position: string; tone: string; ratio: number};
 
 // Every milestone brings its own photo, which takes over while that milestone
 // is active; a milestone without one keeps the photo of the milestone before
 // it. On desktop every photo is a vertical print on a dark mat, so the print
 // stays the same size as the milestones change; landscape photos are cropped
-// towards the DJ (focus, as a horizontal percentage).
+// towards the DJ (focus, as a horizontal percentage). Square images, such as
+// album covers, keep a square print instead, so a cover is never cropped.
+const PRINT_RATIO = 3 / 4;
+const isSquare = (image: ImageMetadata) => Math.abs(image.width / image.height - 1) < 0.1;
+
 const shots: Shot[] = [];
 const timeline = (milestones as Milestone[]).map((milestone) => {
     const src = resolvePhoto(milestone.photo);
@@ -40,6 +44,7 @@ const timeline = (milestones as Milestone[]).map((milestone) => {
         caption: milestone.caption ? pick(locale, milestone.caption, milestone.caption_cs) : undefined,
         position: `${milestone.focus ?? 50}% 50%`,
         tone: milestone.black_and_white ? 'grayscale contrast-125' : '',
+        ratio: isSquare(src) ? 1 : PRINT_RATIO,
     };
     if (ownShot) shots.push(ownShot);
     // Phones and tablets have no photo column, so each photo sits inline in
@@ -47,12 +52,10 @@ const timeline = (milestones as Milestone[]).map((milestone) => {
     return {milestone, shotIndex: Math.max(shots.length - 1, 0), inlineShot: ownShot};
 });
 
-const PRINT_RATIO = 3 / 4;
-
-// A cropped landscape photo renders wider than its vertical print, so its
-// sizes hint scales with how much wider it is; that keeps retina screens sharp.
-const printSizes = (image: {width: number; height: number}) =>
-    `(min-width: 1024px) ${Math.round(42 * Math.max(1, image.width / image.height / PRINT_RATIO))}vw, 100vw`;
+// A cropped landscape photo renders wider than its print, so its sizes hint
+// scales with how much wider it is; that keeps retina screens sharp.
+const printSizes = (shot: Shot) =>
+    `(min-width: 1024px) ${Math.round(42 * Math.max(1, shot.src.width / shot.src.height / shot.ratio))}vw, 100vw`;
 
 // Never more than the original photo, and at most 2000px.
 const printWidths = (width: number) => [480, 800, 1200, 1600].filter((w) => w < width).concat(Math.min(width, 2000));
@@ -82,14 +85,14 @@ const printWidths = (width: number) => [480, 800, 1200, 1600].filter((w) => w < 
                                         <figure
                                                 class:list={[
                                                     'm-0 mt-5 rounded-sm bg-ink p-4 lg:hidden',
-                                                    inlineShot.src.width < inlineShot.src.height ? 'max-w-xs' : 'max-w-md',
+                                                    inlineShot.src.width <= inlineShot.src.height || isSquare(inlineShot.src) ? 'max-w-xs' : 'max-w-md',
                                                 ]}
                                         >
                                             <Image
                                                     src={inlineShot.src}
                                                     alt={inlineShot.alt}
                                                     widths={printWidths(inlineShot.src.width)}
-                                                    sizes={inlineShot.src.width < inlineShot.src.height ? '(min-width: 26rem) 18rem, calc(100vw - 7rem)' : '(min-width: 34rem) 26rem, calc(100vw - 7rem)'}
+                                                    sizes={inlineShot.src.width <= inlineShot.src.height || isSquare(inlineShot.src) ? '(min-width: 26rem) 18rem, calc(100vw - 7rem)' : '(min-width: 34rem) 26rem, calc(100vw - 7rem)'}
                                                     class:list={['block h-auto w-full ring-1 ring-white/10', inlineShot.tone]}
                                                     loading="lazy"
                                             />
@@ -114,12 +117,12 @@ const printWidths = (width: number) => [480, 800, 1200, 1600].filter((w) => w < 
                                 <div class="absolute inset-0 p-[8%]">
                                     <div class="journey-print-area">
                                         <div class="journey-print ring-1 ring-white/10"
-                                             style={`--print-ratio: ${PRINT_RATIO}`}>
+                                             style={`--print-ratio: ${shot.ratio}`}>
                                             <Image
                                                     src={shot.src}
                                                     alt={shot.alt}
                                                     widths={printWidths(shot.src.width)}
-                                                    sizes={printSizes(shot.src)}
+                                                    sizes={printSizes(shot)}
                                                     class:list={['journey-photo h-full w-full object-cover', shot.tone]}
                                                     style={`object-position: ${shot.position}`}
                                                     loading="lazy"
