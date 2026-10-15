@@ -1,11 +1,80 @@
 {
   "milestones": [
-    { "year": "1998", "text": "First mixes on vinyl turntables", "text_cs": "První mixy na gramofonech" },
-    { "year": "1999", "text": "Began performing as DJ Kita", "text_cs": "Začal vystupovat jako DJ Kita" },
-    { "year": "2003", "text": "First vinyl release — Volkom (Samopal Records)", "text_cs": "První vinyl – Volkom (Samopal Records)" },
-    { "year": "2011", "text": "Debuted as Ian Kita with the I Have to Say EP (Naked Records)", "text_cs": "Debut jako Ian Kita s EP I Have to Say (Naked Records)" },
-    { "year": "2021", "text": "Launched Sklep House with DJ Manisch at Sklep 33, Zlín", "text_cs": "S DJ Manischem založil sérii Sklep House v klubu Sklep 33 ve Zlíně" },
-    { "year": "2023", "text": "3rd place, Bass Awards — DJ & Producer", "text_cs": "3. místo v anketě Bass Awards – DJ a producent" },
-    { "year": "2025", "text": "3rd place, Bass Awards — Techno Producer of the Year, third year running", "text_cs": "3. místo v Bass Awards – techno producent roku, třetí rok v řadě" }
+    {
+      "year": "1998",
+      "text": "First mixes on vinyl turntables",
+      "text_cs": "První mixy na gramofonech",
+      "photo": "/src/assets/photos/early-days.jpg",
+      "alt": "Young DJ Kita with dreadlocks and a rasta headband scratching a record",
+      "alt_cs": "Mladý DJ Kita s dredy a rastafariánskou čelenkou scratchuje desku",
+      "caption": "Early days",
+      "caption_cs": "Začátky",
+      "focus": 50,
+      "black_and_white": true
+    },
+    {
+      "year": "1999",
+      "text": "Began performing as DJ Kita",
+      "text_cs": "Začal vystupovat jako DJ Kita",
+      "photo": "/src/assets/photos/jancovka-2001.jpg",
+      "alt": "DJ Kita mixing on vinyl at Jančovka, 2001",
+      "alt_cs": "DJ Kita mixuje na gramofonech, Jančovka 2001",
+      "caption": "2001 · Jančovka",
+      "focus": 50,
+      "black_and_white": true
+    },
+    {
+      "year": "2003",
+      "text": "First vinyl release — Volkom (Samopal Records)",
+      "text_cs": "První vinyl – Volkom (Samopal Records)",
+      "photo": "/src/assets/photos/vinyl-2003.jpg",
+      "alt": "A young DJ Kita mixing on vinyl turntables in a packed club",
+      "alt_cs": "Mladý DJ Kita mixuje na gramofonech v plném klubu",
+      "caption": "2003 · Vinyl days",
+      "caption_cs": "2003 · Doba vinylu",
+      "focus": 0,
+      "black_and_white": true
+    },
+    {
+      "year": "2011",
+      "text": "Debuted as Ian Kita with the I Have to Say EP (Naked Records)",
+      "text_cs": "Debut jako Ian Kita s EP I Have to Say (Naked Records)",
+      "photo": "/src/assets/photos/portrait-bw.jpg",
+      "alt": "Black and white studio portrait of Ian Kita",
+      "alt_cs": "Černobílý studiový portrét Iana Kity",
+      "caption": "Ian Kita",
+      "focus": 52
+    },
+    {
+      "year": "2021",
+      "text": "Launched Sklep House with DJ Manisch at Sklep 33, Zlín",
+      "text_cs": "S DJ Manischem založil sérii Sklep House v klubu Sklep 33 ve Zlíně",
+      "photo": "/src/assets/photos/neon-club.jpg",
+      "alt": "Ian Kita playing under blue neon light beams in a smoky club",
+      "alt_cs": "Ian Kita hraje pod modrými neonovými paprsky v zakouřeném klubu",
+      "caption": "Club night",
+      "caption_cs": "Klubová noc",
+      "focus": 75
+    },
+    {
+      "year": "2023",
+      "text": "3rd place, Bass Awards — DJ & Producer",
+      "text_cs": "3. místo v anketě Bass Awards – DJ a producent",
+      "photo": "/src/assets/photos/coal-festival.jpg",
+      "alt": "Ian Kita in sunglasses playing at Coal Festival",
+      "alt_cs": "Ian Kita ve slunečních brýlích hraje na Coal Festivalu",
+      "caption": "Coal Festival",
+      "focus": 85
+    },
+    {
+      "year": "2025",
+      "text": "3rd place, Bass Awards — Techno Producer of the Year, third year running",
+      "text_cs": "3. místo v Bass Awards – techno producent roku, třetí rok v řadě",
+      "photo": "/src/assets/photos/machac-2026-stage.jpg",
+      "alt": "Ian Kita playing the main stage at Mácháč 2026",
+      "alt_cs": "Ian Kita hraje na hlavní stagi Mácháče 2026",
+      "caption": "Mácháč 2026",
+      "focus": 50
+    }
   ]
 }

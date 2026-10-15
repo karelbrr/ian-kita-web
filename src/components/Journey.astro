@@ -1,57 +1,53 @@
 ---
+import type {ImageMetadata} from 'astro';
 import {Image} from 'astro:assets';
 import {milestones} from '../data/milestones.json';
-import jancovkaPhoto from '../assets/photos/jancovka-2001.jpg';
-import vinylPhoto from '../assets/photos/vinyl-2003.jpg';
-import festivalPhoto from '../assets/photos/coal-festival.jpg';
 import {pick, toLocale} from '../i18n';
 import {getDictionary} from '../i18n/ui';
+import {resolvePhoto} from '../lib/photos';
 
 const locale = toLocale(Astro.currentLocale);
 const t = getDictionary(locale);
 
-// The photo follows the timeline: each shot takes over from the first
-// milestone in or after its year. On desktop every photo is a vertical print on
-// a dark mat, in the 2001 photo's proportions, so the print stays the same size
-// as the eras change; landscape photos are cropped towards the DJ (position).
-const shots = [
-    {
-        src: jancovkaPhoto,
-        fromYear: 0,
-        alt: {en: 'DJ Kita mixing on vinyl at Jančovka, 2001', cs: 'DJ Kita mixuje na gramofonech, Jančovka 2001'},
-        caption: {en: '2001 · Jančovka', cs: '2001 · Jančovka'},
-        position: '50% 50%',
-        tone: 'grayscale contrast-125',
-    },
-    {
-        src: vinylPhoto,
-        fromYear: 2003,
-        alt: {en: 'A young DJ Kita mixing on vinyl turntables in a packed club', cs: 'Mladý DJ Kita mixuje na gramofonech v plném klubu'},
-        caption: {en: '2003 · Vinyl days', cs: '2003 · Doba vinylu'},
-        position: '0% 50%',
-        tone: 'grayscale contrast-125',
-    },
-    {
-        src: festivalPhoto,
-        fromYear: 2021,
-        alt: {en: 'Ian Kita in sunglasses playing at Coal Festival', cs: 'Ian Kita ve slunečních brýlích hraje na Coal Festivalu'},
-        caption: {en: 'Coal Festival', cs: 'Coal Festival'},
-        position: '85% 50%',
-        tone: '',
-    },
-].map((shot) => ({...shot, alt: shot.alt[locale], caption: shot.caption[locale]}));
+type Milestone = {
+    year: string;
+    text: string;
+    text_cs?: string;
+    photo?: string;
+    alt?: string;
+    alt_cs?: string;
+    caption?: string;
+    caption_cs?: string;
+    focus?: number;
+    black_and_white?: boolean;
+};
 
-const shotIndexFor = (year: string) => shots.findLastIndex((shot) => Number(year) >= shot.fromYear);
+type Shot = {src: ImageMetadata; alt: string; caption?: string; position: string; tone: string};
 
-// Phones and tablets have no photo column, so each era's photo sits inline in
-// the timeline, under the first milestone of that era.
-const timeline = milestones.map((milestone, i) => {
-    const shotIndex = shotIndexFor(milestone.year);
-    const startsEra = i === 0 || shotIndex !== shotIndexFor(milestones[i - 1].year);
-    return {milestone, shotIndex, inlineShot: startsEra ? shots[shotIndex] : undefined};
+// Every milestone brings its own photo, which takes over while that milestone
+// is active; a milestone without one keeps the photo of the milestone before
+// it. On desktop every photo is a vertical print on a dark mat, so the print
+// stays the same size as the milestones change; landscape photos are cropped
+// towards the DJ (focus, as a horizontal percentage).
+const shots: Shot[] = [];
+const timeline = (milestones as Milestone[]).map((milestone) => {
+    const src = resolvePhoto(milestone.photo);
+    const ownShot: Shot | undefined = src && {
+        src,
+        alt: milestone.alt
+            ? pick(locale, milestone.alt, milestone.alt_cs)
+            : pick(locale, milestone.text, milestone.text_cs),
+        caption: milestone.caption ? pick(locale, milestone.caption, milestone.caption_cs) : undefined,
+        position: `${milestone.focus ?? 50}% 50%`,
+        tone: milestone.black_and_white ? 'grayscale contrast-125' : '',
+    };
+    if (ownShot) shots.push(ownShot);
+    // Phones and tablets have no photo column, so each photo sits inline in
+    // the timeline, under its own milestone.
+    return {milestone, shotIndex: Math.max(shots.length - 1, 0), inlineShot: ownShot};
 });
 
-const PRINT_RATIO = jancovkaPhoto.width / jancovkaPhoto.height;
+const PRINT_RATIO = 3 / 4;
 
 // A cropped landscape photo renders wider than its vertical print, so its
 // sizes hint scales with how much wider it is; that keeps retina screens sharp.
@@ -97,7 +93,9 @@ const printWidths = (width: number) => [480, 800, 1200, 1600].filter((w) => w < 
                                                     class:list={['block h-auto w-full ring-1 ring-white/10', inlineShot.tone]}
                                                     loading="lazy"
                                             />
-                                            <figcaption class="mt-3 eyebrow text-swiss-white/80">{inlineShot.caption}</figcaption>
+                                            {inlineShot.caption && (
+                                                    <figcaption class="mt-3 eyebrow text-swiss-white/80">{inlineShot.caption}</figcaption>
+                                            )}
                                         </figure>
                                 )}
                             </li>
@@ -130,7 +128,9 @@ const printWidths = (width: number) => [480, 800, 1200, 1600].filter((w) => w < 
                                     </div>
                                 </div>
                                 <div class="absolute inset-0 bg-gradient-to-t from-swiss-black/60 via-transparent to-transparent"></div>
-                                <span class="absolute bottom-4 left-4 eyebrow text-swiss-white/80">{shot.caption}</span>
+                                {shot.caption && (
+                                        <span class="absolute bottom-4 left-4 eyebrow text-swiss-white/80">{shot.caption}</span>
+                                )}
                             </div>
                     ))}
                 </figure>

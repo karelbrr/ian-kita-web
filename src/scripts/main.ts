@@ -61,7 +61,7 @@ function setupReveals() {
 // text column releases walks the line through the milestones in order, while
 // CSS drifts the photo through the extra track length below it. On narrower
 // screens nothing is pinned, so the line follows a focus point 60% down the
-// viewport instead. Either way the photo swaps to the active milestone's era.
+// viewport instead. Either way the active milestone's photo takes over.
 function setupJourney() {
     const section = document.querySelector<HTMLElement>('[data-journey]');
     const runway = section?.querySelector<HTMLElement>('[data-journey-runway]');

@@ -111,6 +111,13 @@ collections:
               - { name: "year", label: "Year", widget: "string" }
               - { name: "text", label: "Text", widget: "string" }
               - { name: "text_cs", label: "Text (Czech)", widget: "string", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }
+              - { name: "photo", label: "Photo", widget: "image", required: false, hint: "Shown while this milestone is active. Leave empty to keep the previous milestone's photo." }
+              - { name: "alt", label: "Alt text", widget: "string", required: false, hint: "Describe the photo for screen readers and search engines." }
+              - { name: "alt_cs", label: "Alt text (Czech)", widget: "string", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }
+              - { name: "caption", label: "Caption", widget: "string", required: false, hint: "Small label on the photo, e.g. “2001 · Jančovka”." }
+              - { name: "caption_cs", label: "Caption (Czech)", widget: "string", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }
+              - { name: "focus", label: "Focus (left → right)", widget: "number", value_type: "int", min: 0, max: 100, default: 50, required: false, hint: "Wide photos are cropped to a portrait print on desktop. 0 keeps the left edge, 50 the centre, 100 the right edge." }
+              - { name: "black_and_white", label: "Black and white", widget: "boolean", default: false, required: false }
 
   - name: "festivals"
     label: "Festivals (scrolling band)"
