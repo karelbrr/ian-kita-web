@@ -1,5 +1,6 @@
 ---
 import LegalPage from "../layouts/LegalPage.astro";
+import footer from "../data/footer.json";
 ---
 
 <LegalPage
@@ -11,7 +12,7 @@ import LegalPage from "../layouts/LegalPage.astro";
         <section>
           <h2 class="font-heading font-medium text-lg text-swiss-white mb-3">1. Who runs this website</h2>
           <p>
-            This website is run by Jan Zelinger, known as Ian Kita, a DJ and producer based in Zlín, Czech Republic. For anything about your personal data, email <a href="mailto:booking@iankita.com" class="text-swiss-white underline">booking@iankita.com</a>.
+            This website is run by Jan Zelinger, known as Ian Kita, a DJ and producer based in Zlín, Czech Republic. For anything about your personal data, email <a href={`mailto:${footer.email}`} class="text-swiss-white underline">{footer.email}</a>.
           </p>
         </section>
 
@@ -42,7 +43,7 @@ import LegalPage from "../layouts/LegalPage.astro";
         <section>
           <h2 class="font-heading font-medium text-lg text-swiss-white mb-3">5. When you email us</h2>
           <p>
-            If you email booking@iankita.com, your email address and message are used only to reply to you and to arrange bookings. They are kept for as long as that conversation or booking needs them, and they are never sold or shared for marketing.
+            If you email {footer.email}, your email address and message are used only to reply to you and to arrange bookings. They are kept for as long as that conversation or booking needs them, and they are never sold or shared for marketing.
           </p>
         </section>
 
@@ -56,7 +57,7 @@ import LegalPage from "../layouts/LegalPage.astro";
         <section>
           <h2 class="font-heading font-medium text-lg text-swiss-white mb-3">7. Your rights</h2>
           <p>
-            Under the GDPR you can ask what personal data we hold about you, have it corrected or deleted, and object to how it is used. Email booking@iankita.com to do so. You can also complain to the Czech data protection authority, the Úřad pro ochranu osobních údajů (<a href="https://uoou.gov.cz" target="_blank" rel="noopener noreferrer" class="text-swiss-white underline">uoou.gov.cz</a>).
+            Under the GDPR you can ask what personal data we hold about you, have it corrected or deleted, and object to how it is used. Email {footer.email} to do so. You can also complain to the Czech data protection authority, the Úřad pro ochranu osobních údajů (<a href="https://uoou.gov.cz" target="_blank" rel="noopener noreferrer" class="text-swiss-white underline">uoou.gov.cz</a>).
           </p>
         </section>
 

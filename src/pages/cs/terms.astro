@@ -1,5 +1,6 @@
 ---
 import LegalPage from "../../layouts/LegalPage.astro";
+import footer from "../../data/footer.json";
 ---
 
 <LegalPage
@@ -61,7 +62,7 @@ import LegalPage from "../../layouts/LegalPage.astro";
         <section>
           <h2 class="font-heading font-medium text-lg text-swiss-white mb-3">7. Kontakt</h2>
           <p>
-            S dotazy k těmto podmínkám pište na <a href="mailto:booking@iankita.com" class="text-swiss-white underline">booking@iankita.com</a>.
+            S dotazy k těmto podmínkám pište na <a href={`mailto:${footer.email}`} class="text-swiss-white underline">{footer.email}</a>.
           </p>
         </section>
 </LegalPage>

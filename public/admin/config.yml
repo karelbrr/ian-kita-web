@@ -120,6 +120,22 @@ collections:
               - { name: "focus", label: "Focus (left → right)", widget: "number", value_type: "int", min: 0, max: 100, default: 50, required: false, hint: "Wide photos are cropped to a portrait print on desktop. 0 keeps the left edge, 50 the centre, 100 the right edge." }
               - { name: "black_and_white", label: "Black and white", widget: "boolean", default: false, required: false }
 
+  - name: "footer"
+    label: "Footer"
+    files:
+      - name: "footer"
+        label: "Footer"
+        file: "src/data/footer.json"
+        format: "json"
+        fields:
+          - { name: "email", label: "Booking email", widget: "string", pattern: ["^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", "Enter a valid email address"], hint: "The big link in the footer. Also used in the privacy policy and terms, so they always name the same address." }
+          - { name: "heading", label: "Headline", widget: "string" }
+          - { name: "heading_cs", label: "Headline (Czech)", widget: "string", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }
+          - { name: "description", label: "Description", widget: "text" }
+          - { name: "description_cs", label: "Description (Czech)", widget: "text", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }
+          - { name: "rights", label: "Copyright line", widget: "string", hint: "The © sign and the current year are added in front automatically." }
+          - { name: "rights_cs", label: "Copyright line (Czech)", widget: "string", required: false, hint: "Shown on the Czech site. Leave empty to reuse the English text." }
+
   - name: "festivals"
     label: "Festivals (scrolling band)"
     files:

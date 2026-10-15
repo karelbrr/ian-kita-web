@@ -1,13 +1,14 @@
 ---
 import Arrow from './Arrow.astro';
 import Logo from './Logo.astro';
-import {localePath, toLocale} from '../i18n';
+import footer from '../data/footer.json';
+import {localePath, pick, toLocale} from '../i18n';
 import {getDictionary} from '../i18n/ui';
 
 const locale = toLocale(Astro.currentLocale);
 const t = getDictionary(locale);
 
-const email = 'booking@iankita.com';
+const {email} = footer;
 ---
 
 <footer id="contact" class="reveal overflow-hidden bg-swiss-white text-swiss-black">
@@ -37,17 +38,17 @@ const email = 'booking@iankita.com';
 
         <div class="mt-8 grid grid-cols-1 gap-6 lg:mt-12 lg:grid-cols-12 lg:gap-16">
             <p class="m-0 font-heading text-xl font-medium leading-[1.15] tracking-tight text-balance sm:text-3xl lg:col-span-6 xl:text-4xl">
-                {t.booking.heading}
+                {pick(locale, footer.heading, footer.heading_cs)}
             </p>
             <div class="lg:col-span-5 lg:col-start-8">
                 <p class="m-0 max-w-xl text-base leading-relaxed text-swiss-black/60 lg:text-lg">
-                    {t.booking.description}
+                    {pick(locale, footer.description, footer.description_cs)}
                 </p>
             </div>
         </div>
 
         <div class="mt-20 flex flex-col items-start justify-between gap-4 border-t border-black/10 py-8 text-xs text-swiss-black/60 md:flex-row md:items-center lg:mt-32">
-            <p class="m-0">&copy; {new Date().getFullYear()} {t.booking.rights}</p>
+            <p class="m-0">&copy; {new Date().getFullYear()} {pick(locale, footer.rights, footer.rights_cs)}</p>
             <div class="flex flex-wrap items-center gap-x-6">
                 <a href={localePath(locale, '/privacy-policy')} class="inline-block py-2 underline transition-colors hover:text-swiss-black">{t.booking.privacy}</a>
                 <a href={localePath(locale, '/terms')} class="inline-block py-2 underline transition-colors hover:text-swiss-black">{t.booking.terms}</a>

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import LogoDefs from '../components/LogoDefs.astro';
+import footer from '../data/footer.json';
 import {DEFAULT_LOCALE, LANGUAGES, otherLocale, toLocale, translatedPath} from '../i18n';
 import {getDictionary} from '../i18n/ui';
 import {GOOUT_URL, PROFILES} from '../lib/profiles';
@@ -51,7 +52,7 @@ const structuredData = {
     contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'booking',
-        email: 'booking@iankita.com',
+        email: footer.email,
     },
 };
 ---

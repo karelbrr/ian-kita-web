@@ -66,10 +66,6 @@ const en = {
     },
     booking: {
         label: 'Booking',
-        heading: 'Available for clubs, festivals and radio shows across Europe.',
-        description:
-            'Techno and house sets, radio show guest mixes and remixes. Based in Zlín, Czech Republic — playing across the Czech Republic, Slovakia, Poland, Germany and Luxembourg.',
-        rights: 'Ian Kita. All rights reserved.',
         privacy: 'Privacy Policy',
         terms: 'Terms of Service',
         madeBy: 'Made by',
@@ -145,10 +141,6 @@ const cs: Dictionary = {
     },
     booking: {
         label: 'Booking',
-        heading: 'K dispozici pro kluby, festivaly i rádia po celé Evropě.',
-        description:
-            'Techno a house sety, hostovské mixy do rádií a remixy. Sídlí ve Zlíně a hraje po celé České republice, na Slovensku, v Polsku, Německu a Lucembursku.',
-        rights: 'Ian Kita. Všechna práva vyhrazena.',
         privacy: 'Ochrana osobních údajů',
         terms: 'Podmínky užití',
         madeBy: 'Web vytvořil',
