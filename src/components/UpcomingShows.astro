@@ -1,9 +1,22 @@
 ---
 import { Image } from 'astro:assets';
-import { shows as SHOWS } from '../data/upcoming-shows.json';
+import showsData from '../data/upcoming-shows.json';
 import photo from '../assets/photos/machac-2026-lake.jpg';
 import { pick, toLocale } from '../i18n';
 import { getDictionary } from '../i18n/ui';
+import { GOOUT_URL } from '../lib/profiles';
+import Arrow from './Arrow.astro';
+
+interface Show {
+    date: string;
+    venue: string;
+    location: string;
+    location_cs?: string;
+}
+
+// Typed explicitly: when the list is emptied in the CMS, the JSON import alone
+// would be inferred as never[].
+const SHOWS: Show[] = showsData.shows;
 
 const locale = toLocale(Astro.currentLocale);
 const t = getDictionary(locale);
@@ -87,6 +100,15 @@ function parseShowDate(date: string) {
                     })}
                 </ul>
             )}
+            <a
+                href={GOOUT_URL[locale]}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-8 inline-flex items-center gap-1.5 eyebrow text-swiss-white/60 transition-colors hover:text-swiss-white no-underline"
+            >
+                {t.shows.goout}
+                <Arrow class="h-3 w-3"/>
+            </a>
         </div>
     </div>
 </section>

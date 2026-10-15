@@ -4,6 +4,7 @@ import Logo from './Logo.astro';
 import {getLatestTracks} from '../lib/soundcloudTracks';
 import {toLocale} from '../i18n';
 import {getDictionary} from '../i18n/ui';
+import {PROFILES} from '../lib/profiles';
 
 const t = getDictionary(toLocale(Astro.currentLocale));
 
@@ -12,13 +13,9 @@ const TRACK_COUNT = 4;
 // It is his own site, so "Ian Kita - " in front of his own titles is noise.
 // Screen-reader labels keep the full SoundCloud title.
 const displayTitle = (title: string) => title.replace(/^ian kita\s*[-–—]\s*/i, '');
-const tracks = await getLatestTracks('https://soundcloud.com/iankitadj', TRACK_COUNT);
+const tracks = await getLatestTracks(PROFILES.soundcloud.href, TRACK_COUNT);
 
-const platforms = [
-    {href: 'https://soundcloud.com/iankitadj', label: 'SoundCloud'},
-    {href: 'https://open.spotify.com/artist/5O53OdbKPbycjdfysY4Oyt', label: 'Spotify'},
-    {href: 'https://www.instagram.com/dj_ian_kita/', label: 'Instagram'},
-];
+const platforms = [PROFILES.soundcloud, PROFILES.spotify, PROFILES.beatport, PROFILES.instagram, PROFILES.facebook];
 ---
 
 <section id="music" class="reveal relative border-t border-white/10 px-page py-24 lg:py-40">

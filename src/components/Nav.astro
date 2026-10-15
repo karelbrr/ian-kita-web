@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import {LANGUAGES, localePath, otherLocale, toLocale} from '../i18n';
 import {getDictionary} from '../i18n/ui';
+import {PROFILES} from '../lib/profiles';
 
 export interface Props {
     /** This page in the other language, for the language switch. */
@@ -24,11 +25,7 @@ const links = [
 const homeHref = localePath(locale, '/');
 const bookHref = localePath(locale, '/#contact');
 
-const socials = [
-    {href: 'https://www.instagram.com/dj_ian_kita/', label: 'Instagram'},
-    {href: 'https://soundcloud.com/iankitadj', label: 'SoundCloud'},
-    {href: 'https://open.spotify.com/artist/5O53OdbKPbycjdfysY4Oyt', label: 'Spotify'},
-];
+const socials = [PROFILES.instagram, PROFILES.facebook, PROFILES.soundcloud, PROFILES.spotify, PROFILES.beatport];
 ---
 
 <header class="site-nav fixed inset-x-0 top-0 z-50 border-b border-transparent" data-nav>

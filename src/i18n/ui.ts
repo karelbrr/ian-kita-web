@@ -44,6 +44,7 @@ const en = {
         emptyBefore: 'No upcoming shows right now — check back soon or ',
         emptyLink: 'book a date',
         emptyAfter: '.',
+        goout: 'Tickets and all shows on GoOut',
     },
     music: {
         label: 'Music',
@@ -122,6 +123,7 @@ const cs: Dictionary = {
         emptyBefore: 'Momentálně nejsou naplánované žádné akce – zastavte se brzy znovu, nebo si ',
         emptyLink: 'domluvte termín',
         emptyAfter: '.',
+        goout: 'Vstupenky a všechny akce na GoOut',
     },
     music: {
         label: 'Hudba',

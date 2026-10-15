@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import LogoDefs from '../components/LogoDefs.astro';
 import {DEFAULT_LOCALE, LANGUAGES, otherLocale, toLocale, translatedPath} from '../i18n';
 import {getDictionary} from '../i18n/ui';
+import {GOOUT_URL, PROFILES} from '../lib/profiles';
 
 export interface Props {
     title: string;
@@ -46,11 +47,7 @@ const structuredData = {
         '@type': 'Place',
         name: 'Zlín, Czech Republic',
     },
-    sameAs: [
-        'https://www.instagram.com/dj_ian_kita/',
-        'https://soundcloud.com/iankitadj',
-        'https://open.spotify.com/artist/5O53OdbKPbycjdfysY4Oyt',
-    ],
+    sameAs: [...Object.values(PROFILES).map((profile) => profile.href), GOOUT_URL.en],
     contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'booking',
