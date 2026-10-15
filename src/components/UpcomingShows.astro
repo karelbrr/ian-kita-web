@@ -12,6 +12,7 @@ interface Show {
     venue: string;
     location: string;
     location_cs?: string;
+    url?: string;
 }
 
 // Typed explicitly: when the list is emptied in the CMS, the JSON import alone
@@ -78,7 +79,7 @@ function parseShowDate(date: string) {
                         // :first-child, so it stays right when past rows are removed.
                         return (
                             <li
-                                class="group flex items-center gap-5 border-b border-l-2 border-white/10 border-l-transparent px-4 py-6 transition-colors first:border-l-accent first:bg-accent/[0.04] hover:bg-white/[0.03] lg:gap-8 lg:py-7"
+                                class="group relative flex items-center gap-5 border-b border-l-2 border-white/10 border-l-transparent px-4 py-6 transition-colors first:border-l-accent first:bg-accent/[0.04] hover:bg-white/[0.03] lg:gap-8 lg:py-7"
                                 data-show-date={show.date}
                             >
                                 <time
@@ -90,7 +91,21 @@ function parseShowDate(date: string) {
                                 </time>
                                 <div class="min-w-0 flex-1">
                                     <div class="mb-1 flex flex-wrap items-center gap-3">
-                                        <span class="font-heading text-xl font-medium tracking-tight text-swiss-white lg:text-3xl">{show.venue}</span>
+                                        {show.url ? (
+                                            // The link's ::after covers the whole row, so the date and
+                                            // location are clickable too.
+                                            <a
+                                                href={show.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="inline-flex items-center gap-2 font-heading text-xl font-medium tracking-tight text-swiss-white no-underline after:absolute after:inset-0 lg:text-3xl"
+                                            >
+                                                {show.venue}
+                                                <Arrow class="h-4 w-4 shrink-0 text-swiss-white/50 transition-colors group-hover:text-accent lg:h-5 lg:w-5"/>
+                                            </a>
+                                        ) : (
+                                            <span class="font-heading text-xl font-medium tracking-tight text-swiss-white lg:text-3xl">{show.venue}</span>
+                                        )}
                                         <span class="hidden border border-accent/50 px-1.5 py-0.5 eyebrow text-accent group-first:inline-block">{t.shows.next}</span>
                                     </div>
                                     <span class="text-sm text-swiss-white/60 lg:text-base">{pick(locale, show.location, show.location_cs)} · {year}</span>

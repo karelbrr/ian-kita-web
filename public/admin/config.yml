@@ -93,6 +93,7 @@ collections:
               - { name: "venue", label: "Venue", widget: "string", hint: "Normal case, e.g. Club Zlín." }
               - { name: "location", label: "Location", widget: "string", hint: "City and country, e.g. Zlín, CZ." }
               - { name: "location_cs", label: "Location (Czech)", widget: "string", required: false, hint: "Only when the Czech name differs, e.g. Praha, CZ." }
+              - { name: "url", label: "Event link", widget: "string", required: false, pattern: ["^https?://", "Paste the full address, starting with https://"], hint: "Facebook event, GoOut or ticket page. The whole row then links to it." }
 
   - name: "milestones"
     label: "Milestones"
