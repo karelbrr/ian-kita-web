@@ -60,7 +60,7 @@
       "year": "2023",
       "text": "3rd place, Bass Awards — DJ & Producer",
       "text_cs": "3. místo v anketě Bass Awards – DJ a producent",
-      "photo": "/src/assets/photos/coal-festival.jpg",
+      "photo": "/src/assets/photos/kita.jpg",
       "alt": "Ian Kita in sunglasses playing at Coal Festival",
       "alt_cs": "Ian Kita ve slunečních brýlích hraje na Coal Festivalu",
       "caption": "Coal Festival",
@@ -69,13 +69,14 @@
     {
       "year": "2024",
       "text": "3rd place, Bass Awards — Techno Producer of the Year",
-      "text_cs": "3. místo, Bass Awards — Techno producent roku"
+      "text_cs": "3. místo, Bass Awards — Techno producent roku",
+      "photo": "/src/assets/photos/bsawrds.jpg"
     },
     {
       "year": "2025",
       "text": "3rd place, Bass Awards — Techno Producer of the Year, third year running",
       "text_cs": "3. místo v Bass Awards – techno producent roku, třetí rok v řadě",
-      "photo": "/src/assets/photos/machac-2026-stage.jpg",
+      "photo": "/src/assets/photos/awrds.jpg",
       "alt": "Ian Kita playing the main stage at Mácháč 2026",
       "alt_cs": "Ian Kita hraje na hlavní stagi Mácháče 2026",
       "caption": "Mácháč 2026",
