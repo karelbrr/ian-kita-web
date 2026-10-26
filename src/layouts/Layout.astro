@@ -97,6 +97,11 @@ const structuredData = {
     <title>{title}</title>
 
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}/>
+
+    {/* Cookie-free visitor statistics (Cloudflare Web Analytics). The token
+        only identifies the site and is public by design. */}
+    <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2bb1623710d94a389d1e2dd690c51210"}'></script>
 </head>
 <body>
 <a href="#main" class="skip-link eyebrow">{t.skipLink}</a>
