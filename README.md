@@ -66,14 +66,31 @@ The site is in English at the root and in Czech under `/cs/`, using Astro's i18n
 - **Czech typesetting**: one-letter words (a, i, k, o, s, u, v, z) are joined to the next word so they never end a line (`czechNbsp` in `src/i18n/index.ts`).
 - **Home page**: the section order lives in `src/components/HomePage.astro`, shared by `src/pages/index.astro` and `src/pages/cs/index.astro`.
 
-## Scheduled rebuild
+## Scheduled jobs (Cloudflare Worker)
 
-Upcoming shows are filtered by date and SoundCloud tracks are fetched when the site is built, so the site rebuilds on a schedule. `netlify/functions/scheduled-rebuild.mjs` is a Netlify scheduled function that calls a build hook three times a week (Monday, Wednesday and Friday at 00:15 UTC). Not every night, because each rebuild is a full deploy and Netlify's credit-based free plan (300 credits a month, 15 per deploy) can't cover one a day. It needs a one-time setup in the Netlify dashboard:
+The site is static, but `worker/index.js` (wired up in `wrangler.jsonc`) adds two cron jobs on Cloudflare:
 
-1. **Site configuration → Build & deploy → Build hooks**: add a hook for `main`.
-2. **Site configuration → Environment variables**: add `BUILD_HOOK_URL` with the hook's URL, scoped to Functions.
+- **Nightly rebuild** (00:15 UTC): calls the Workers Builds deploy hook, so past shows drop out of the HTML and new SoundCloud tracks appear. Visitors' browsers hide past shows between rebuilds anyway.
+- **Monthly report** (1st of the month, 06:00 UTC): `worker/report.js` reads last month's Cloudflare Web Analytics (visits, page views, Czech vs English, top pages, referrers, countries, devices) and e-mails a short Czech summary through [Resend](https://resend.com).
 
-Visitors' browsers hide shows whose date has passed even between rebuilds (and before the setup); the rebuild keeps the HTML and tracks fresh.
+One-time setup in **Workers & Pages → ian-kita-web → Settings → Variables and Secrets**:
+
+| Name | Type | Value |
+|---|---|---|
+| `DEPLOY_HOOK_URL` | Secret | Settings → Builds → Deploy Hooks, a hook for `main` |
+| `CF_API_TOKEN` | Secret | API token with **Account Analytics: Read** |
+| `RESEND_API_KEY` | Secret | Resend API key; the domain iankita.com must be verified in Resend |
+| `REPORT_KEY` | Secret | Any long random string, for trying the report by hand |
+| `WA_SITE_TAG` | Text | The Web Analytics site tag (`siteTag` in the dashboard URL) |
+| `REPORT_TO` | Text | Recipients, comma-separated |
+
+`CF_ACCOUNT_ID` and `REPORT_FROM` live in `wrangler.jsonc`; `keep_vars` stops deploys from removing the dashboard values.
+
+To preview last month's report without sending it (add `?send=1` to also e-mail it):
+
+```sh
+curl -X POST -H "Authorization: Bearer $REPORT_KEY" https://iankita.com/__report -o report.html
+```
 
 ## 🧞 Commands
 

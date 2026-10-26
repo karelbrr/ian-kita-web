@@ -1,13 +1,27 @@
-// Cloudflare hosting: the site is fully static, so `npm run build` writes the
-// finished pages to dist/ and `wrangler deploy` uploads that folder as is.
-// Without this file Wrangler would add Astro's Cloudflare server adapter,
-// which a static site doesn't need.
+// Cloudflare hosting. The site itself is static: `npm run build` writes the
+// pages to dist/ and Cloudflare serves them before any code runs. Without
+// this file Wrangler would add Astro's Cloudflare server adapter, which a
+// static site doesn't need. worker/index.js only adds scheduled jobs.
 {
   "name": "ian-kita-web",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     // Missing pages get dist/404.html with a 404 status.
     "not_found_handling": "404-page"
-  }
+  },
+  "triggers": {
+    // Nightly rebuild (00:15 UTC) and the monthly report (1st, 06:00 UTC).
+    "crons": ["15 0 * * *", "0 6 1 * *"]
+  },
+  "vars": {
+    "CF_ACCOUNT_ID": "1c245c505ee54b49c0570a9005fc4e56",
+    "REPORT_FROM": "Web iankita.com <report@iankita.com>"
+  },
+  // WA_SITE_TAG and REPORT_TO are set in the dashboard (Settings > Variables
+  // and Secrets), as are the secrets CF_API_TOKEN, RESEND_API_KEY,
+  // DEPLOY_HOOK_URL and REPORT_KEY. keep_vars stops deploys removing them.
+  "keep_vars": true
 }
