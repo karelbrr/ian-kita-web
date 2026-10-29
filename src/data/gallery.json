@@ -76,6 +76,34 @@
       "caption": "Novesta 2003",
       "caption_cs": "Novesta 2003",
       "alt_cs": "Novesta 2003"
+    },
+    {
+      "url": "/src/assets/photos/sklep-house.jpg",
+      "alt": "Sklep House Zlín",
+      "caption": "Sklep House Zlín",
+      "caption_cs": "Sklep House Zlín",
+      "alt_cs": "Sklep House Zlín"
+    },
+    {
+      "url": "/src/assets/photos/soldout-festival-ostrava.jpg",
+      "alt": "Soldout festival Ostrava",
+      "caption": "Soldout festival Ostrava",
+      "caption_cs": "Soldout festival Ostrava",
+      "alt_cs": "Soldout festival Ostrava"
+    },
+    {
+      "url": "/src/assets/photos/first-steps.jpg",
+      "alt": "First Steps with the Piano Without a Teacher ",
+      "caption": "First Steps with the Piano Without a Teacher ",
+      "caption_cs": "First Steps with the Piano Without a Teacher ",
+      "alt_cs": "First Steps with the Piano Without a Teacher "
+    },
+    {
+      "url": "/src/assets/photos/interview.jpg",
+      "alt": "Interview",
+      "caption": "Interview",
+      "caption_cs": "Interview",
+      "alt_cs": "Interview"
     }
   ]
 }
