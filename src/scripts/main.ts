@@ -265,6 +265,78 @@ function setupLazyVideo() {
     videos.forEach((v) => observer.observe(v));
 }
 
+// --- Gallery: balanced rows, first photos, the rest on request ---------------
+// CSS alone fills rows greedily, which can strand one photo on the last row.
+// This picks the row breaks that keep every row, the last included, closest
+// to the target height (--row), then sets each tile's flex-basis so the browser
+// breaks exactly there and flex-grow closes the last fraction of a pixel.
+// The "Show all" button ships hidden, so without JavaScript every photo shows.
+// Hidden photos stay in the lightbox, which still steps through all of them.
+function setupGallery() {
+    const gallery = document.querySelector<HTMLElement>('[data-gallery]');
+    if (!gallery || !('ResizeObserver' in window)) return;
+    const tiles = Array.from(gallery.querySelectorAll<HTMLElement>('.gallery-rows__tile'));
+    const button = document.querySelector<HTMLButtonElement>('button[data-gallery-more]');
+
+    const layout = () => {
+        const visible = tiles.filter((tile) => !tile.matches('.is-collapsed > .gallery-rows__extra'));
+        const ratios = visible.map((tile) => parseFloat(tile.style.getPropertyValue('--ratio')) || 1);
+        const style = getComputedStyle(gallery);
+        const width = gallery.getBoundingClientRect().width;
+        const gap = parseFloat(style.columnGap) || 0;
+        const target = parseFloat(style.getPropertyValue('--row'));
+        if (!width || !target) return;
+
+        // best[j] is the lowest cost of laying out the first j photos. A row's
+        // cost is the squared log of its height over the target, so a row
+        // twice too tall counts the same as one half too short.
+        const best = [0];
+        const rowStart = [0];
+        for (let j = 1; j <= ratios.length; j++) {
+            best[j] = Infinity;
+            let ratioSum = 0;
+            for (let i = j - 1; i >= 0; i--) {
+                ratioSum += ratios[i];
+                const height = (width - gap * (j - i - 1)) / ratioSum;
+                const cost = best[i] + Math.log(height / target) ** 2;
+                if (cost < best[j]) {
+                    best[j] = cost;
+                    rowStart[j] = i;
+                }
+                if (height < target / 2) break;
+            }
+        }
+
+        for (let end = ratios.length; end > 0; end = rowStart[end]) {
+            const start = rowStart[end];
+            const ratioSum = ratios.slice(start, end).reduce((sum, ratio) => sum + ratio, 0);
+            const height = (width - gap * (end - start - 1)) / ratioSum;
+            for (let k = start; k < end; k++) {
+                visible[k].style.flexBasis = `${Math.floor(height * ratios[k] * 100) / 100 - 0.05}px`;
+            }
+        }
+        gallery.classList.add('is-justified');
+    };
+
+    if (button) {
+        gallery.classList.add('is-collapsed');
+        button.hidden = false;
+        button.addEventListener('click', () => {
+            gallery.classList.remove('is-collapsed');
+            button.hidden = true;
+            layout();
+            gallery.querySelector<HTMLElement>('.gallery-rows__extra')?.focus();
+        });
+    }
+
+    let lastWidth = 0;
+    new ResizeObserver(() => {
+        if (gallery.clientWidth === lastWidth) return;
+        lastWidth = gallery.clientWidth;
+        layout();
+    }).observe(gallery);
+}
+
 // --- Gallery lightbox --------------------------------------------------------
 function setupLightbox() {
     const dialog = document.querySelector<HTMLDialogElement>('dialog[data-lightbox-dialog]');
@@ -361,6 +433,7 @@ setupNav();
 setupScrollSpy();
 setupLanguageSwitch();
 setupLazyVideo();
+setupGallery();
 setupLightbox();
 setupCopyButtons();
 setupScrollProgressFallback();

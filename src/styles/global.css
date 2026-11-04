@@ -312,6 +312,60 @@ body.menu-open {
 }
 
 /* ---------------------------------------------------------------------------
+   Gallery: justified rows
+   A tile starts at the row height times its aspect ratio and grows in
+   proportion to that ratio, so the photos in a row end up the same height and
+   fill the width. The filler soaks up the spare width of the last row, which
+   keeps its photos at the base height instead of ballooning. main.ts then
+   picks balanced row breaks (.is-justified) and drops the filler; --row is
+   registered as a length so the script can read it resolved to pixels.
+--------------------------------------------------------------------------- */
+/* initial-value must not depend on font size (rem), or the rule is ignored. */
+@property --row {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 160px;
+}
+
+.gallery-rows {
+  --row: 10rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+@media (min-width: 48rem) {
+  .gallery-rows {
+    --row: 14rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .gallery-rows {
+    --row: min(19vw, 18rem);
+    gap: 1rem;
+  }
+}
+
+.gallery-rows__tile {
+  flex: var(--ratio) 1 calc(var(--ratio) * var(--row));
+  aspect-ratio: var(--ratio);
+}
+
+.gallery-rows__filler {
+  flex: 1000 1 0;
+}
+
+.gallery-rows.is-justified > .gallery-rows__filler {
+  display: none;
+}
+
+.gallery-rows.is-collapsed > .gallery-rows__extra {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
    Gallery lightbox
 --------------------------------------------------------------------------- */
 .lightbox {

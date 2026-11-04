@@ -165,7 +165,7 @@ collections:
             widget: "list"
             allow_add: true
             summary: "{{caption}}"
-            hint: "The first photo anchors the grid as a large tile; portrait photos take two rows, wide photos two columns."
+            hint: "Photos show in this order, left to right, uncropped. The first 10 show straight away, the rest under “Show all photos”, so drag the strongest ones to the top."
             fields:
               - { name: "url", label: "Photo", widget: "image" }
               - { name: "alt", label: "Alt text", widget: "string", hint: "Describe the photo for screen readers and search engines." }

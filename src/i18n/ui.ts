@@ -63,6 +63,7 @@ const en = {
         previous: 'Previous photo',
         next: 'Next photo',
         openPhoto: (caption: string) => `Open photo: ${caption}`,
+        showAll: (count: number) => `Show all ${count} photos`,
     },
     booking: {
         label: 'Booking',
@@ -138,6 +139,8 @@ const cs: Dictionary = {
         previous: 'Předchozí fotka',
         next: 'Další fotka',
         openPhoto: (caption) => `Otevřít fotku: ${caption}`,
+        // Only shown past ten photos, where Czech always takes "fotek".
+        showAll: (count) => `Zobrazit všech ${count} fotek`,
     },
     booking: {
         label: 'Booking',
